@@ -1,0 +1,176 @@
+<html>
+<head>
+<title>FormCadastro.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+.s3 { color: #808080;}
+.s4 { color: #6897bb;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+FormCadastro.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.esp_eventos</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.content.Intent</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.graphics.Color</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Bundle</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.util.Log</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.Window</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Button</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.EditText</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.ImageView</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.appcompat.app.AppCompatActivity</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.google.android.material.snackbar.Snackbar</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.auth.FirebaseAuth</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.auth.FirebaseAuthInvalidCredentialsException</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.auth.FirebaseAuthUserCollisionException</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.auth.FirebaseAuthWeakPasswordException</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.firestore.DocumentReference</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.firestore.FirebaseFirestore</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">java.util.HashMap</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.Map</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.Objects</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">FormCadastro </span><span class="s0">extends </span><span class="s1">AppCompatActivity {</span>
+
+    <span class="s1">ImageView imageViewback</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">EditText edit_nome</span><span class="s0">,</span><span class="s1">edit_email</span><span class="s0">,</span><span class="s1">edit_senha</span><span class="s0">,</span><span class="s1">edit_coord</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">Button bt_cadastrar</span><span class="s0">;</span>
+    <span class="s1">String[] mensagens = {</span><span class="s2">&quot;Preencha todos os campos&quot;</span><span class="s0">, </span><span class="s2">&quot;Cadastro realizado com sucesso&quot;</span><span class="s1">}</span><span class="s0">;</span>
+    <span class="s1">String usuarioID</span><span class="s0">;</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">onCreate(Bundle savedInstanceState) {</span>
+        <span class="s0">super</span><span class="s1">.onCreate(savedInstanceState)</span><span class="s0">;</span>
+        <span class="s1">setContentView(R.layout.activity_form_cadastro)</span><span class="s0">;</span>
+
+        <span class="s3">//getSupportActionBar().hide();</span>
+        <span class="s1">IniciarComponentes()</span><span class="s0">; </span><span class="s3">// Tem que iniciar o componente criado no private void IniciarComponentes</span>
+
+        <span class="s1">Window window = </span><span class="s0">this</span><span class="s1">.getWindow()</span><span class="s0">;</span>
+        <span class="s1">window.setStatusBarColor(</span><span class="s0">this</span><span class="s1">.getResources().getColor(R.color.colorPrimary))</span><span class="s0">;</span>
+
+        <span class="s1">bt_cadastrar.setOnClickListener(v -&gt; {</span>
+
+            <span class="s1">String nome = edit_nome.getText().toString()</span><span class="s0">;</span>
+            <span class="s1">String email = edit_email.getText().toString()</span><span class="s0">;</span>
+            <span class="s1">String senha = edit_senha.getText().toString()</span><span class="s0">;</span>
+            <span class="s1">String cord = edit_coord.getText().toString()</span><span class="s0">;</span>
+            <span class="s1">bt_cadastrar.setEnabled(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+
+            <span class="s0">if</span><span class="s1">(nome.isEmpty() || cord.isEmpty() || email.isEmpty() || senha.isEmpty()){</span>
+
+                <span class="s1">Snackbar snackbar = Snackbar.make(v</span><span class="s0">,</span><span class="s1">mensagens[</span><span class="s4">0</span><span class="s1">]</span><span class="s0">,</span><span class="s1">Snackbar.LENGTH_SHORT)</span><span class="s0">;</span>
+                <span class="s1">snackbar.setBackgroundTint(Color.WHITE)</span><span class="s0">;</span>
+                <span class="s1">snackbar.setTextColor(Color.BLACK)</span><span class="s0">;</span>
+                <span class="s1">snackbar.show()</span><span class="s0">;</span>
+                <span class="s1">bt_cadastrar.setEnabled(</span><span class="s0">true</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">}</span><span class="s0">else</span><span class="s1">{</span>
+
+                <span class="s1">CadastrarUsuario(v)</span><span class="s0">;</span>
+                <span class="s1">bt_cadastrar.setEnabled(</span><span class="s0">true</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s3">//Login();</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+        <span class="s1">imageViewback.setOnClickListener(v -&gt; {</span>
+
+            <span class="s1">FirebaseAuth.getInstance().signOut()</span><span class="s0">;</span>
+            <span class="s1">Intent intentVoltarCadastroUsuario = </span><span class="s0">new </span><span class="s1">Intent(FormCadastro.</span><span class="s0">this, </span><span class="s1">Activity_Splash_Form_Login.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">startActivity(intentVoltarCadastroUsuario)</span><span class="s0">;</span>
+            <span class="s1">finish()</span><span class="s0">;</span>
+        <span class="s1">})</span><span class="s0">;</span>
+    <span class="s1">}</span>
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">onDestroy(){</span>
+        <span class="s0">super</span><span class="s1">.onDestroy()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+    <span class="s0">private void </span><span class="s1">CadastrarUsuario(View v){</span>
+        <span class="s1">String email = edit_email.getText().toString()</span><span class="s0">; </span><span class="s3">//Ele recebe o campo de texto, ou seja, o que eu digitar no frontend e ainda converte com o toString.</span>
+        <span class="s1">String senha = edit_senha.getText().toString()</span><span class="s0">;</span>
+
+        <span class="s1">FirebaseAuth.getInstance().createUserWithEmailAndPassword(email</span><span class="s0">,</span><span class="s1">senha).addOnCompleteListener(task -&gt; {</span>
+            <span class="s0">if</span><span class="s1">(task.isSuccessful()){</span>
+                <span class="s1">SalvarDadosUsuario(v)</span><span class="s0">;</span>
+                <span class="s1">Login()</span><span class="s0">;</span>
+
+            <span class="s1">}</span><span class="s0">else</span><span class="s1">{</span>
+                <span class="s1">String erro</span><span class="s0">;</span>
+                <span class="s0">try</span><span class="s1">{</span>
+
+                    <span class="s0">throw </span><span class="s1">Objects.requireNonNull(task.getException())</span><span class="s0">;</span>
+
+                <span class="s1">}</span><span class="s0">catch </span><span class="s1">(FirebaseAuthWeakPasswordException e){</span>
+
+                    <span class="s1">erro = </span><span class="s2">&quot;Digite uma senha com no mínimo 6 caracteres&quot;</span><span class="s0">;</span>
+
+                <span class="s1">}</span><span class="s0">catch </span><span class="s1">(FirebaseAuthUserCollisionException e){</span>
+
+                    <span class="s1">erro = </span><span class="s2">&quot;Esta conta já foi cadastrada&quot;</span><span class="s0">;</span>
+
+                <span class="s1">}</span><span class="s0">catch </span><span class="s1">(FirebaseAuthInvalidCredentialsException e){</span>
+
+                    <span class="s1">erro = </span><span class="s2">&quot;E-mail inválido&quot;</span><span class="s0">;</span>
+
+                <span class="s1">}</span><span class="s0">catch </span><span class="s1">(Exception e){</span>
+
+                    <span class="s1">erro = </span><span class="s2">&quot;Erro ao cadastrar usuário&quot;</span><span class="s0">;</span>
+
+                <span class="s1">}</span>
+
+                <span class="s1">Snackbar snackbar = Snackbar.make(v</span><span class="s0">,</span><span class="s1">erro</span><span class="s0">,</span><span class="s1">Snackbar.LENGTH_SHORT)</span><span class="s0">;</span>
+                <span class="s1">snackbar.setBackgroundTint(Color.WHITE)</span><span class="s0">;</span>
+                <span class="s1">snackbar.setTextColor(Color.BLACK)</span><span class="s0">;</span>
+                <span class="s1">snackbar.show()</span><span class="s0">;</span>
+
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+    <span class="s1">}</span>
+    <span class="s0">private void </span><span class="s1">Login(){</span>
+        <span class="s1">Intent intentFCUsuario = </span><span class="s0">new </span><span class="s1">Intent(FormCadastro.</span><span class="s0">this, </span><span class="s1">Activity_Splash_Form_Login.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">startActivity(intentFCUsuario)</span><span class="s0">;</span>
+        <span class="s1">finish()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+    <span class="s0">private void </span><span class="s1">SalvarDadosUsuario(View s){</span>
+        <span class="s1">String nome = edit_nome.getText().toString()</span><span class="s0">;</span>
+        <span class="s1">String coord = edit_coord.getText().toString()</span><span class="s0">;</span>
+
+        <span class="s1">FirebaseFirestore db = FirebaseFirestore.getInstance()</span><span class="s0">;</span>
+
+        <span class="s1">Map&lt;String</span><span class="s0">, </span><span class="s1">Object&gt; usuarios = </span><span class="s0">new </span><span class="s1">HashMap&lt;&gt;()</span><span class="s0">;</span>
+        <span class="s1">usuarios.put(</span><span class="s2">&quot;Nome&quot;</span><span class="s0">,</span><span class="s1">nome)</span><span class="s0">;</span>
+        <span class="s1">usuarios.put(</span><span class="s2">&quot;Coordenação&quot;</span><span class="s0">,</span><span class="s1">coord)</span><span class="s0">;</span>
+
+        <span class="s1">usuarioID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()</span><span class="s0">;</span>
+
+        <span class="s1">DocumentReference documentReference = db.collection(</span><span class="s2">&quot;Info_Usuarios&quot;</span><span class="s1">).document(usuarioID)</span><span class="s0">;</span>
+        <span class="s1">documentReference.set(usuarios).addOnSuccessListener(aVoid -&gt; {</span>
+            <span class="s1">Log.d(</span><span class="s2">&quot;db&quot;</span><span class="s0">,</span><span class="s2">&quot;Sucesso ao salvar os dados&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+            <span class="s1">Snackbar snackbar = Snackbar.make(s</span><span class="s0">,</span><span class="s1">mensagens[</span><span class="s4">1</span><span class="s1">]</span><span class="s0">,</span><span class="s1">Snackbar.LENGTH_SHORT)</span><span class="s0">;</span>
+            <span class="s1">snackbar.setBackgroundTint(Color.WHITE)</span><span class="s0">;</span>
+            <span class="s1">snackbar.setTextColor(Color.BLACK)</span><span class="s0">;</span>
+            <span class="s1">snackbar.show()</span><span class="s0">;</span>
+        <span class="s1">}).addOnFailureListener(e -&gt; Log.d(</span><span class="s2">&quot;db_error&quot;</span><span class="s0">, </span><span class="s2">&quot;Erro ao salvar os dados&quot; </span><span class="s1">+ e))</span><span class="s0">;</span>
+    <span class="s1">}</span>
+    <span class="s0">private void </span><span class="s1">IniciarComponentes(){</span>
+        <span class="s1">edit_nome = findViewById(R.id.edit_nome)</span><span class="s0">; </span><span class="s3">//Recuperar o edit_nome que está na parte do front-end.</span>
+        <span class="s1">edit_email = findViewById(R.id.edit_email)</span><span class="s0">; </span><span class="s3">//Recuperar o edit_email que está na parte do front-end.</span>
+        <span class="s1">edit_senha = findViewById(R.id.edit_senha)</span><span class="s0">; </span><span class="s3">//Recuperar o edit_senha que está na parte do front-end.</span>
+        <span class="s1">edit_coord = findViewById(R.id.edit_coord)</span><span class="s0">; </span><span class="s3">// Recuperar o edit_coord que está na parte do front-end.</span>
+        <span class="s1">bt_cadastrar = findViewById(R.id.bt_cadastrar)</span><span class="s0">; </span><span class="s3">//Recuperar o bt_cadastrar que está na parte do front-end.</span>
+        <span class="s1">imageViewback = findViewById(R.id.imageViewback)</span><span class="s0">; </span><span class="s3">//Recuperar o imageViewback que está na parte do front-end.</span>
+    <span class="s1">}</span>
+<span class="s1">}</span></pre>
+</body>
+</html>

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "298491850974",
+    "project_id": "esp-eventos",
+    "storage_bucket": "esp-eventos.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:298491850974:android:07def2ba290cdb2551524f",
+        "android_client_info": {
+          "package_name": "com.example.esp_eventos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "298491850974-4hpdc8mvpbl2oe3vj1dlgfqhg24ofka3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.esp_eventos",
+            "certificate_hash": "27f71daed7f3019a7585a6c427e1094aa180e623"
+          }
+        },
+        {
+          "client_id": "298491850974-fnjf1drqlkv6cq513dae70jt8a0jsiu0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnHED09913SAI27092ovJse3z5Ak0N7dU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "298491850974-d0b3qvp92hf2lcf4b1v9rki9f9qnjh17.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

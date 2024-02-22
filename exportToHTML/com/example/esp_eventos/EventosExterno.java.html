@@ -1,0 +1,124 @@
+<html>
+<head>
+<title>EventosExterno.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+EventosExterno.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.esp_eventos</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">EventosExterno {</span>
+
+    <span class="s0">private </span><span class="s1">String eventosId</span><span class="s0">, </span><span class="s1">nomedoEventoExterno</span><span class="s0">, </span><span class="s1">localEventoExterno</span><span class="s0">,</span>
+            <span class="s1">horaInicialEventoExterno</span><span class="s0">,</span><span class="s1">horaFinalEventoExterno</span><span class="s0">,</span>
+            <span class="s1">descricaoEventoExterno</span><span class="s0">, </span><span class="s1">dataInicialEventoExterno</span><span class="s0">,</span>
+            <span class="s1">dataFinalEventoExterno</span><span class="s0">, </span><span class="s1">observacoesEventoExterno</span><span class="s0">,</span>
+            <span class="s1">participantesEventoExterno</span><span class="s0">, </span><span class="s1">setorResponsavelEventoExterno</span><span class="s0">;</span>
+
+    <span class="s0">public </span><span class="s1">EventosExterno(){}</span>
+
+    <span class="s0">public </span><span class="s1">EventosExterno(String eventosId</span><span class="s0">, </span><span class="s1">String nomedoEventoExterno</span><span class="s0">, </span><span class="s1">String localEventoExterno</span><span class="s0">, </span><span class="s1">String horaInicialEventoExterno</span><span class="s0">, </span><span class="s1">String horaFinalEventoExterno</span><span class="s0">, </span><span class="s1">String descricaoEventoExterno</span><span class="s0">, </span><span class="s1">String dataInicialEventoExterno</span><span class="s0">, </span><span class="s1">String dataFinalEventoExterno</span><span class="s0">, </span><span class="s1">String observacoesEventoExterno</span><span class="s0">, </span><span class="s1">String participantesEventoExterno</span><span class="s0">, </span><span class="s1">String setorResponsavelEventoExterno){</span>
+        <span class="s0">this</span><span class="s1">.eventosId = eventosId</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.nomedoEventoExterno = nomedoEventoExterno</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.localEventoExterno = localEventoExterno</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.horaInicialEventoExterno = horaInicialEventoExterno</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.horaFinalEventoExterno = horaFinalEventoExterno</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.descricaoEventoExterno = descricaoEventoExterno</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.dataInicialEventoExterno = dataInicialEventoExterno</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.dataFinalEventoExterno = dataFinalEventoExterno</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.observacoesEventoExterno = observacoesEventoExterno</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.participantesEventoExterno = participantesEventoExterno</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.setorResponsavelEventoExterno = setorResponsavelEventoExterno</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String getEventosId() {</span>
+        <span class="s0">return </span><span class="s1">eventosId</span><span class="s0">;</span>
+    <span class="s1">}</span>
+    <span class="s0">public void </span><span class="s1">setEventosId(String eventosId) {</span>
+        <span class="s0">this</span><span class="s1">.eventosId = eventosId</span><span class="s0">;</span>
+    <span class="s1">}</span>
+    <span class="s0">public </span><span class="s1">String getNomedoEventoExterno() {</span>
+        <span class="s0">return </span><span class="s1">nomedoEventoExterno</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setNomedoEventoExterno(String nomedoEventoExterno) {</span>
+        <span class="s0">this</span><span class="s1">.nomedoEventoExterno = nomedoEventoExterno</span><span class="s0">;</span>
+    <span class="s1">}</span>
+    <span class="s0">public </span><span class="s1">String getLocalEventoExterno() {</span>
+        <span class="s0">return </span><span class="s1">localEventoExterno</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setLocalEventoExterno(String localEventoExterno) {</span>
+        <span class="s0">this</span><span class="s1">.localEventoExterno = localEventoExterno</span><span class="s0">;</span>
+    <span class="s1">}</span>
+    <span class="s0">public </span><span class="s1">String getHoraInicialEventoExterno() {</span>
+        <span class="s0">return </span><span class="s1">horaInicialEventoExterno</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setHoraInicialEventoExterno(String horaInicialEventoExterno) {</span>
+        <span class="s0">this</span><span class="s1">.horaInicialEventoExterno = horaInicialEventoExterno</span><span class="s0">;</span>
+    <span class="s1">}</span>
+    <span class="s0">public </span><span class="s1">String getHoraFinalEventoExterno() {</span>
+        <span class="s0">return </span><span class="s1">horaFinalEventoExterno</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setHoraFinalEventoExterno(String horaFinalEventoExterno) {</span>
+        <span class="s0">this</span><span class="s1">.horaFinalEventoExterno = horaFinalEventoExterno</span><span class="s0">;</span>
+    <span class="s1">}</span>
+    <span class="s0">public </span><span class="s1">String getDescricaoEventoExterno() {</span>
+        <span class="s0">return </span><span class="s1">descricaoEventoExterno</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setDescricaoEventoExterno(String descricaoEventoExterno) {</span>
+        <span class="s0">this</span><span class="s1">.descricaoEventoExterno = descricaoEventoExterno</span><span class="s0">;</span>
+    <span class="s1">}</span>
+    <span class="s0">public </span><span class="s1">String getDataInicialEventoExterno() {</span>
+        <span class="s0">return </span><span class="s1">dataInicialEventoExterno</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setDataInicialEventoExterno(String dataInicialEventoExterno) {</span>
+        <span class="s0">this</span><span class="s1">.dataInicialEventoExterno = dataInicialEventoExterno</span><span class="s0">;</span>
+    <span class="s1">}</span>
+    <span class="s0">public </span><span class="s1">String getDataFinalEventoExterno() {</span>
+        <span class="s0">return </span><span class="s1">dataFinalEventoExterno</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setDataFinalEventoExterno(String dataFinalEventoExterno) {</span>
+        <span class="s0">this</span><span class="s1">.dataFinalEventoExterno = dataFinalEventoExterno</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String getObservacoesEventoExterno() {</span>
+        <span class="s0">return </span><span class="s1">observacoesEventoExterno</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setObservacoesEventoExterno(String observacoesEventoExterno) {</span>
+        <span class="s0">this</span><span class="s1">.observacoesEventoExterno = observacoesEventoExterno</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String getParticipantesEventoExterno() {</span>
+        <span class="s0">return </span><span class="s1">participantesEventoExterno</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setParticipantesEventoExterno(String participantesEventoExterno) {</span>
+        <span class="s0">this</span><span class="s1">.participantesEventoExterno = participantesEventoExterno</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String getSetorResponsavelEventoExterno() {</span>
+        <span class="s0">return </span><span class="s1">setorResponsavelEventoExterno</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setSetorResponsavelEventoExterno(String setorResponsavelEventoExterno) {</span>
+        <span class="s0">this</span><span class="s1">.setorResponsavelEventoExterno = setorResponsavelEventoExterno</span><span class="s0">;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+</pre>
+</body>
+</html>

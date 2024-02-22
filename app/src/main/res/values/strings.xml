@@ -1,0 +1,105 @@
+<resources>
+
+    <!--TITULO DO APLICATIVO -->
+    <string name="app_name">ESP Eventos</string>
+    <string name="entrar">Entrar</string>
+    <string name="text_cadastro">Crie uma conta clicando aqui</string>
+    <string name="text_login_google">Faça o login com o Google</string>
+    <string name="title_activity_form_cadastro">FormCadastro</string>
+    <string name="title_cadastro">Cadastre-se</string>
+    <string name="title_agendamento">Agendamento</string>
+    <string name="select">Selecione um local *</string>
+
+    <!--FORMULÁRIO CADASTRO DE EVENTO-->
+    <string name="deslogar">Deslogar</string>
+    <string name="voltar1">Voltar</string>
+    <string name="subtitle_agendamento_interno">Interno</string>
+    <string name="subtitle_agendamento_externo">Externo</string>
+    <string name="nomeEvento">Nome do Evento *</string>
+    <string name="setorResp">Setor Responsável *</string>
+    <string name="numPart">Número de Participantes *</string>
+    <string name="data">Data Inicial *</string>
+    <string name="datafinal">Data Final *</string>
+    <string name="dataicone">Selecionar Data</string>
+    <string name="horarioInicial">Horário Inicial *</string>
+    <string name="horarioFinal">Horário Final *</string>
+    <string name="horarioicone">Selecionar Hora *</string>
+    <string name="descricaoAtv">Descrição da Atividade *</string>
+    <string name="equipamentos">Equipamentos de Áudio e Vídeo *</string>
+    <string name="materialapoio">Materiais de Apoio ? *</string>
+    <string name="transmissao">Haverá Transmissão/ Gravação ? *</string>
+    <string name="modalidade">Qual a modalidade da atividade ? *</string>
+    <string name="link">Será necessário gerar link ? *</string>
+    <string name="materialgrafico">Produção de material gráfico/ publicitário ? *</string>
+    <string name="formsLink">Preencha o formulário no link abaixo: *</string>
+    <string name="linkformsgraf">
+        <a href="https://forms.gle/Yn9HvZhRNmnYkQBr9">Solicitação de materiais gráficos/ publicitários</a>
+    </string>
+    <string name="sim">Sim</string>
+    <string name="nao">Não</string>
+    <string name="presencial">Presencial</string>
+    <string name="hibrido">Híbrido</string>
+    <string name="online">Online</string>
+    <string name="transmissaocheck">Transmissão</string>
+    <string name="gravacao">Gravação</string>
+    <string name="ambos">Ambos</string>
+    <string name="quais">Quais ?</string>
+    <string name="observacoes">Observações *</string>
+    <string name="camposobrigatorios">* campos obrigátorios</string>
+    <string name="cadastrar">Cadastrar</string>
+
+    <!--FORMULÁRIO CADASTRO DE USUÁRIOS-->
+    <string name="nome">Nome *</string>
+    <string name="coord">Coordenação *</string>
+    <string name="email">Email *</string>
+    <string name="senha">Senha *</string>
+    <string name="obrigatorio">* campos obrigatórios</string>
+    <string name="admin1">Administrador</string>
+    <string name="administrador">Administrador ?</string>
+
+    <!--FORMULÁRIO LOGIN -->
+    <string name="logo">Logo</string>
+    <string name="espeventos">ESP Eventos</string>
+    <string name="emaillogin">Email</string>
+    <string name="senhalogin">Senha</string>
+    <string name="mostrarsenha">Mostrar a senha ?</string>
+    <string name="exibirsenha">Visualizar a senha</string>
+
+    <!-- FORMULÁRIO VISUALIZAÇÃO -->
+    <string name="usuario">Usuário</string>
+    <string name="bemvindo">Seja Bem vindo (a)</string>
+    <string name="adicionar">Adicionar</string>
+    <string name="proximosEventos">Próximos Eventos</string>
+    <string name="eventosexternos"> Eventos Externos</string>
+    <string name="eventosinternos"> Eventos Internos</string>
+
+    <!-- RECUPERAÇÃO DE SENHA -->
+    <string name="redefinirsenha">Esqueceu sua senha ?</string>
+    <string name="textredefinir">Digite o seu e-mail e te enviaremos um link para redefinir sua senha.</string>
+    <string name="redefinir">Redefinir</string>
+    <string name="esqueceusenha">Esqueci minha senha</string>
+
+    <!--SELECIONAR AMBIENTE-->
+    <string name="txtAmbiente">Ambiente do Evento</string>
+    <string name="selectAmb">Selecione um Ambiente</string>
+    <string name="seguinte">Seguinte</string>
+
+    <!-- LISTA EVENTOS -->
+    <string name="data2">Data Inicial:</string>
+    <string name="data3">Data Final:</string>
+    <string name="horario2">Horário Inicial:</string>
+    <string name="horario3">Horário Final:</string>
+    <string name="local2">Local:</string>
+
+    <!-- ORDENAÇÃO EVENTOS -->
+    <string name="hoje">Hoje</string>
+    <string name="ultimos7dias">Próximos 7 dias</string>
+    <string name="ultimos30dias">Próximos 30 dias</string>
+    <string name="periodopersonalizado">Período Personalizado</string>
+
+    <!-- CONFIGURAÇÕES DE ADMINISTRADORES -->
+    <string name="relatorioeventosinternos">Baixar relatório dos eventos internos</string>
+    <string name="relatorioeventosexternos">Baixar relatório dos eventos externos</string>
+    <string name="cadastraradmin">Cadastrar administrador</string>
+
+</resources>

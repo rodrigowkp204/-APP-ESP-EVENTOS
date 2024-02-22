@@ -1,0 +1,146 @@
+<html>
+<head>
+<title>PaginaPrincipal.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+.s3 { color: #808080;}
+.s4 { color: #6897bb;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+PaginaPrincipal.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.esp_eventos</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.annotation.SuppressLint</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.app.AlertDialog</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.Intent</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Build</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Bundle</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.util.Log</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.Window</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.ImageView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.TextView</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.recyclerview.widget.GridLayoutManager</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.recyclerview.widget.RecyclerView</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.google.firebase.FirebaseApp</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.auth.FirebaseAuth</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.firestore.DocumentReference</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.firestore.FirebaseFirestore</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.firestore.FirebaseFirestoreSettings</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">java.util.ArrayList</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.List</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.Objects</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">PaginaPrincipal </span><span class="s0">extends </span><span class="s1">BaseActivity {</span>
+    <span class="s1">ImageView imageViewoff</span><span class="s0">;</span>
+    <span class="s1">TextView textnomeUsuario</span><span class="s0">;</span>
+    <span class="s1">String usuarioID</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">RecyclerView recyclerView</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">List&lt;Photos&gt; photoList = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;()</span><span class="s0">;</span>
+
+    <span class="s1">@SuppressLint({</span><span class="s2">&quot;MissingInflatedId&quot;</span><span class="s0">, </span><span class="s2">&quot;ObsoleteSdkInt&quot;</span><span class="s1">})</span>
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">onCreate(Bundle savedInstanceState) {</span>
+        <span class="s0">super</span><span class="s1">.onCreate(savedInstanceState)</span><span class="s0">;</span>
+        <span class="s1">setContentView(R.layout.activity_pagina_principal)</span><span class="s0">;</span>
+
+        <span class="s1">FirebaseApp.initializeApp(</span><span class="s0">this</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">FirebaseFirestoreSettings settings = </span><span class="s0">new </span><span class="s1">FirebaseFirestoreSettings.Builder()</span>
+                <span class="s1">.build()</span><span class="s0">;</span>
+        <span class="s1">FirebaseFirestore db = FirebaseFirestore.getInstance()</span><span class="s0">;</span>
+        <span class="s1">db.setFirestoreSettings(settings)</span><span class="s0">;</span>
+
+        <span class="s1">IniciarComponentes()</span><span class="s0">;</span>
+
+        <span class="s1">imageViewoff.setOnClickListener(v -&gt; {</span>
+
+            <span class="s1">FirebaseAuth.getInstance().signOut()</span><span class="s0">;</span>
+            <span class="s1">Intent intentDeslogarPaginaPrincipal = </span><span class="s0">new </span><span class="s1">Intent(PaginaPrincipal.</span><span class="s0">this, </span><span class="s1">Activity_Splash_Form_Login.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">startActivity(intentDeslogarPaginaPrincipal)</span><span class="s0">;</span>
+            <span class="s1">finish()</span><span class="s0">;</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s3">/* 
+        Layout Manager -&gt; configuração de layout, aparência, estrutura 
+        adapter -&gt; apadtador, intermediario entre o dataset e o layout 
+        dataset -&gt; dados 
+        configurar o adapter 
+        */</span>
+
+        <span class="s1">photoList = getPhotoList()</span><span class="s0">;</span>
+        <span class="s1">PhotoAdapter photoAdapter = </span><span class="s0">new </span><span class="s1">PhotoAdapter(photoList)</span><span class="s0">;</span>
+
+        <span class="s3">//configurar o recyclerview</span>
+        <span class="s1">recyclerView.setLayoutManager(</span><span class="s0">new </span><span class="s1">GridLayoutManager(</span><span class="s0">this,</span><span class="s4">1</span><span class="s1">))</span><span class="s0">;</span>
+        <span class="s1">recyclerView.setHasFixedSize(</span><span class="s0">true</span><span class="s1">)</span><span class="s0">; </span><span class="s3">//lista dinamica tera um tamanho fixo</span>
+        <span class="s1">recyclerView.setAdapter(photoAdapter)</span><span class="s0">;</span>
+
+        <span class="s3">// IMPLEMENTAR EM TODAS AS PÁGINAS</span>
+        <span class="s0">if</span><span class="s1">(Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.LOLLIPOP){</span>
+            <span class="s1">Window window = </span><span class="s0">this</span><span class="s1">.getWindow()</span><span class="s0">;</span>
+            <span class="s1">window.setStatusBarColor(</span><span class="s0">this</span><span class="s1">.getResources().getColor(R.color.colorPrimary))</span><span class="s0">;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">onStart() {</span>
+        <span class="s0">super</span><span class="s1">.onStart()</span><span class="s0">;</span>
+
+        <span class="s1">usuarioID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()</span><span class="s0">;</span>
+        <span class="s1">FirebaseFirestore db = FirebaseFirestore.getInstance()</span><span class="s0">;</span>
+        <span class="s1">DocumentReference documentReference = db.collection(</span><span class="s2">&quot;Info_Usuarios&quot;</span><span class="s1">).document(usuarioID)</span><span class="s0">;</span>
+        <span class="s1">documentReference.addSnapshotListener((documentSnapshot</span><span class="s0">, </span><span class="s1">error) -&gt; {</span>
+            <span class="s0">if</span><span class="s1">(documentSnapshot != </span><span class="s0">null</span><span class="s1">){</span>
+                <span class="s1">textnomeUsuario.setText(Objects.requireNonNull(documentSnapshot.getString(</span><span class="s2">&quot;Nome&quot;</span><span class="s1">)).toUpperCase())</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+    <span class="s1">}</span>
+    <span class="s0">public void </span><span class="s1">onBackPressed(){</span>
+
+        <span class="s0">new </span><span class="s1">AlertDialog.Builder(</span><span class="s0">this</span><span class="s1">)</span>
+                <span class="s1">.setMessage(</span><span class="s2">&quot;Você deseja realmente sair do aplicativo ?&quot;</span><span class="s1">)</span>
+                <span class="s1">.setCancelable(</span><span class="s0">false</span><span class="s1">)</span>
+                <span class="s1">.setPositiveButton(</span><span class="s2">&quot;Sim&quot;</span><span class="s0">, </span><span class="s1">(dialog</span><span class="s0">, </span><span class="s1">which) -&gt; {</span>
+                    <span class="s1">FirebaseAuth.getInstance().signOut()</span><span class="s0">;</span>
+                    <span class="s1">finish()</span><span class="s0">;</span>
+                <span class="s1">})</span>
+                <span class="s1">.setNegativeButton(</span><span class="s2">&quot;Não&quot;</span><span class="s0">,null</span><span class="s1">)</span>
+                <span class="s1">.show()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+    <span class="s0">private </span><span class="s1">List&lt;Photos&gt; getPhotoList(){</span>
+
+        <span class="s1">photoList.add(</span><span class="s0">new </span><span class="s1">Photos(</span><span class="s4">1</span><span class="s0">,</span><span class="s1">R.drawable.logo_calendario_eventos_pagina_inicial</span><span class="s0">,</span><span class="s2">&quot;Agendar Evento&quot;</span><span class="s1">))</span><span class="s0">;</span>
+        <span class="s1">photoList.add(</span><span class="s0">new </span><span class="s1">Photos(</span><span class="s4">2</span><span class="s0">,</span><span class="s1">R.drawable.logo_visualizacao_pagina_inicial</span><span class="s0">, </span><span class="s2">&quot;Visualizar Agendados&quot;</span><span class="s1">))</span><span class="s0">;</span>
+
+        <span class="s0">return </span><span class="s1">photoList</span><span class="s0">;</span>
+    <span class="s1">}</span>
+    <span class="s0">private void </span><span class="s1">IniciarComponentes(){</span>
+        <span class="s1">textnomeUsuario = findViewById(R.id.textnomeUsuario)</span><span class="s0">;</span>
+        <span class="s1">imageViewoff = findViewById(R.id.imageViewoff)</span><span class="s0">;</span>
+        <span class="s1">recyclerView = findViewById(R.id.recyclerView)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+    <span class="s0">protected void </span><span class="s1">onDestroy(){</span>
+        <span class="s0">super</span><span class="s1">.onDestroy()</span><span class="s0">;</span>
+
+        <span class="s1">recyclerView.setAdapter(</span><span class="s0">null</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">recyclerView.setLayoutManager(</span><span class="s0">null</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">recyclerView = </span><span class="s0">null;</span>
+
+        <span class="s1">photoList.clear()</span><span class="s0">;</span>
+        <span class="s1">photoList = </span><span class="s0">null;</span>
+
+        <span class="s1">Log.d(</span><span class="s2">&quot;Pagina principal&quot;</span><span class="s0">, </span><span class="s2">&quot;Activity finalizada&quot;</span><span class="s1">)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+<span class="s1">}</span></pre>
+</body>
+</html>

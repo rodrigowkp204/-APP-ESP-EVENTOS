@@ -1,0 +1,291 @@
+<html>
+<head>
+<title>FormCadastroEventoExterno.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+.s3 { color: #6897bb;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+FormCadastroEventoExterno.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.esp_eventos</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.annotation.SuppressLint</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.app.AlertDialog</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.app.DatePickerDialog</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.app.Dialog</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.app.TimePickerDialog</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.Intent</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Bundle</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.util.Log</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.MotionEvent</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.Window</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Button</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.EditText</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.ImageView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Toast</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.annotation.NonNull</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.fragment.app.DialogFragment</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.google.firebase.auth.FirebaseAuth</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.firestore.CollectionReference</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.firestore.DocumentReference</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.firestore.FirebaseFirestore</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">java.util.Calendar</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.HashMap</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.Map</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.UUID</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">FormCadastroEventoExterno </span><span class="s0">extends </span><span class="s1">BaseActivity {</span>
+
+    <span class="s1">ImageView imageViewoff_ext</span><span class="s0">, </span><span class="s1">imageViewback_ext</span><span class="s0">,</span>
+            <span class="s1">imageViewData_ext</span><span class="s0">, </span><span class="s1">imageViewDataFinal_ext</span><span class="s0">,</span>
+            <span class="s1">imageViewHora_ext</span><span class="s0">, </span><span class="s1">imageViewHoraFinal_ext</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">EditText edit_nome_evento_ext</span><span class="s0">, </span><span class="s1">edit_setor_resp_ext</span><span class="s0">,</span>
+            <span class="s1">edit_numeros_participantes_ext</span><span class="s0">, </span><span class="s1">edit_local_externo_ext</span><span class="s0">,</span>
+            <span class="s1">edit_desc_atv_ext</span><span class="s0">,</span><span class="s1">edit_obs_ext</span><span class="s0">;</span>
+    <span class="s1">String eventoId = UUID.randomUUID().toString()</span><span class="s0">;</span>
+    <span class="s1">Button bt_cadastrar_ext</span><span class="s0">;</span>
+    <span class="s1">@SuppressLint(</span><span class="s2">&quot;StaticFieldLeak&quot;</span><span class="s1">)</span>
+    <span class="s0">static </span><span class="s1">EditText edit_data_ext</span><span class="s0">, </span><span class="s1">edit_data_final_ext</span><span class="s0">,</span>
+            <span class="s1">edit_horas_ext</span><span class="s0">, </span><span class="s1">edit_horas_final_ext</span><span class="s0">;</span>
+
+    <span class="s1">@SuppressLint(</span><span class="s2">&quot;ClickableViewAccessibility&quot;</span><span class="s1">)</span>
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">onCreate(Bundle savedInstanceState) {</span>
+        <span class="s0">super</span><span class="s1">.onCreate(savedInstanceState)</span><span class="s0">;</span>
+        <span class="s1">setContentView(R.layout.activity_form_cadastro_evento_externo)</span><span class="s0">;</span>
+
+        <span class="s1">IniciarComponentes()</span><span class="s0">;</span>
+
+        <span class="s1">Window window = </span><span class="s0">this</span><span class="s1">.getWindow()</span><span class="s0">;</span>
+        <span class="s1">window.setStatusBarColor(</span><span class="s0">this</span><span class="s1">.getResources().getColor(R.color.colorPrimary))</span><span class="s0">;</span>
+
+        <span class="s1">Calendar calendario = Calendar.getInstance()</span><span class="s0">;</span>
+        <span class="s1">Integer dia = calendario.get(Calendar.DAY_OF_MONTH)</span><span class="s0">;</span>
+        <span class="s0">int </span><span class="s1">mes = calendario.get(Calendar.MONTH)</span><span class="s0">;</span>
+        <span class="s1">Integer ano = calendario.get(Calendar.YEAR)</span><span class="s0">;</span>
+        <span class="s1">Integer hora = calendario.get(Calendar.HOUR_OF_DAY)</span><span class="s0">;</span>
+        <span class="s1">Integer minutos = calendario.get(Calendar.MINUTE)</span><span class="s0">;</span>
+
+        <span class="s1">@SuppressLint(</span><span class="s2">&quot;DefaultLocale&quot;</span><span class="s1">)</span>
+        <span class="s1">String dataFormatada = String.format(</span><span class="s2">&quot;%02d/%02d/%04d&quot;</span><span class="s0">, </span><span class="s1">dia</span><span class="s0">,</span><span class="s1">mes+</span><span class="s3">1</span><span class="s0">,</span><span class="s1">ano)</span><span class="s0">;</span>
+        <span class="s1">edit_data_ext.setText(dataFormatada)</span><span class="s0">;</span>
+
+        <span class="s1">@SuppressLint(</span><span class="s2">&quot;DefaultLocale&quot;</span><span class="s1">)</span>
+        <span class="s1">String horaformatada = String.format(</span><span class="s2">&quot;%02d:%02d&quot;</span><span class="s0">,</span><span class="s1">hora</span><span class="s0">,</span><span class="s1">minutos)</span><span class="s0">;</span>
+        <span class="s1">edit_horas_ext.setText(horaformatada)</span><span class="s0">;</span>
+
+        <span class="s1">imageViewback_ext.setOnClickListener(v -&gt; {</span>
+
+            <span class="s1">Intent intentVoltarFCEEX = </span><span class="s0">new </span><span class="s1">Intent(FormCadastroEventoExterno.</span><span class="s0">this, </span><span class="s1">PaginaPrincipal.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">startActivity(intentVoltarFCEEX)</span><span class="s0">;</span>
+            <span class="s1">finish()</span><span class="s0">;</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">imageViewoff_ext.setOnClickListener(v -&gt; {</span>
+
+            <span class="s1">FirebaseAuth.getInstance().signOut()</span><span class="s0">;</span>
+            <span class="s1">Intent intentFCEEX = </span><span class="s0">new </span><span class="s1">Intent(FormCadastroEventoExterno.</span><span class="s0">this, </span><span class="s1">Activity_Splash_Form_Login.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">startActivity(intentFCEEX)</span><span class="s0">;</span>
+            <span class="s1">finish()</span><span class="s0">;</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">imageViewData_ext.setOnClickListener(v -&gt; {</span>
+            <span class="s1">DialogFragment dialogFragment = </span><span class="s0">new </span><span class="s1">DatePicker()</span><span class="s0">;</span>
+            <span class="s1">dialogFragment.show(getSupportFragmentManager()</span><span class="s0">,</span><span class="s2">&quot;data_ext&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">imageViewDataFinal_ext.setOnClickListener(v -&gt; {</span>
+            <span class="s1">DialogFragment dialogFragment = </span><span class="s0">new </span><span class="s1">DatePicker()</span><span class="s0">;</span>
+            <span class="s1">dialogFragment.show(getSupportFragmentManager()</span><span class="s0">, </span><span class="s2">&quot;data_final_ext&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">imageViewHora_ext.setOnClickListener(v -&gt; {</span>
+            <span class="s1">DialogFragment dialogFragment = </span><span class="s0">new </span><span class="s1">TimePicker()</span><span class="s0">;</span>
+            <span class="s1">dialogFragment.show(getSupportFragmentManager()</span><span class="s0">, </span><span class="s2">&quot;hora1&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">imageViewHoraFinal_ext.setOnClickListener(v -&gt; {</span>
+            <span class="s1">DialogFragment dialogFragment = </span><span class="s0">new </span><span class="s1">TimePicker()</span><span class="s0">;</span>
+            <span class="s1">dialogFragment.show(getSupportFragmentManager()</span><span class="s0">, </span><span class="s2">&quot;hora_final&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">bt_cadastrar_ext.setOnClickListener(v -&gt; {</span>
+            <span class="s1">String nome_ext = edit_nome_evento_ext.getText().toString()</span><span class="s0">;</span>
+            <span class="s1">String datainicial_ext = edit_data_ext.getText().toString()</span><span class="s0">;</span>
+            <span class="s1">String datafinal_ext = edit_data_final_ext.getText().toString()</span><span class="s0">;</span>
+            <span class="s1">String horainicial_ext = edit_horas_ext.getText().toString()</span><span class="s0">;</span>
+            <span class="s1">String horafinal_ext = edit_horas_final_ext.getText().toString()</span><span class="s0">;</span>
+            <span class="s1">String local_ext = edit_local_externo_ext.getText().toString()</span><span class="s0">;</span>
+            <span class="s1">String desc_ext = edit_desc_atv_ext.getText().toString()</span><span class="s0">;</span>
+
+            <span class="s0">if</span><span class="s1">(nome_ext.isEmpty() || datainicial_ext.isEmpty() || datafinal_ext.isEmpty()</span>
+                <span class="s1">|| horainicial_ext.isEmpty() || horafinal_ext.isEmpty() || local_ext.isEmpty()</span>
+                <span class="s1">|| desc_ext.isEmpty()) {</span>
+
+                <span class="s1">Toast.makeText(getApplicationContext()</span><span class="s0">, </span><span class="s2">&quot;Preencha todos os campos&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+
+            <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                <span class="s1">FirebaseFirestore db = FirebaseFirestore.getInstance()</span><span class="s0">;</span>
+                <span class="s1">CollectionReference colRef = db.collection(</span><span class="s2">&quot;eventosExt&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+                <span class="s1">Map&lt;String</span><span class="s0">, </span><span class="s1">Object&gt; eventosExt = </span><span class="s0">new </span><span class="s1">HashMap&lt;&gt;()</span><span class="s0">;</span>
+                <span class="s1">eventosExt.put(</span><span class="s2">&quot;nomedoEventoExterno&quot;</span><span class="s0">, </span><span class="s1">nome_ext)</span><span class="s0">;</span>
+                <span class="s1">eventosExt.put(</span><span class="s2">&quot;dataInicialEventoExterno&quot;</span><span class="s0">, </span><span class="s1">datainicial_ext)</span><span class="s0">;</span>
+                <span class="s1">eventosExt.put(</span><span class="s2">&quot;dataFinalEventoExterno&quot;</span><span class="s0">, </span><span class="s1">datafinal_ext)</span><span class="s0">;</span>
+                <span class="s1">eventosExt.put(</span><span class="s2">&quot;horaInicialEventoExterno&quot;</span><span class="s0">, </span><span class="s1">horainicial_ext)</span><span class="s0">;</span>
+                <span class="s1">eventosExt.put(</span><span class="s2">&quot;horaFinalEventoExterno&quot;</span><span class="s0">, </span><span class="s1">horafinal_ext)</span><span class="s0">;</span>
+                <span class="s1">eventosExt.put(</span><span class="s2">&quot;localEventoExterno&quot;</span><span class="s0">, </span><span class="s1">local_ext)</span><span class="s0">;</span>
+                <span class="s1">eventosExt.put(</span><span class="s2">&quot;descricaoEventoExterno&quot;</span><span class="s0">, </span><span class="s1">desc_ext)</span><span class="s0">;</span>
+                <span class="s1">eventosExt.put(</span><span class="s2">&quot;eventosExtId&quot;</span><span class="s0">, </span><span class="s1">eventoId)</span><span class="s0">;</span>
+
+                <span class="s1">colRef.add(eventosExt).addOnSuccessListener(documentReference -&gt; {</span>
+
+                    <span class="s1">Toast.makeText(getApplicationContext()</span><span class="s0">, </span><span class="s2">&quot;Agendamento cadastrado com sucesso&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                    <span class="s1">cadastrarinfosexternos()</span><span class="s0">;</span>
+                    <span class="s1">Intent intentCEX = </span><span class="s0">new </span><span class="s1">Intent(FormCadastroEventoExterno.</span><span class="s0">this, </span><span class="s1">PaginaPrincipal.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">startActivity(intentCEX)</span><span class="s0">;</span>
+
+                <span class="s1">}).addOnFailureListener(e -&gt; Toast.makeText(getApplicationContext()</span><span class="s0">, </span><span class="s2">&quot;Erro ao cadastrar agendamento&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show())</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+        <span class="s1">edit_obs_ext.setOnTouchListener((v</span><span class="s0">, </span><span class="s1">event) -&gt; {</span>
+            <span class="s0">if</span><span class="s1">(v.getId() == R.id.edit_obs_ext){</span>
+                <span class="s1">v.getParent().requestDisallowInterceptTouchEvent(</span><span class="s0">true</span><span class="s1">)</span><span class="s0">;</span>
+
+                <span class="s0">if</span><span class="s1">((event.getAction() &amp; MotionEvent.ACTION_MASK) == MotionEvent.ACTION_UP){</span>
+                    <span class="s1">v.getParent().requestDisallowInterceptTouchEvent(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+            <span class="s0">return false;</span>
+        <span class="s1">})</span><span class="s0">;</span>
+        <span class="s1">edit_desc_atv_ext.setOnTouchListener((v</span><span class="s0">, </span><span class="s1">event) -&gt; {</span>
+            <span class="s0">if</span><span class="s1">(v.getId() == R.id.edit_desc_atv_ext){</span>
+                <span class="s1">v.getParent().requestDisallowInterceptTouchEvent(</span><span class="s0">true</span><span class="s1">)</span><span class="s0">;</span>
+
+                <span class="s0">if</span><span class="s1">((event.getAction() &amp; MotionEvent.ACTION_MASK) == MotionEvent.ACTION_UP){</span>
+                    <span class="s1">v.getParent().requestDisallowInterceptTouchEvent(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+            <span class="s0">return false;</span>
+        <span class="s1">})</span><span class="s0">;</span>
+    <span class="s1">}</span>
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">onDestroy() {</span>
+        <span class="s0">super</span><span class="s1">.onDestroy()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onBackPressed(){</span>
+        <span class="s1">Toast.makeText(</span><span class="s0">this, </span><span class="s2">&quot;Utilize o botão de voltar no topo da tela&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+    <span class="s0">public static class </span><span class="s1">DatePicker </span><span class="s0">extends </span><span class="s1">DialogFragment </span><span class="s0">implements </span><span class="s1">DatePickerDialog.OnDateSetListener {</span>
+
+        <span class="s1">@NonNull</span>
+        <span class="s0">public </span><span class="s1">Dialog onCreateDialog(Bundle savedInstanceState){</span>
+
+            <span class="s1">Calendar calendario = Calendar.getInstance()</span><span class="s0">;</span>
+            <span class="s0">int </span><span class="s1">dia = calendario.get(Calendar.DAY_OF_MONTH)</span><span class="s0">;</span>
+            <span class="s0">int </span><span class="s1">mes = calendario.get(Calendar.MONTH)</span><span class="s0">;</span>
+            <span class="s0">int </span><span class="s1">ano = calendario.get(Calendar.YEAR)</span><span class="s0">;</span>
+
+            <span class="s0">return new </span><span class="s1">DatePickerDialog(getActivity()</span><span class="s0">, </span><span class="s1">AlertDialog.THEME_DEVICE_DEFAULT_DARK</span><span class="s0">, this, </span><span class="s1">ano</span><span class="s0">,</span><span class="s1">mes</span><span class="s0">, </span><span class="s1">dia)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s1">@Override</span>
+        <span class="s0">public void </span><span class="s1">onDateSet(android.widget.DatePicker view</span><span class="s0">, int </span><span class="s1">ano</span><span class="s0">, int </span><span class="s1">mes</span><span class="s0">, int </span><span class="s1">dia) {</span>
+
+            <span class="s1">String tagClicado = getTag()</span><span class="s0">;</span>
+
+            <span class="s0">assert </span><span class="s1">tagClicado != </span><span class="s0">null;</span>
+            <span class="s0">if</span><span class="s1">(tagClicado.equals(</span><span class="s2">&quot;data_ext&quot;</span><span class="s1">)){</span>
+                <span class="s1">@SuppressLint(</span><span class="s2">&quot;DefaultLocale&quot;</span><span class="s1">)</span>
+                <span class="s1">String dataFormatada = String.format(</span><span class="s2">&quot;%02d/%02d/%04d&quot;</span><span class="s0">, </span><span class="s1">dia</span><span class="s0">, </span><span class="s1">mes+</span><span class="s3">1</span><span class="s0">, </span><span class="s1">ano)</span><span class="s0">;</span>
+                <span class="s1">edit_data_ext.setText(dataFormatada)</span><span class="s0">;</span>
+            <span class="s1">} </span><span class="s0">else if </span><span class="s1">(tagClicado.equals(</span><span class="s2">&quot;data_final_ext&quot;</span><span class="s1">)){</span>
+                <span class="s1">@SuppressLint(</span><span class="s2">&quot;DefaultLocale&quot;</span><span class="s1">)</span>
+                <span class="s1">String dataFormatadaFinal = String.format(</span><span class="s2">&quot;%02d/%02d/%04d&quot;</span><span class="s0">, </span><span class="s1">dia</span><span class="s0">, </span><span class="s1">mes+</span><span class="s3">1</span><span class="s0">, </span><span class="s1">ano)</span><span class="s0">;</span>
+                <span class="s1">edit_data_final_ext.setText(dataFormatadaFinal)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+    <span class="s0">public static class </span><span class="s1">TimePicker </span><span class="s0">extends </span><span class="s1">DialogFragment </span><span class="s0">implements </span><span class="s1">TimePickerDialog.OnTimeSetListener {</span>
+
+        <span class="s1">@NonNull</span>
+        <span class="s0">public </span><span class="s1">Dialog onCreateDialog(Bundle savedInstanceState){</span>
+
+            <span class="s1">Calendar calendario = Calendar.getInstance()</span><span class="s0">;</span>
+            <span class="s0">int </span><span class="s1">hora = calendario.get(Calendar.HOUR_OF_DAY)</span><span class="s0">;</span>
+            <span class="s0">int </span><span class="s1">minutos = calendario.get(Calendar.MINUTE)</span><span class="s0">;</span>
+
+            <span class="s0">return new </span><span class="s1">TimePickerDialog(getActivity()</span><span class="s0">, </span><span class="s1">AlertDialog.THEME_DEVICE_DEFAULT_DARK</span><span class="s0">, this, </span><span class="s1">hora</span><span class="s0">, </span><span class="s1">minutos</span><span class="s0">,true</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s1">@Override</span>
+        <span class="s0">public void </span><span class="s1">onTimeSet(android.widget.TimePicker view</span><span class="s0">, int </span><span class="s1">horas</span><span class="s0">, int </span><span class="s1">minutos) {</span>
+
+            <span class="s1">String tagClicado = getTag()</span><span class="s0">;</span>
+
+            <span class="s0">assert </span><span class="s1">tagClicado != </span><span class="s0">null;</span>
+            <span class="s0">if</span><span class="s1">(tagClicado.equals(</span><span class="s2">&quot;hora1&quot;</span><span class="s1">)){</span>
+                <span class="s1">@SuppressLint(</span><span class="s2">&quot;DefaultLocale&quot;</span><span class="s1">)</span>
+                <span class="s1">String horaformatada = String.format(</span><span class="s2">&quot;%02d:%02d&quot;</span><span class="s0">,</span><span class="s1">horas</span><span class="s0">,</span><span class="s1">minutos)</span><span class="s0">;</span>
+                <span class="s1">edit_horas_ext.setText(horaformatada)</span><span class="s0">;</span>
+            <span class="s1">}</span><span class="s0">else if </span><span class="s1">(tagClicado.equals(</span><span class="s2">&quot;hora_final&quot;</span><span class="s1">)){</span>
+                <span class="s1">@SuppressLint(</span><span class="s2">&quot;DefaultLocale&quot;</span><span class="s1">)</span>
+                <span class="s1">String horaformatadafinal = String.format(</span><span class="s2">&quot;%02d:%02d&quot;</span><span class="s0">,</span><span class="s1">horas</span><span class="s0">,</span><span class="s1">minutos)</span><span class="s0">;</span>
+                <span class="s1">edit_horas_final_ext.setText(horaformatadafinal)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+    <span class="s0">private void </span><span class="s1">cadastrarinfosexternos(){</span>
+
+        <span class="s1">String setor_responsavel_ext = edit_setor_resp_ext.getText().toString()</span><span class="s0">;</span>
+        <span class="s1">String participantes_ext = edit_numeros_participantes_ext.getText().toString()</span><span class="s0">;</span>
+        <span class="s1">String obs_ext = edit_obs_ext.getText().toString()</span><span class="s0">;</span>
+        <span class="s1">String documentoIdExt = eventoId</span><span class="s0">;</span>
+
+        <span class="s1">FirebaseFirestore db = FirebaseFirestore.getInstance()</span><span class="s0">;</span>
+        <span class="s1">DocumentReference infoExterno = db.collection(</span><span class="s2">&quot;infoEventosExt&quot;</span><span class="s1">).document(documentoIdExt)</span><span class="s0">;</span>
+
+        <span class="s1">Map&lt;String</span><span class="s0">, </span><span class="s1">Object&gt; infoeventosExt = </span><span class="s0">new </span><span class="s1">HashMap&lt;&gt;()</span><span class="s0">;</span>
+        <span class="s1">infoeventosExt.put(</span><span class="s2">&quot;setorResponsavelEventoExterno&quot;</span><span class="s0">, </span><span class="s1">setor_responsavel_ext)</span><span class="s0">;</span>
+        <span class="s1">infoeventosExt.put(</span><span class="s2">&quot;participantesEventoExterno&quot;</span><span class="s0">,</span><span class="s1">participantes_ext)</span><span class="s0">;</span>
+        <span class="s1">infoeventosExt.put(</span><span class="s2">&quot;observacoesEventoExterno&quot;</span><span class="s0">, </span><span class="s1">obs_ext)</span><span class="s0">;</span>
+        <span class="s1">infoeventosExt.put(</span><span class="s2">&quot;eventosExtId&quot;</span><span class="s0">, </span><span class="s1">eventoId)</span><span class="s0">;</span>
+
+        <span class="s1">infoExterno.set(infoeventosExt).addOnSuccessListener(unused -&gt; Log.d(</span><span class="s2">&quot;Firestore&quot;</span><span class="s0">, </span><span class="s2">&quot;Informações do evento cadastradas com sucesso!&quot;</span><span class="s1">))</span>
+                <span class="s1">.addOnFailureListener(e -&gt; Log.e(</span><span class="s2">&quot;Firestore&quot;</span><span class="s0">, </span><span class="s2">&quot;Erro ao cadastrar as informações do evento: &quot; </span><span class="s1">+ e.getMessage()))</span><span class="s0">;</span>
+    <span class="s1">}</span>
+    <span class="s0">private void </span><span class="s1">IniciarComponentes(){</span>
+        <span class="s1">imageViewoff_ext = findViewById(R.id.imageViewoff_ext)</span><span class="s0">;</span>
+        <span class="s1">imageViewback_ext = findViewById(R.id.imageViewback_ext)</span><span class="s0">;</span>
+        <span class="s1">imageViewData_ext = findViewById(R.id.imageViewData_ext)</span><span class="s0">;</span>
+        <span class="s1">imageViewDataFinal_ext = findViewById(R.id.imageViewDataFinal_ext)</span><span class="s0">;</span>
+        <span class="s1">imageViewHora_ext = findViewById(R.id.imageViewHora_ext)</span><span class="s0">;</span>
+        <span class="s1">imageViewHoraFinal_ext = findViewById(R.id.imageViewHoraFinal_ext)</span><span class="s0">;</span>
+
+        <span class="s1">edit_data_ext = findViewById(R.id.edit_data_ext)</span><span class="s0">;</span>
+        <span class="s1">edit_data_final_ext = findViewById(R.id.edit_data_final_ext)</span><span class="s0">;</span>
+        <span class="s1">edit_horas_ext = findViewById(R.id.edit_horas_ext)</span><span class="s0">;</span>
+        <span class="s1">edit_horas_final_ext = findViewById(R.id.edit_horas_final_ext)</span><span class="s0">;</span>
+
+        <span class="s1">bt_cadastrar_ext = findViewById(R.id.bt_cadastrar_ext)</span><span class="s0">;</span>
+
+        <span class="s1">edit_nome_evento_ext = findViewById(R.id.edit_nome_evento_ext)</span><span class="s0">;</span>
+        <span class="s1">edit_setor_resp_ext = findViewById(R.id.edit_setor_resp_ext)</span><span class="s0">;</span>
+        <span class="s1">edit_numeros_participantes_ext = findViewById(R.id.edit_numeros_participantes_ext)</span><span class="s0">;</span>
+        <span class="s1">edit_local_externo_ext = findViewById(R.id.edit_local_externo_ext)</span><span class="s0">;</span>
+        <span class="s1">edit_desc_atv_ext = findViewById(R.id.edit_desc_atv_ext)</span><span class="s0">;</span>
+        <span class="s1">edit_obs_ext = findViewById(R.id.edit_obs_ext)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span></pre>
+</body>
+</html>

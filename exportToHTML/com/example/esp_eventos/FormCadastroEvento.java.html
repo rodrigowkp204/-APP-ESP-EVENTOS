@@ -1,0 +1,496 @@
+<html>
+<head>
+<title>FormCadastroEvento.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+.s3 { color: #808080;}
+.s4 { color: #6897bb;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+FormCadastroEvento.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.esp_eventos</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.annotation.SuppressLint</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.app.AlertDialog</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.app.DatePickerDialog</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.app.Dialog</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.app.TimePickerDialog</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.Intent</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Bundle</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.util.Log</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.MotionEvent</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.Window</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.ArrayAdapter</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.AutoCompleteTextView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Button</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.EditText</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.ImageView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.ScrollView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Toast</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.annotation.NonNull</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.fragment.app.DialogFragment</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.google.firebase.FirebaseApp</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.auth.FirebaseAuth</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.firestore.CollectionReference</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.firestore.DocumentReference</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.firestore.DocumentSnapshot</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.firestore.FirebaseFirestore</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.firestore.FirebaseFirestoreSettings</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.firestore.Query</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.firestore.QuerySnapshot</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">java.text.ParseException</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.text.SimpleDateFormat</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.Calendar</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.Date</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.HashMap</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.Locale</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.Map</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.UUID</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">FormCadastroEvento </span><span class="s0">extends </span><span class="s1">BaseActivity {</span>
+    <span class="s0">private </span><span class="s1">EditText edit_nome_evento</span><span class="s0">,</span><span class="s1">edit_setor_resp</span><span class="s0">, </span><span class="s1">edit_numeros_participantes</span><span class="s0">, </span><span class="s1">edit_desc_atv</span><span class="s0">, </span><span class="s1">edit_obs </span><span class="s0">;</span>
+    <span class="s1">String[] locais = {</span><span class="s2">&quot;Isabel dos Santos&quot;</span><span class="s0">,</span><span class="s2">&quot;Paulo Freire&quot;</span><span class="s0">,</span><span class="s2">&quot;Multimídia 1&quot;</span><span class="s0">,</span><span class="s2">&quot;Multimídia 2&quot;</span><span class="s1">}</span><span class="s0">;</span>
+    <span class="s1">String eventoId = UUID.randomUUID().toString()</span><span class="s0">;</span>
+    <span class="s1">AutoCompleteTextView autoCompleteTxt</span><span class="s0">;</span>
+    <span class="s1">ArrayAdapter&lt;String&gt; adapterlocais</span><span class="s0">;</span>
+    <span class="s1">ImageView imageViewData</span><span class="s0">; </span><span class="s3">//Instanciando o que você deseja puxar</span>
+    <span class="s1">ImageView imageViewDataFinal</span><span class="s0">; </span><span class="s3">//Instanciando o que você deseja puxar</span>
+    <span class="s1">ImageView imageViewoff</span><span class="s0">;  </span><span class="s3">//Instanciando o que você deseja puxar</span>
+    <span class="s1">ImageView imageViewHora</span><span class="s0">; </span><span class="s3">//Instanciando o que você deseja puxar</span>
+    <span class="s1">ImageView imageViewHoraFinal</span><span class="s0">; </span><span class="s3">//Instanciando o que você deseja puxar</span>
+    <span class="s1">ImageView imageViewback</span><span class="s0">; </span><span class="s3">//Instanciando o que você deseja puxar</span>
+    <span class="s1">Button bt_cadastrar</span><span class="s0">;</span>
+    <span class="s1">@SuppressLint(</span><span class="s2">&quot;StaticFieldLeak&quot;</span><span class="s1">)</span>
+    <span class="s0">static </span><span class="s1">EditText editTextData</span><span class="s0">;</span>
+    <span class="s1">@SuppressLint(</span><span class="s2">&quot;StaticFieldLeak&quot;</span><span class="s1">)</span>
+    <span class="s0">static </span><span class="s1">EditText editTextData2</span><span class="s0">;</span>
+    <span class="s1">@SuppressLint(</span><span class="s2">&quot;StaticFieldLeak&quot;</span><span class="s1">)</span>
+    <span class="s0">static </span><span class="s1">EditText editTextDataFinal</span><span class="s0">;</span>
+    <span class="s1">@SuppressLint(</span><span class="s2">&quot;StaticFieldLeak&quot;</span><span class="s1">)</span>
+    <span class="s0">static </span><span class="s1">EditText editTextDataFinal2</span><span class="s0">;</span>
+    <span class="s1">@SuppressLint(</span><span class="s2">&quot;StaticFieldLeak&quot;</span><span class="s1">)</span>
+    <span class="s0">static </span><span class="s1">EditText editTextHoraInicial</span><span class="s0">;</span>
+    <span class="s1">@SuppressLint(</span><span class="s2">&quot;StaticFieldLeak&quot;</span><span class="s1">)</span>
+    <span class="s0">static </span><span class="s1">EditText editTextHoraFinal</span><span class="s0">;</span>
+    <span class="s1">ScrollView scrollview</span><span class="s0">;</span>
+
+    <span class="s1">@SuppressLint({</span><span class="s2">&quot;MissingInflatedId&quot;</span><span class="s0">, </span><span class="s2">&quot;CutPasteId&quot;</span><span class="s0">, </span><span class="s2">&quot;ClickableViewAccessibility&quot;</span><span class="s1">})</span>
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">onCreate(Bundle savedInstanceState) {</span>
+        <span class="s0">super</span><span class="s1">.onCreate(savedInstanceState)</span><span class="s0">;</span>
+        <span class="s1">setContentView(R.layout.activity_form_cadastro_evento)</span><span class="s0">;</span>
+
+        <span class="s1">FirebaseApp.initializeApp(</span><span class="s0">this</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">FirebaseFirestoreSettings settings = </span><span class="s0">new </span><span class="s1">FirebaseFirestoreSettings.Builder()</span>
+                <span class="s1">.build()</span><span class="s0">;</span>
+        <span class="s1">FirebaseFirestore db = FirebaseFirestore.getInstance()</span><span class="s0">;</span>
+        <span class="s1">db.setFirestoreSettings(settings)</span><span class="s0">;</span>
+
+        <span class="s1">IniciarComponentes()</span><span class="s0">;</span>
+
+        <span class="s1">adapterlocais = </span><span class="s0">new </span><span class="s1">ArrayAdapter&lt;&gt;(</span><span class="s0">this, </span><span class="s1">R.layout.lista_item_local</span><span class="s0">, </span><span class="s1">locais)</span><span class="s0">;</span>
+        <span class="s1">autoCompleteTxt.setAdapter(adapterlocais)</span><span class="s0">;</span>
+
+        <span class="s1">Window window = </span><span class="s0">this</span><span class="s1">.getWindow()</span><span class="s0">;</span>
+        <span class="s1">window.setStatusBarColor(</span><span class="s0">this</span><span class="s1">.getResources().getColor(R.color.colorPrimary))</span><span class="s0">;</span>
+
+        <span class="s3">//Pegar a data do celular</span>
+        <span class="s1">Calendar calendario = Calendar.getInstance()</span><span class="s0">;</span>
+        <span class="s1">Integer dia = calendario.get(Calendar.DAY_OF_MONTH)</span><span class="s0">;</span>
+        <span class="s0">int </span><span class="s1">mes = calendario.get(Calendar.MONTH)</span><span class="s0">;</span>
+        <span class="s1">Integer ano = calendario.get(Calendar.YEAR)</span><span class="s0">;</span>
+        <span class="s1">Integer hora = calendario.get(Calendar.HOUR_OF_DAY)</span><span class="s0">;</span>
+        <span class="s1">Integer minutos = calendario.get(Calendar.MINUTE)</span><span class="s0">;</span>
+
+        <span class="s1">@SuppressLint(</span><span class="s2">&quot;DefaultLocale&quot;</span><span class="s1">)</span>
+        <span class="s1">String dataFormatada = String.format(</span><span class="s2">&quot;%02d/%02d/%04d&quot;</span><span class="s0">, </span><span class="s1">dia</span><span class="s0">, </span><span class="s1">mes+</span><span class="s4">1</span><span class="s0">, </span><span class="s1">ano)</span><span class="s0">;</span>
+        <span class="s1">editTextData.setText(dataFormatada)</span><span class="s0">;</span>
+        <span class="s1">editTextData2.setText(dataFormatada)</span><span class="s0">;</span>
+        <span class="s1">@SuppressLint(</span><span class="s2">&quot;DefaultLocale&quot;</span><span class="s1">)</span>
+        <span class="s1">String horaformatada = String.format(</span><span class="s2">&quot;%02d:%02d&quot;</span><span class="s0">,</span><span class="s1">hora</span><span class="s0">,</span><span class="s1">minutos)</span><span class="s0">;</span>
+        <span class="s1">editTextHoraInicial.setText(horaformatada)</span><span class="s0">;</span>
+
+        <span class="s1">imageViewData.setOnClickListener(v -&gt; {</span>
+            <span class="s3">//Colocar as ações que você deseja executar quando clicar</span>
+            <span class="s1">DialogFragment dialogFragment = </span><span class="s0">new </span><span class="s1">DatePicker()</span><span class="s0">;</span>
+            <span class="s1">dialogFragment.show(getSupportFragmentManager()</span><span class="s0">, </span><span class="s2">&quot;data1&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">imageViewData.setOnClickListener(v -&gt; {</span>
+            <span class="s3">//Colocar as ações que você deseja executar quando clicar</span>
+            <span class="s1">DialogFragment dialogFragment = </span><span class="s0">new </span><span class="s1">DatePicker()</span><span class="s0">;</span>
+            <span class="s1">dialogFragment.show(getSupportFragmentManager()</span><span class="s0">, </span><span class="s2">&quot;data2&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">imageViewDataFinal.setOnClickListener(v -&gt; {</span>
+            <span class="s1">DialogFragment dialogFragment = </span><span class="s0">new </span><span class="s1">DatePicker()</span><span class="s0">;</span>
+            <span class="s1">dialogFragment.show(getSupportFragmentManager()</span><span class="s0">, </span><span class="s2">&quot;datafinal1&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">imageViewDataFinal.setOnClickListener(v -&gt; {</span>
+            <span class="s1">DialogFragment dialogFragment = </span><span class="s0">new </span><span class="s1">DatePicker()</span><span class="s0">;</span>
+            <span class="s1">dialogFragment.show(getSupportFragmentManager()</span><span class="s0">, </span><span class="s2">&quot;datafinal2&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">imageViewHora.setOnClickListener(v -&gt; {</span>
+            <span class="s3">//Colocar as ações que você deseja executar quando clicar</span>
+            <span class="s1">DialogFragment dialogFragment = </span><span class="s0">new </span><span class="s1">TimePicker()</span><span class="s0">;</span>
+            <span class="s1">dialogFragment.show(getSupportFragmentManager()</span><span class="s0">, </span><span class="s2">&quot;hora1&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">imageViewHoraFinal.setOnClickListener(v -&gt; {</span>
+            <span class="s1">DialogFragment dialogFragmentFinal = </span><span class="s0">new </span><span class="s1">TimePicker()</span><span class="s0">;</span>
+            <span class="s1">dialogFragmentFinal.show(getSupportFragmentManager()</span><span class="s0">,</span><span class="s2">&quot;hora2&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">imageViewoff.setOnClickListener(v -&gt; {</span>
+            <span class="s1">FirebaseAuth.getInstance().signOut()</span><span class="s0">;</span>
+            <span class="s1">Intent intentDeslogarFormCadastroEvento = </span><span class="s0">new </span><span class="s1">Intent(FormCadastroEvento.</span><span class="s0">this, </span><span class="s1">Activity_Splash_Form_Login.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">startActivity(intentDeslogarFormCadastroEvento)</span><span class="s0">;</span>
+            <span class="s1">finish()</span><span class="s0">;</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">imageViewback.setOnClickListener(v -&gt; {</span>
+            <span class="s1">Intent intentVoltarFormCadastroEvento = </span><span class="s0">new </span><span class="s1">Intent(FormCadastroEvento.</span><span class="s0">this, </span><span class="s1">PaginaPrincipal.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">startActivity(intentVoltarFormCadastroEvento)</span><span class="s0">;</span>
+            <span class="s1">finish()</span><span class="s0">;</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">bt_cadastrar.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+                <span class="s1">String data = editTextData2.getText().toString()</span><span class="s0">;</span>
+                <span class="s1">String datafinal = editTextDataFinal2.getText().toString()</span><span class="s0">;</span>
+                <span class="s1">String hora = editTextHoraInicial.getText().toString()</span><span class="s0">;</span>
+                <span class="s1">String horafinal = editTextHoraFinal.getText().toString()</span><span class="s0">;</span>
+                <span class="s1">String nome = edit_nome_evento.getText().toString()</span><span class="s0">;</span>
+                <span class="s1">String local = autoCompleteTxt.getText().toString()</span><span class="s0">;</span>
+                <span class="s1">String descricao = edit_desc_atv.getText().toString()</span><span class="s0">;</span>
+                <span class="s1">String setor = edit_setor_resp.getText().toString()</span><span class="s0">;</span>
+                <span class="s1">String participantes = edit_numeros_participantes.getText().toString()</span><span class="s0">;</span>
+
+
+                <span class="s1">CollectionReference evento = db.collection(</span><span class="s2">&quot;eventos&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+                <span class="s1">Query querytudoigual = evento.whereEqualTo(</span><span class="s2">&quot;localdoEvento&quot;</span><span class="s0">, </span><span class="s1">local)</span>
+                        <span class="s1">.whereEqualTo(</span><span class="s2">&quot;datadoEvento&quot;</span><span class="s0">, </span><span class="s1">data)</span>
+                        <span class="s1">.whereEqualTo(</span><span class="s2">&quot;datadoEventoFinal&quot;</span><span class="s0">, </span><span class="s1">datafinal)</span>
+                        <span class="s1">.whereEqualTo(</span><span class="s2">&quot;horadoEventoInicial&quot;</span><span class="s0">, </span><span class="s1">hora)</span>
+                        <span class="s1">.whereEqualTo(</span><span class="s2">&quot;horaEventoFinal&quot;</span><span class="s0">, </span><span class="s1">horafinal)</span><span class="s0">;</span>
+
+                <span class="s1">querytudoigual.get().addOnCompleteListener(task -&gt; {</span>
+                    <span class="s0">if</span><span class="s1">(task.isSuccessful()) {</span>
+                        <span class="s0">boolean </span><span class="s1">isEmptyField = data.isEmpty() || datafinal.isEmpty() || hora.isEmpty() || horafinal.isEmpty()</span>
+                                <span class="s1">|| nome.isEmpty() || setor.isEmpty() || participantes.isEmpty()</span>
+                                <span class="s1">|| local.isEmpty() || descricao.isEmpty()</span><span class="s0">;</span>
+
+                        <span class="s1">QuerySnapshot querySnapshot = task.getResult()</span><span class="s0">;</span>
+
+                        <span class="s0">if</span><span class="s1">(querySnapshot != </span><span class="s0">null </span><span class="s1">&amp;&amp; !querySnapshot.isEmpty()) {</span>
+                            <span class="s3">// Já existe um evento com as mesmas informações</span>
+                            <span class="s3">// Realize as ações apropriadas, como exibir uma mensagem de erro ou retornar do método</span>
+                            <span class="s1">Toast.makeText(getApplicationContext()</span><span class="s0">, </span><span class="s2">&quot;Já existe um evento com as mesmas informações&quot;</span><span class="s0">,</span>
+                                    <span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                        <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                            <span class="s3">// Não existe um evento com as mesmas informações, verifique a segunda restrição</span>
+                            <span class="s1">Query secondQuery = evento.whereEqualTo(</span><span class="s2">&quot;localdoEvento&quot;</span><span class="s0">, </span><span class="s1">local)</span><span class="s0">;</span>
+
+                            <span class="s1">secondQuery.get().addOnCompleteListener(secondTask -&gt; {</span>
+                                <span class="s0">if</span><span class="s1">(secondTask.isSuccessful()) {</span>
+                                    <span class="s1">QuerySnapshot secondQuerySnapshot = secondTask.getResult()</span><span class="s0">;</span>
+
+                                    <span class="s0">if</span><span class="s1">(secondQuerySnapshot != </span><span class="s0">null </span><span class="s1">&amp;&amp; !secondQuerySnapshot.isEmpty()) {</span>
+                                        <span class="s3">// Já existe um evento com o mesmo local, verifique se a data está dentro do intervalo</span>
+                                        <span class="s0">boolean </span><span class="s1">isDataHoraWithinRange = </span><span class="s0">false;</span>
+
+                                        <span class="s0">for </span><span class="s1">(DocumentSnapshot document : secondQuerySnapshot.getDocuments()) {</span>
+                                            <span class="s1">String dataEvento = document.getString(</span><span class="s2">&quot;datadoEvento&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                                            <span class="s1">String dataFinalEvento = document.getString(</span><span class="s2">&quot;datadoEventoFinal&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                                            <span class="s1">String horaInicialEvento = document.getString(</span><span class="s2">&quot;horadoEventoInicial&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                                            <span class="s1">String horaFinalEvento = document.getString(</span><span class="s2">&quot;horaEventoFinal&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+                                            <span class="s0">if </span><span class="s1">(isDataHoraWithinRange(dataEvento</span><span class="s0">, </span><span class="s1">dataFinalEvento</span><span class="s0">, </span><span class="s1">horaInicialEvento</span><span class="s0">, </span><span class="s1">horaFinalEvento</span><span class="s0">, </span><span class="s1">data</span><span class="s0">, </span><span class="s1">datafinal</span><span class="s0">, </span><span class="s1">hora</span><span class="s0">, </span><span class="s1">horafinal)) {</span>
+                                                <span class="s1">isDataHoraWithinRange = </span><span class="s0">true;</span>
+                                                <span class="s0">break;</span>
+                                            <span class="s1">}</span>
+                                        <span class="s1">}</span>
+
+                                        <span class="s0">if </span><span class="s1">(isDataHoraWithinRange) {</span>
+                                            <span class="s3">// Já existe um evento com intervalo de tempo que contém o evento a ser cadastrado</span>
+                                            <span class="s3">// Realize as ações apropriadas, como exibir uma mensagem de erro ou retornar do método</span>
+                                            <span class="s1">Toast.makeText(getApplicationContext()</span><span class="s0">, </span><span class="s2">&quot;Já existe um agendamento para essa data e local ou conflito de data e hora&quot;</span><span class="s0">,</span>
+                                                    <span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                                        <span class="s1">} </span><span class="s0">else if </span><span class="s1">(isEmptyField){</span>
+                                            <span class="s1">Toast.makeText(getApplicationContext()</span><span class="s0">, </span><span class="s2">&quot;Preencha todos os campos&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                                        <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                                            <span class="s0">int </span><span class="s1">capacidadeMaxima = </span><span class="s4">0</span><span class="s0">; </span><span class="s3">// Capacidade máxima inicializada com 0</span>
+                                            <span class="s0">switch </span><span class="s1">(local) {</span>
+                                                <span class="s0">case </span><span class="s2">&quot;Isabel dos Santos&quot;</span><span class="s1">:</span>
+                                                    <span class="s1">capacidadeMaxima = </span><span class="s4">80</span><span class="s0">;</span>
+                                                    <span class="s0">break;</span>
+                                                <span class="s0">case </span><span class="s2">&quot;Paulo Freire&quot;</span><span class="s1">:</span>
+                                                    <span class="s1">capacidadeMaxima = </span><span class="s4">150</span><span class="s0">;</span>
+                                                    <span class="s0">break;</span>
+                                                <span class="s0">case </span><span class="s2">&quot;Multimídia 1&quot;</span><span class="s1">:</span>
+                                                <span class="s0">case </span><span class="s2">&quot;Multimídia 2&quot;</span><span class="s1">:</span>
+                                                    <span class="s1">capacidadeMaxima = </span><span class="s4">50</span><span class="s0">;</span>
+                                                    <span class="s0">break;</span>
+                                            <span class="s1">}</span>
+                                            <span class="s0">if </span><span class="s1">(Integer.parseInt(participantes) &gt; capacidadeMaxima){</span>
+                                                <span class="s3">// Verificar se o número de participantes excede a capacidade máxima</span>
+                                                <span class="s1">Toast.makeText(getApplicationContext()</span><span class="s0">, </span><span class="s2">&quot;A capacidade máxima para este local é de &quot; </span><span class="s1">+ capacidadeMaxima + </span><span class="s2">&quot; participantes&quot;</span><span class="s0">,</span>
+                                                        <span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                                            <span class="s1">}</span><span class="s0">else </span><span class="s1">{</span>
+                                                <span class="s3">// Não existem eventos com intervalo de tempo que contém o evento a ser cadastrado</span>
+                                                <span class="s3">// Proceda com o cadastro do novo evento</span>
+                                                <span class="s1">Map&lt;String</span><span class="s0">, </span><span class="s1">Object&gt; eventos = </span><span class="s0">new </span><span class="s1">HashMap&lt;&gt;()</span><span class="s0">;</span>
+                                                <span class="s1">eventos.put(</span><span class="s2">&quot;datadoEvento&quot;</span><span class="s0">, </span><span class="s1">data)</span><span class="s0">;</span>
+                                                <span class="s1">eventos.put(</span><span class="s2">&quot;datadoEventoFinal&quot;</span><span class="s0">, </span><span class="s1">datafinal)</span><span class="s0">;</span>
+                                                <span class="s1">eventos.put(</span><span class="s2">&quot;horadoEventoInicial&quot;</span><span class="s0">, </span><span class="s1">hora)</span><span class="s0">;</span>
+                                                <span class="s1">eventos.put(</span><span class="s2">&quot;horaEventoFinal&quot;</span><span class="s0">, </span><span class="s1">horafinal)</span><span class="s0">;</span>
+                                                <span class="s1">eventos.put(</span><span class="s2">&quot;nomedoEvento&quot;</span><span class="s0">, </span><span class="s1">nome)</span><span class="s0">;</span>
+                                                <span class="s1">eventos.put(</span><span class="s2">&quot;localdoEvento&quot;</span><span class="s0">, </span><span class="s1">local)</span><span class="s0">;</span>
+                                                <span class="s1">eventos.put(</span><span class="s2">&quot;descricaodaAtividade&quot;</span><span class="s0">, </span><span class="s1">descricao)</span><span class="s0">;</span>
+                                                <span class="s1">eventos.put(</span><span class="s2">&quot;eventosId&quot;</span><span class="s0">, </span><span class="s1">eventoId)</span><span class="s0">;</span>
+
+                                                <span class="s1">evento.add(eventos).addOnSuccessListener(documentReference -&gt; {</span>
+                                                    <span class="s1">Toast.makeText(getApplicationContext()</span><span class="s0">, </span><span class="s2">&quot;Agendamento cadastrado com sucesso&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                                                    <span class="s1">cadastrarinfos()</span><span class="s0">;</span>
+                                                    <span class="s1">Intent intentCE = </span><span class="s0">new </span><span class="s1">Intent(FormCadastroEvento.</span><span class="s0">this, </span><span class="s1">PaginaPrincipal.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+                                                    <span class="s1">intentCE.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)</span><span class="s0">;</span>
+                                                    <span class="s1">startActivity(intentCE)</span><span class="s0">;</span>
+                                                <span class="s1">}).addOnFailureListener(e -&gt; Toast.makeText(getApplicationContext()</span><span class="s0">, </span><span class="s2">&quot;Erro ao cadastrar agendamento&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show())</span><span class="s0">;</span>
+                                            <span class="s1">}</span>
+                                        <span class="s1">}</span>
+                                    <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                                        <span class="s0">if</span><span class="s1">(isEmptyField){</span>
+                                            <span class="s1">Toast.makeText(getApplicationContext()</span><span class="s0">, </span><span class="s2">&quot;Preencha todos os campos&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                                        <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                                            <span class="s0">int </span><span class="s1">capacidadeMaxima = </span><span class="s4">0</span><span class="s0">; </span><span class="s3">// Capacidade máxima inicializada com 0</span>
+                                            <span class="s0">switch </span><span class="s1">(local) {</span>
+                                                <span class="s0">case </span><span class="s2">&quot;Isabel dos Santos&quot;</span><span class="s1">:</span>
+                                                    <span class="s1">capacidadeMaxima = </span><span class="s4">80</span><span class="s0">;</span>
+                                                    <span class="s0">break;</span>
+                                                <span class="s0">case </span><span class="s2">&quot;Paulo Freire&quot;</span><span class="s1">:</span>
+                                                    <span class="s1">capacidadeMaxima = </span><span class="s4">150</span><span class="s0">;</span>
+                                                    <span class="s0">break;</span>
+                                                <span class="s0">case </span><span class="s2">&quot;Multimídia 1&quot;</span><span class="s1">:</span>
+                                                <span class="s0">case </span><span class="s2">&quot;Multimídia 2&quot;</span><span class="s1">:</span>
+                                                    <span class="s1">capacidadeMaxima = </span><span class="s4">50</span><span class="s0">;</span>
+                                                    <span class="s0">break;</span>
+                                            <span class="s1">}</span>
+                                            <span class="s0">if</span><span class="s1">(Integer.parseInt(participantes) &gt; capacidadeMaxima){</span>
+                                                <span class="s3">// Verificar se o número de participantes excede a capacidade máxima</span>
+                                                <span class="s1">Toast.makeText(getApplicationContext()</span><span class="s0">, </span><span class="s2">&quot;A capacidade máxima para este local é de &quot; </span><span class="s1">+ capacidadeMaxima + </span><span class="s2">&quot; participantes&quot;</span><span class="s0">,</span>
+                                                        <span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                                            <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                                                <span class="s3">// Não existem eventos com o mesmo local</span>
+                                                <span class="s3">// Proceda com o cadastro do novo evento</span>
+                                                <span class="s1">Map&lt;String</span><span class="s0">, </span><span class="s1">Object&gt; eventos = </span><span class="s0">new </span><span class="s1">HashMap&lt;&gt;()</span><span class="s0">;</span>
+                                                <span class="s1">eventos.put(</span><span class="s2">&quot;datadoEvento&quot;</span><span class="s0">, </span><span class="s1">data)</span><span class="s0">;</span>
+                                                <span class="s1">eventos.put(</span><span class="s2">&quot;datadoEventoFinal&quot;</span><span class="s0">, </span><span class="s1">datafinal)</span><span class="s0">;</span>
+                                                <span class="s1">eventos.put(</span><span class="s2">&quot;horadoEventoInicial&quot;</span><span class="s0">, </span><span class="s1">hora)</span><span class="s0">;</span>
+                                                <span class="s1">eventos.put(</span><span class="s2">&quot;horaEventoFinal&quot;</span><span class="s0">, </span><span class="s1">horafinal)</span><span class="s0">;</span>
+                                                <span class="s1">eventos.put(</span><span class="s2">&quot;nomedoEvento&quot;</span><span class="s0">, </span><span class="s1">nome)</span><span class="s0">;</span>
+                                                <span class="s1">eventos.put(</span><span class="s2">&quot;localdoEvento&quot;</span><span class="s0">, </span><span class="s1">local)</span><span class="s0">;</span>
+                                                <span class="s1">eventos.put(</span><span class="s2">&quot;descricaodaAtividade&quot;</span><span class="s0">, </span><span class="s1">descricao)</span><span class="s0">;</span>
+                                                <span class="s1">eventos.put(</span><span class="s2">&quot;eventosId&quot;</span><span class="s0">, </span><span class="s1">eventoId)</span><span class="s0">;</span>
+
+                                                <span class="s1">evento.add(eventos).addOnSuccessListener(documentReference -&gt; {</span>
+                                                    <span class="s1">Toast.makeText(getApplicationContext()</span><span class="s0">, </span><span class="s2">&quot;Agendamento cadastrado com sucesso&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                                                    <span class="s1">cadastrarinfos()</span><span class="s0">;</span>
+                                                    <span class="s1">Intent intentCE = </span><span class="s0">new </span><span class="s1">Intent(FormCadastroEvento.</span><span class="s0">this, </span><span class="s1">PaginaPrincipal.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+                                                    <span class="s1">intentCE.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)</span><span class="s0">;</span>
+                                                    <span class="s1">startActivity(intentCE)</span><span class="s0">;</span>
+                                                <span class="s1">}).addOnFailureListener(e -&gt; Toast.makeText(getApplicationContext()</span><span class="s0">, </span><span class="s2">&quot;Erro ao cadastrar agendamento&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show())</span><span class="s0">;</span>
+                                            <span class="s1">}</span>
+                                        <span class="s1">}</span>
+                                    <span class="s1">}</span>
+                                <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                                    <span class="s3">// Lida com possíveis erros na consulta do Firestore</span>
+                                    <span class="s1">Toast.makeText(getApplicationContext()</span><span class="s0">, </span><span class="s2">&quot;Erro ao verificar agendamento&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                                <span class="s1">}</span>
+                            <span class="s1">})</span><span class="s0">;</span>
+                        <span class="s1">}</span>
+                    <span class="s1">} </span><span class="s0">else</span><span class="s1">{</span>
+                        <span class="s3">// Lida com possíveis erros na consulta do Firestore</span>
+                        <span class="s1">Toast.makeText(getApplicationContext()</span><span class="s0">, </span><span class="s2">&quot;Erro ao verificar agendamento&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+                <span class="s1">})</span><span class="s0">;</span>
+            <span class="s1">}</span>
+            <span class="s0">private boolean </span><span class="s1">isDataHoraWithinRange(String dataEvento</span><span class="s0">, </span><span class="s1">String dataFinalEvento</span><span class="s0">, </span><span class="s1">String horaInicialEvento</span><span class="s0">, </span><span class="s1">String horaFinalEvento</span><span class="s0">, </span><span class="s1">String data</span><span class="s0">, </span><span class="s1">String datafinal</span><span class="s0">, </span><span class="s1">String hora</span><span class="s0">, </span><span class="s1">String horafinal) {</span>
+                <span class="s0">try </span><span class="s1">{</span>
+                    <span class="s1">SimpleDateFormat sdf = </span><span class="s0">new </span><span class="s1">SimpleDateFormat(</span><span class="s2">&quot;dd/MM/yyyy HH:mm&quot;</span><span class="s0">, </span><span class="s1">Locale.getDefault())</span><span class="s0">;</span>
+                    <span class="s1">Date eventoStartDateTime = sdf.parse(dataEvento + </span><span class="s2">&quot; &quot; </span><span class="s1">+ horaInicialEvento)</span><span class="s0">;</span>
+                    <span class="s1">Date eventoEndDateTime = sdf.parse(dataFinalEvento + </span><span class="s2">&quot; &quot; </span><span class="s1">+ horaFinalEvento)</span><span class="s0">;</span>
+                    <span class="s1">Date novoEventoStartDateTime = sdf.parse(data + </span><span class="s2">&quot; &quot; </span><span class="s1">+ hora)</span><span class="s0">;</span>
+                    <span class="s1">Date novoEventoEndDateTime = sdf.parse(datafinal + </span><span class="s2">&quot; &quot; </span><span class="s1">+ horafinal)</span><span class="s0">;</span>
+
+                    <span class="s0">return </span><span class="s1">eventoStartDateTime != </span><span class="s0">null </span><span class="s1">&amp;&amp; eventoEndDateTime != </span><span class="s0">null </span><span class="s1">&amp;&amp; novoEventoStartDateTime != </span><span class="s0">null </span><span class="s1">&amp;&amp; novoEventoEndDateTime != </span><span class="s0">null </span><span class="s1">&amp;&amp;</span>
+                            <span class="s1">novoEventoStartDateTime.compareTo(eventoEndDateTime) &lt;= </span><span class="s4">0 </span><span class="s1">&amp;&amp; novoEventoEndDateTime.compareTo(eventoStartDateTime) &gt;= </span><span class="s4">0</span><span class="s0">;</span>
+                <span class="s1">} </span><span class="s0">catch </span><span class="s1">(ParseException e) {</span>
+                    <span class="s1">e.printStackTrace()</span><span class="s0">;</span>
+                    <span class="s0">return false;</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+        <span class="s1">edit_obs.setOnTouchListener((v</span><span class="s0">, </span><span class="s1">event) -&gt; {</span>
+            <span class="s0">if</span><span class="s1">(v.getId() == R.id.edit_obs){</span>
+                <span class="s1">v.getParent().requestDisallowInterceptTouchEvent(</span><span class="s0">true</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s0">if </span><span class="s1">((event.getAction() &amp; MotionEvent.ACTION_MASK) == MotionEvent.ACTION_UP) {</span>
+                    <span class="s1">v.getParent().requestDisallowInterceptTouchEvent(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+            <span class="s0">return false;</span>
+        <span class="s1">})</span><span class="s0">;</span>
+        <span class="s1">edit_desc_atv.setOnTouchListener((v</span><span class="s0">, </span><span class="s1">event) -&gt; {</span>
+            <span class="s0">if</span><span class="s1">(v.getId() == R.id.edit_desc_atv){</span>
+                <span class="s1">v.getParent().requestDisallowInterceptTouchEvent(</span><span class="s0">true</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s0">if </span><span class="s1">((event.getAction() &amp; MotionEvent.ACTION_MASK) == MotionEvent.ACTION_UP) {</span>
+                    <span class="s1">v.getParent().requestDisallowInterceptTouchEvent(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+            <span class="s0">return false;</span>
+        <span class="s1">})</span><span class="s0">;</span>
+    <span class="s1">}</span>
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">onDestroy(){</span>
+        <span class="s0">super</span><span class="s1">.onDestroy()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onBackPressed(){</span>
+        <span class="s1">Toast.makeText(</span><span class="s0">this, </span><span class="s2">&quot;Utilize o botão de voltar no topo da tela&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+    <span class="s0">private void </span><span class="s1">cadastrarinfos() {</span>
+        <span class="s1">String setor = edit_setor_resp.getText().toString()</span><span class="s0">;</span>
+        <span class="s1">String participantes = edit_numeros_participantes.getText().toString()</span><span class="s0">;</span>
+        <span class="s1">String observacoes = edit_obs.getText().toString()</span><span class="s0">;</span>
+        <span class="s1">String documentoId = eventoId</span><span class="s0">;</span>
+
+        <span class="s1">FirebaseFirestore db = FirebaseFirestore.getInstance()</span><span class="s0">;</span>
+        <span class="s1">DocumentReference info = db.collection(</span><span class="s2">&quot;infoEventos&quot;</span><span class="s1">).document(documentoId)</span><span class="s0">;</span>
+
+        <span class="s1">Map&lt;String</span><span class="s0">, </span><span class="s1">Object&gt; eventos2 = </span><span class="s0">new </span><span class="s1">HashMap&lt;&gt;()</span><span class="s0">;</span>
+        <span class="s1">eventos2.put(</span><span class="s2">&quot;setorResponsavel&quot;</span><span class="s0">,</span><span class="s1">setor)</span><span class="s0">;</span>
+        <span class="s1">eventos2.put(</span><span class="s2">&quot;numerosdeParticipantes&quot;</span><span class="s0">, </span><span class="s1">participantes)</span><span class="s0">;</span>
+        <span class="s1">eventos2.put(</span><span class="s2">&quot;observacoes&quot;</span><span class="s0">, </span><span class="s1">observacoes)</span><span class="s0">;</span>
+        <span class="s1">eventos2.put(</span><span class="s2">&quot;eventosId&quot;</span><span class="s0">, </span><span class="s1">eventoId)</span><span class="s0">;</span>
+
+        <span class="s1">info.set(eventos2).addOnSuccessListener(unused -&gt; Log.d(</span><span class="s2">&quot;Firestore&quot;</span><span class="s0">, </span><span class="s2">&quot;Informações do evento cadastradas com sucesso!&quot;</span><span class="s1">))</span>
+                <span class="s1">.addOnFailureListener(e -&gt; Log.e(</span><span class="s2">&quot;Firestore&quot;</span><span class="s0">, </span><span class="s2">&quot;Erro ao cadastrar as informações do evento: &quot; </span><span class="s1">+ e.getMessage()))</span><span class="s0">;</span>
+    <span class="s1">}</span>
+    <span class="s0">public static class </span><span class="s1">DatePicker </span><span class="s0">extends </span><span class="s1">DialogFragment </span><span class="s0">implements </span><span class="s1">DatePickerDialog.OnDateSetListener {</span>
+
+        <span class="s1">@NonNull</span>
+        <span class="s1">@Override</span>
+        <span class="s0">public </span><span class="s1">Dialog onCreateDialog(Bundle savedInstanceState){</span>
+
+            <span class="s1">Calendar calendario = Calendar.getInstance()</span><span class="s0">;</span>
+            <span class="s0">int </span><span class="s1">dia = calendario.get(Calendar.DAY_OF_MONTH)</span><span class="s0">;</span>
+            <span class="s0">int </span><span class="s1">mes = calendario.get(Calendar.MONTH)</span><span class="s0">;</span>
+            <span class="s0">int </span><span class="s1">ano = calendario.get(Calendar.YEAR)</span><span class="s0">;</span>
+
+            <span class="s0">return new </span><span class="s1">DatePickerDialog(getActivity()</span><span class="s0">, </span><span class="s1">AlertDialog.THEME_DEVICE_DEFAULT_DARK</span><span class="s0">, this, </span><span class="s1">ano</span><span class="s0">, </span><span class="s1">mes</span><span class="s0">, </span><span class="s1">dia)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s1">@Override</span>
+        <span class="s0">public void </span><span class="s1">onDateSet(android.widget.DatePicker view</span><span class="s0">, int </span><span class="s1">ano</span><span class="s0">, int </span><span class="s1">mes</span><span class="s0">, int </span><span class="s1">dia) {</span>
+
+            <span class="s1">String tagClicado = getTag()</span><span class="s0">;</span>
+
+            <span class="s0">assert </span><span class="s1">tagClicado != </span><span class="s0">null;</span>
+            <span class="s0">switch </span><span class="s1">(tagClicado) {</span>
+                <span class="s0">case </span><span class="s2">&quot;data1&quot;</span><span class="s1">:</span>
+                    <span class="s1">@SuppressLint(</span><span class="s2">&quot;DefaultLocale&quot;</span><span class="s1">)</span>
+                    <span class="s1">String dataFormatada = String.format(</span><span class="s2">&quot;%02d/%02d/%04d&quot;</span><span class="s0">, </span><span class="s1">dia</span><span class="s0">, </span><span class="s1">mes + </span><span class="s4">1</span><span class="s0">, </span><span class="s1">ano)</span><span class="s0">;</span>
+                    <span class="s1">editTextData.setText(dataFormatada)</span><span class="s0">;</span>
+                    <span class="s0">break;</span>
+                <span class="s0">case </span><span class="s2">&quot;data2&quot;</span><span class="s1">:</span>
+                    <span class="s1">@SuppressLint(</span><span class="s2">&quot;DefaultLocale&quot;</span><span class="s1">)</span>
+                    <span class="s1">String dataFormatada2 = String.format(</span><span class="s2">&quot;%02d/%02d/%04d&quot;</span><span class="s0">, </span><span class="s1">dia</span><span class="s0">, </span><span class="s1">mes + </span><span class="s4">1</span><span class="s0">, </span><span class="s1">ano)</span><span class="s0">;</span>
+                    <span class="s1">editTextData2.setText(dataFormatada2)</span><span class="s0">;</span>
+                    <span class="s0">break;</span>
+                <span class="s0">case </span><span class="s2">&quot;datafinal1&quot;</span><span class="s1">:</span>
+                    <span class="s1">@SuppressLint(</span><span class="s2">&quot;DefaultLocale&quot;</span><span class="s1">)</span>
+                    <span class="s1">String dataFormatada3 = String.format(</span><span class="s2">&quot;%02d/%02d/%04d&quot;</span><span class="s0">, </span><span class="s1">dia</span><span class="s0">, </span><span class="s1">mes + </span><span class="s4">1</span><span class="s0">, </span><span class="s1">ano)</span><span class="s0">;</span>
+                    <span class="s1">editTextDataFinal.setText(dataFormatada3)</span><span class="s0">;</span>
+                    <span class="s0">break;</span>
+                <span class="s0">case </span><span class="s2">&quot;datafinal2&quot;</span><span class="s1">:</span>
+                    <span class="s1">@SuppressLint(</span><span class="s2">&quot;DefaultLocale&quot;</span><span class="s1">) String dataFormatada4 = String.format(</span><span class="s2">&quot;%02d/%02d/%04d&quot;</span><span class="s0">, </span><span class="s1">dia</span><span class="s0">, </span><span class="s1">mes + </span><span class="s4">1</span><span class="s0">, </span><span class="s1">ano)</span><span class="s0">;</span>
+                    <span class="s1">editTextDataFinal2.setText(dataFormatada4)</span><span class="s0">;</span>
+                    <span class="s0">break;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+    <span class="s0">public static class </span><span class="s1">TimePicker </span><span class="s0">extends </span><span class="s1">DialogFragment </span><span class="s0">implements </span><span class="s1">TimePickerDialog.OnTimeSetListener {</span>
+
+        <span class="s1">@NonNull</span>
+        <span class="s1">@Override</span>
+        <span class="s0">public </span><span class="s1">Dialog onCreateDialog(Bundle savedInstanceState){</span>
+
+            <span class="s1">Calendar calendario = Calendar.getInstance()</span><span class="s0">;</span>
+            <span class="s0">int </span><span class="s1">hora = calendario.get(Calendar.HOUR_OF_DAY)</span><span class="s0">;</span>
+            <span class="s0">int </span><span class="s1">minutos = calendario.get(Calendar.MINUTE)</span><span class="s0">;</span>
+
+            <span class="s0">return new </span><span class="s1">TimePickerDialog(getActivity()</span><span class="s0">, </span><span class="s1">AlertDialog.THEME_DEVICE_DEFAULT_DARK</span><span class="s0">, this, </span><span class="s1">hora</span><span class="s0">, </span><span class="s1">minutos</span><span class="s0">,true</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s1">@Override</span>
+        <span class="s0">public void </span><span class="s1">onTimeSet(android.widget.TimePicker view</span><span class="s0">, int </span><span class="s1">horas</span><span class="s0">, int </span><span class="s1">minutos) {</span>
+
+            <span class="s1">String tagClicado = getTag()</span><span class="s0">;</span>
+
+            <span class="s0">assert </span><span class="s1">tagClicado != </span><span class="s0">null;</span>
+            <span class="s0">if</span><span class="s1">(tagClicado.equals(</span><span class="s2">&quot;hora1&quot;</span><span class="s1">)){</span>
+
+                <span class="s1">@SuppressLint(</span><span class="s2">&quot;DefaultLocale&quot;</span><span class="s1">)</span>
+                <span class="s1">String horaformatada = String.format(</span><span class="s2">&quot;%02d:%02d&quot;</span><span class="s0">,</span><span class="s1">horas</span><span class="s0">,</span><span class="s1">minutos)</span><span class="s0">;</span>
+                <span class="s1">editTextHoraInicial.setText(horaformatada)</span><span class="s0">;</span>
+
+            <span class="s1">}</span><span class="s0">else if </span><span class="s1">(tagClicado.equals(</span><span class="s2">&quot;hora2&quot;</span><span class="s1">)){</span>
+
+                <span class="s1">@SuppressLint(</span><span class="s2">&quot;DefaultLocale&quot;</span><span class="s1">)</span>
+                <span class="s1">String horaformatadafinal = String.format(</span><span class="s2">&quot;%02d:%02d&quot;</span><span class="s0">,</span><span class="s1">horas</span><span class="s0">,</span><span class="s1">minutos)</span><span class="s0">;</span>
+                <span class="s1">editTextHoraFinal.setText(horaformatadafinal)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+    <span class="s1">@SuppressLint({</span><span class="s2">&quot;WrongViewCast&quot;</span><span class="s0">, </span><span class="s2">&quot;CutPasteId&quot;</span><span class="s1">})</span>
+    <span class="s0">private void </span><span class="s1">IniciarComponentes(){</span>
+
+        <span class="s3">//Recuperar as informações que foram colocados no front-end.</span>
+        <span class="s1">edit_nome_evento = findViewById(R.id.edit_nome_evento)</span><span class="s0">;</span>
+        <span class="s1">edit_setor_resp = findViewById(R.id.edit_setor_resp)</span><span class="s0">;</span>
+        <span class="s1">edit_numeros_participantes = findViewById(R.id.edit_numeros_participantes)</span><span class="s0">;</span>
+        <span class="s1">edit_desc_atv = findViewById(R.id.edit_desc_atv)</span><span class="s0">;</span>
+        <span class="s1">edit_obs = findViewById(R.id.edit_obs)</span><span class="s0">;</span>
+        <span class="s1">editTextHoraInicial = findViewById(R.id.edit_horas)</span><span class="s0">;</span>
+        <span class="s1">editTextHoraFinal = findViewById(R.id.edit_horas_final)</span><span class="s0">;</span>
+        <span class="s1">editTextData = findViewById(R.id.edit_data)</span><span class="s0">;</span>
+        <span class="s1">editTextData2 = findViewById(R.id.edit_data)</span><span class="s0">;</span>
+        <span class="s1">editTextDataFinal = findViewById(R.id.edit_data_final)</span><span class="s0">;</span>
+        <span class="s1">editTextDataFinal2 = findViewById(R.id.edit_data_final)</span><span class="s0">;</span>
+        <span class="s1">imageViewHora = findViewById(R.id.imageViewHora)</span><span class="s0">;</span>
+        <span class="s1">imageViewHoraFinal = findViewById(R.id.imageViewHoraFinal)</span><span class="s0">;</span>
+        <span class="s1">imageViewData = findViewById(R.id.imageViewData)</span><span class="s0">;</span>
+        <span class="s1">imageViewDataFinal = findViewById(R.id.imageViewDataFinal)</span><span class="s0">;</span>
+        <span class="s1">imageViewoff = findViewById(R.id.imageViewoff)</span><span class="s0">;</span>
+        <span class="s1">bt_cadastrar = findViewById(R.id.bt_cadastrar)</span><span class="s0">;</span>
+        <span class="s1">imageViewback = findViewById(R.id.imageViewback)</span><span class="s0">;</span>
+        <span class="s1">autoCompleteTxt = findViewById(R.id.auto_complete_txt)</span><span class="s0">;</span>
+        <span class="s1">scrollview = findViewById(R.id.scrollView)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span></pre>
+</body>
+</html>

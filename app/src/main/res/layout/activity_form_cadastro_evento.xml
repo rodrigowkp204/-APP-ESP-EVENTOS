@@ -1,0 +1,739 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_claro"
+        tools:context=".FormCadastroEvento">
+
+            <!-- Imagem de Logout -->
+            <ImageView
+                android:id="@+id/imageViewoff"
+                android:layout_width="30dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10sp"
+                android:contentDescription="@string/deslogar"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/imageViewData"
+                app:layout_constraintStart_toStartOf="@id/imageViewData"
+                app:srcCompat="@drawable/logo_logout"
+                tools:ignore="MissingConstraints"/>
+
+            <ImageView
+                android:id="@+id/imageViewback"
+                android:layout_width="30dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10sp"
+                android:contentDescription="@string/voltar1"
+                app:layout_constraintStart_toStartOf="@id/nomeTextInputLayoutFormCadastroEvento"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/logo_voltar"
+                tools:ignore="MissingConstraints" />
+
+            <!-- Visualização do texto do Usuário
+            <TextView
+                android:id="@+id/title_recepcao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/> -->
+
+            <!-- Visualização do texto de Agendamento -->
+            <TextView
+                android:id="@+id/title_agendamento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/title_agendamento"
+                android:textColor="@color/azul1"
+                android:fontFamily="@font/signika_semibold"
+                android:textSize="50sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imageViewoff"/>
+
+            <TextView
+                android:id="@+id/title_complemento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/subtitle_agendamento_interno"
+                android:textColor="@color/azul1"
+                android:fontFamily="@font/signika_light"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title_agendamento"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/nomeTextInputLayoutFormCadastroEvento"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="@string/nomeEvento"
+            android:textColorHint="@color/gray"
+            app:layout_constraintTop_toBottomOf="@id/title_complemento"
+            style="@style/CustomTextInputLayoutLoginRedefinir">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_nome_evento"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:drawableEnd="@drawable/ic_user_name"
+                android:textColor="@color/black"
+                android:autofillHints="name"
+                android:background="@drawable/layout_login_edits"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+            <!--
+            <EditText
+                android:id="@+id/edit_nome_evento"
+                style="@style/Edit_Text_Agend"
+                android:hint="@string/nomeEvento"
+                android:inputType="text"
+                android:autofillHints="Nome do Evento"
+                app:layout_constraintTop_toBottomOf="@id/title_complemento"
+                tools:ignore="MissingConstraints"
+                />
+            -->
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/setorTextInputLayoutFormCadastroEvento"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="@string/setorResp"
+            android:textColorHint="@color/gray"
+            app:layout_constraintTop_toBottomOf="@id/nomeTextInputLayoutFormCadastroEvento"
+            style="@style/CustomTextInputLayoutLoginRedefinir">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_setor_resp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:drawableEnd="@drawable/ic_coord"
+                android:textColor="@color/black"
+                android:autofillHints="name"
+                android:background="@drawable/layout_login_edits"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Campo de texto do Setor Responsável -->
+            <!--
+            <EditText
+                android:id="@+id/edit_setor_resp"
+                style="@style/Edit_Text_Agend"
+                android:hint="@string/setorResp"
+                android:inputType="text"
+                android:autofillHints="Setor Responsável"
+                app:layout_constraintTop_toBottomOf="@id/nomeTextInputLayoutFormCadastro"
+                tools:ignore="MissingConstraints" />
+                -->
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/participantesTextInputLayoutFormCadastroEvento"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="@string/numPart"
+            android:textColorHint="@color/gray"
+            app:layout_constraintTop_toBottomOf="@id/setorTextInputLayoutFormCadastroEvento"
+            style="@style/CustomTextInputLayoutLoginRedefinir">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_numeros_participantes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableEnd="@drawable/ic_numer_part"
+                android:autofillHints="name"
+                android:inputType="number"
+                android:textColor="@color/black"
+                android:background="@drawable/layout_login_edits"
+                app:layout_constraintTop_toBottomOf="@id/title_cadastrese"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+            <!-- Campo de texto do Número de Participantes -->
+            <!--
+            <EditText
+                android:id="@+id/edit_numeros_participantes"
+                style="@style/Edit_Text_Agend"
+                android:hint="@string/numPart"
+                android:inputType="number"
+                android:autofillHints="Número de Participantes"
+                app:layout_constraintTop_toBottomOf="@id/setorTextInputLayoutFormCadastroEvento"
+                tools:ignore="MissingConstraints" />
+                -->
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/datainicioTextInputLayoutFormCadastroEvento"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="@string/data"
+            android:textColorHint="@color/gray"
+            app:layout_constraintTop_toBottomOf="@id/participantesTextInputLayoutFormCadastroEvento"
+            style="@style/CustomTextInputLayoutFormCadastroData">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:autofillHints="name"
+                android:textColor="@color/black"
+                android:background="@drawable/layout_login_edits"
+                app:layout_constraintTop_toBottomOf="@id/title_cadastrese"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Campo de texto da Data -->
+            <!--
+            <EditText
+                android:id="@+id/edit_data"
+                style="@style/Edit_Text_Data"
+                android:hint="@string/data"
+                android:inputType="text"
+                android:autofillHints="Data"
+                app:layout_constraintTop_toBottomOf="@id/participantesTextInputLayoutFormCadastroEvento"
+                tools:ignore="MissingConstraints" />
+            -->
+            <!-- Imagem do Calendário -->
+        <ImageView
+            android:id="@+id/imageViewData"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="14dp"
+            android:contentDescription="@string/dataicone"
+            android:textColor="@color/gray"
+            app:layout_constraintBottom_toBottomOf="@+id/datainicioTextInputLayoutFormCadastroEvento"
+            app:layout_constraintStart_toEndOf="@id/datafinalTextInputLayoutFormCadastroEvento"
+            app:layout_constraintTop_toTopOf="@+id/datainicioTextInputLayoutFormCadastroEvento"
+            app:srcCompat="@drawable/logo_calendario_form"
+            tools:ignore="MissingConstraints" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/datafinalTextInputLayoutFormCadastroEvento"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="@string/datafinal"
+            android:textColorHint="@color/gray"
+            app:layout_constraintTop_toBottomOf="@id/datainicioTextInputLayoutFormCadastroEvento"
+            style="@style/CustomTextInputLayoutFormCadastroData">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_data_final"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:autofillHints="name"
+                android:textColor="@color/black"
+                android:background="@drawable/layout_login_edits"
+                app:layout_constraintTop_toBottomOf="@id/title_cadastrese"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Campo de texto da Data -->
+            <!--
+            <EditText
+                android:id="@+id/edit_data_final"
+                style="@style/Edit_Text_Data"
+                android:hint="@string/datafinal"
+                android:inputType="text"
+                android:autofillHints="Data"
+                app:layout_constraintTop_toBottomOf="@id/datainicioTextInputLayoutFormCadastroEvento"
+                tools:ignore="MissingConstraints" />
+                -->
+
+            <!-- Imagem do Calendário -->
+        <ImageView
+            android:id="@+id/imageViewDataFinal"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="14dp"
+            android:contentDescription="@string/dataicone"
+            android:textColor="@color/gray"
+            app:layout_constraintBottom_toBottomOf="@+id/datafinalTextInputLayoutFormCadastroEvento"
+            app:layout_constraintStart_toEndOf="@id/datafinalTextInputLayoutFormCadastroEvento"
+            app:layout_constraintTop_toTopOf="@+id/datafinalTextInputLayoutFormCadastroEvento"
+            app:srcCompat="@drawable/logo_calendario_form"
+            tools:ignore="MissingConstraints" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/horainicialTextInputLayoutFormCadastroEvento"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="@string/horarioInicial"
+            android:textColorHint="@color/gray"
+            app:layout_constraintTop_toBottomOf="@id/datafinalTextInputLayoutFormCadastroEvento"
+            style="@style/CustomTextInputLayoutFormCadastroData">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_horas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:autofillHints="name"
+                android:textColor="@color/black"
+                android:background="@drawable/layout_login_edits"
+                app:layout_constraintTop_toBottomOf="@id/title_cadastrese"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+            <!-- Campo de texto do Horário -->
+            <!--
+            <EditText
+                android:id="@+id/edit_horas"
+                style="@style/Edit_Text_Data"
+                android:hint="@string/horarioInicial"
+                android:inputType="text"
+                android:autofillHints="Horário"
+                app:layout_constraintTop_toBottomOf="@id/datafinalTextInputLayoutFormCadastroEvento"
+                tools:ignore="MissingConstraints" />
+                -->
+
+            <!-- Imagem do Horário -->
+        <ImageView
+            android:id="@+id/imageViewHora"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="14dp"
+            android:contentDescription="@string/horarioicone"
+            android:textColor="@color/gray"
+            app:layout_constraintBottom_toBottomOf="@+id/horainicialTextInputLayoutFormCadastroEvento"
+            app:layout_constraintStart_toEndOf="@id/horainicialTextInputLayoutFormCadastroEvento"
+            app:layout_constraintTop_toTopOf="@+id/horainicialTextInputLayoutFormCadastroEvento"
+            app:srcCompat="@drawable/logo_hora_form"
+            tools:ignore="MissingConstraints" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/horafinalTextInputLayoutFormCadastroEvento"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="@string/horarioFinal"
+            android:textColorHint="@color/gray"
+            app:layout_constraintTop_toBottomOf="@id/horainicialTextInputLayoutFormCadastroEvento"
+            style="@style/CustomTextInputLayoutFormCadastroData">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_horas_final"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:autofillHints="name"
+                android:textColor="@color/black"
+                android:background="@drawable/layout_login_edits"
+                app:layout_constraintTop_toBottomOf="@id/title_cadastrese"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--
+        <EditText
+            android:id="@+id/edit_horas_final"
+            style="@style/Edit_Text_Data"
+            android:hint="@string/horarioFinal"
+            android:inputType="text"
+            android:autofillHints="Horário"
+            app:layout_constraintTop_toBottomOf="@id/horainicialTextInputLayoutFormCadastroEvento"
+            tools:ignore="MissingConstraints" />
+            -->
+
+        <!-- Imagem do Horário -->
+        <ImageView
+            android:id="@+id/imageViewHoraFinal"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="14dp"
+            android:contentDescription="@string/horarioicone"
+            android:textColor="@color/gray"
+            app:layout_constraintBottom_toBottomOf="@+id/horafinalTextInputLayoutFormCadastroEvento"
+            app:layout_constraintStart_toEndOf="@id/horafinalTextInputLayoutFormCadastroEvento"
+            app:layout_constraintTop_toTopOf="@+id/horafinalTextInputLayoutFormCadastroEvento"
+            app:srcCompat="@drawable/logo_hora_form"
+            tools:ignore="MissingConstraints" />
+
+
+            <!-- Campo de texto de Local-->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/inputtext"
+                style="@style/LoginTextInputLayoutStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:hint="@string/select"
+                android:textColorHint="@color/gray"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/horafinalTextInputLayoutFormCadastroEvento">
+
+                <AutoCompleteTextView
+                    android:id="@+id/auto_complete_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    android:textColor="@color/black"
+                    tools:ignore="VisualLintTextFieldSize"
+                />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/title_equipamentos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/signika_semibold"
+            android:text="@string/equipamentos"
+            android:textColor="@color/azul1"
+            app:layout_constraintStart_toStartOf="@+id/inputtext"
+            app:layout_constraintTop_toBottomOf="@id/inputtext" />
+
+        <CheckBox
+            android:id="@+id/checkBoxSimEvento"
+            android:layout_width="71dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/sim"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="@+id/title_equipamentos"
+            app:layout_constraintTop_toBottomOf="@id/title_equipamentos" />
+
+        <CheckBox
+            android:id="@+id/checkBoxNãoEvento"
+            android:layout_width="71dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="80dp"
+            android:text="@string/nao"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="@+id/title_equipamentos"
+            app:layout_constraintTop_toBottomOf="@id/title_equipamentos" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/quaisTextInputLayoutFormCadastroEvento"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="@string/quais"
+            android:textColorHint="@color/gray"
+            app:layout_constraintTop_toBottomOf="@id/checkBoxSimEvento"
+            style="@style/CustomTextInputLayoutLoginRedefinir">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_quais_equip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:visibility="gone"
+                android:textColor="@color/black"
+                android:autofillHints="name"
+                android:background="@drawable/layout_login_edits"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/title_transmissao_gravacao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/signika_semibold"
+            android:text="@string/transmissao"
+            android:textColor="@color/azul1"
+            app:layout_constraintStart_toStartOf="@+id/quaisTextInputLayoutFormCadastroEvento"
+            app:layout_constraintTop_toBottomOf="@id/quaisTextInputLayoutFormCadastroEvento" />
+
+        <CheckBox
+            android:id="@+id/checkBoxSimEventoTransmissao"
+            android:layout_width="71dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/sim"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="@+id/title_transmissao_gravacao"
+            app:layout_constraintTop_toBottomOf="@id/title_transmissao_gravacao" />
+
+        <CheckBox
+            android:id="@+id/checkBoxNãoEventoTransmissao"
+            android:layout_width="71dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="80dp"
+            android:text="@string/nao"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="@+id/title_equipamentos"
+            app:layout_constraintTop_toBottomOf="@id/title_transmissao_gravacao" />
+
+        <CheckBox
+            android:id="@+id/checkBoxtransmissao"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/transmissaocheck"
+            android:visibility="gone"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="@+id/checkBoxSimEventoTransmissao"
+            app:layout_constraintTop_toBottomOf="@id/checkBoxSimEventoTransmissao" />
+
+        <CheckBox
+            android:id="@+id/checkBoxgravacao"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="-50dp"
+            android:text="@string/gravacao"
+            android:visibility="gone"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="@+id/title_equipamentos"
+            app:layout_constraintStart_toStartOf="@+id/checkBoxNãoEventoTransmissao"
+            app:layout_constraintTop_toBottomOf="@id/checkBoxSimEventoTransmissao" />
+
+        <CheckBox
+            android:id="@+id/checkBoxAmbos"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="0dp"
+            android:text="@string/ambos"
+            android:visibility="gone"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="@+id/inputtext"
+            app:layout_constraintTop_toBottomOf="@id/checkBoxSimEventoTransmissao" />
+
+        <TextView
+            android:id="@+id/title_modalidade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/signika_semibold"
+            android:text="@string/modalidade"
+            android:textColor="@color/azul1"
+            app:layout_constraintStart_toStartOf="@+id/checkBoxtransmissao"
+            app:layout_constraintTop_toBottomOf="@id/checkBoxtransmissao" />
+
+        <CheckBox
+            android:id="@+id/checkBoxPresencial"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/presencial"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="@+id/title_modalidade"
+            app:layout_constraintTop_toBottomOf="@id/title_modalidade" />
+
+        <CheckBox
+            android:id="@+id/checkBoxHibrido"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/hibrido"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="@+id/title_equipamentos"
+            app:layout_constraintStart_toStartOf="@+id/checkBoxNãoEventoTransmissao"
+            app:layout_constraintTop_toBottomOf="@id/title_modalidade" />
+
+        <CheckBox
+            android:id="@+id/checkBoxonline"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/online"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="@+id/inputtext"
+            app:layout_constraintStart_toEndOf="@+id/checkBoxHibrido"
+            app:layout_constraintTop_toBottomOf="@id/title_modalidade" />
+
+        <TextView
+            android:id="@+id/title_link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/signika_semibold"
+            android:text="@string/link"
+            android:textColor="@color/azul1"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@+id/checkBoxtransmissao"
+            app:layout_constraintTop_toBottomOf="@id/checkBoxPresencial" />
+
+        <CheckBox
+            android:id="@+id/checkBoxSimEventoLink"
+            android:layout_width="71dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/sim"
+            android:textColor="@color/black"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@+id/title_link"
+            app:layout_constraintTop_toBottomOf="@id/title_link" />
+
+        <CheckBox
+            android:id="@+id/checkBoxNãoEventoLink"
+            android:layout_width="71dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="80dp"
+            android:text="@string/nao"
+            android:textColor="@color/black"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@+id/title_equipamentos"
+            app:layout_constraintTop_toBottomOf="@id/title_link" />
+
+        <TextView
+            android:id="@+id/title_material_grafico"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/signika_semibold"
+            android:text="@string/materialgrafico"
+            android:textColor="@color/azul1"
+            app:layout_constraintStart_toStartOf="@+id/checkBoxtransmissao"
+            app:layout_constraintTop_toBottomOf="@id/checkBoxSimEventoLink" />
+
+        <CheckBox
+            android:id="@+id/checkBoxSimMaterialGrafico"
+            android:layout_width="71dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/sim"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="@+id/title_material_grafico"
+            app:layout_constraintTop_toBottomOf="@id/title_material_grafico" />
+
+        <CheckBox
+            android:id="@+id/checkBoxNãoMaterialGrafico"
+            android:layout_width="71dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="80dp"
+            android:text="@string/nao"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="@+id/title_equipamentos"
+            app:layout_constraintTop_toBottomOf="@id/title_material_grafico" />
+
+        <TextView
+            android:id="@+id/title_solicitacao_material_grafico"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/signika_semibold"
+            android:text="@string/formsLink"
+            android:visibility="gone"
+            android:textColor="@color/azul1"
+            app:layout_constraintStart_toStartOf="@+id/checkBoxtransmissao"
+            app:layout_constraintTop_toBottomOf="@id/checkBoxSimMaterialGrafico" />
+
+        <TextView
+            android:id="@+id/link_solicitacao_material_grafico"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/signika_semibold"
+            android:text="@string/linkformsgraf"
+            android:visibility="gone"
+            android:textColor="@color/azul1"
+            app:layout_constraintStart_toStartOf="@+id/checkBoxtransmissao"
+            app:layout_constraintTop_toBottomOf="@id/title_solicitacao_material_grafico" />
+
+
+        <androidx.core.widget.NestedScrollView
+                android:id="@+id/scrol2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintTop_toBottomOf="@id/link_solicitacao_material_grafico">
+                        <!-- Campo de texto de Descrição de Atividades -->
+                        <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_desc_atv"
+                        style="@style/Edit_Text_Obs_Desc"
+                        android:hint="@string/descricaoAtv"
+                        android:textColorHint="@color/gray"
+                        android:inputType="textMultiLine"
+                        android:gravity="start"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:maxLength="200"
+                        android:lines="5"
+                        android:autofillHints="Descrição da Atividade"
+                        android:overScrollMode="always"
+                        android:scrollbars="vertical"
+                        android:scrollbarStyle="insideOverlay"
+                        android:scrollHorizontally="false"
+                        android:fadeScrollbars="false"
+                        tools:ignore="MissingConstraints" />
+            </androidx.core.widget.NestedScrollView>
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/scrol3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintTop_toBottomOf="@id/scrol2">
+                        <!-- Campo de texto de Observações -->
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_obs"
+                        style="@style/Edit_Text_Obs_Desc"
+                        android:hint="@string/observacoes"
+                        android:textColorHint="@color/gray"
+                        android:inputType="textMultiLine"
+                        android:gravity="start"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:maxLength="200"
+                        android:lines="5"
+                        android:autofillHints="Observações"
+                        android:overScrollMode="always"
+                        android:scrollbars="vertical"
+                        android:scrollbarStyle="insideInset"
+                        android:scrollHorizontally="false"
+                        android:fadeScrollbars="false"
+                        tools:ignore="MissingConstraints" />
+            </androidx.core.widget.NestedScrollView>
+
+        <TextView
+            android:id="@+id/camp_obrig"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/signika_semibold"
+            android:text="@string/camposobrigatorios"
+            android:textColor="@color/azul1"
+            app:layout_constraintStart_toStartOf="@+id/bt_cadastrar"
+            app:layout_constraintEnd_toEndOf="@+id/bt_cadastrar"
+            app:layout_constraintTop_toBottomOf="@id/scrol3" />
+
+            <!-- Botão do cadastrar evento -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/bt_cadastrar"
+                style="@style/Button2"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:text="@string/cadastrar"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/camp_obrig"
+                />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

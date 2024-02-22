@@ -1,0 +1,185 @@
+<html>
+<head>
+<title>VisuAdapter.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+VisuAdapter.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.esp_eventos</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.annotation.SuppressLint</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.app.AlertDialog</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.Context</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.util.Log</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.LayoutInflater</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.ViewGroup</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.ImageView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.TextView</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.annotation.NonNull</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.recyclerview.widget.RecyclerView</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.google.firebase.firestore.DocumentReference</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.firestore.DocumentSnapshot</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.firestore.FirebaseFirestore</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">java.util.List</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">VisuAdapter </span><span class="s0">extends </span><span class="s1">RecyclerView.Adapter&lt;VisuAdapter.MyViewHolder&gt; {</span>
+
+    <span class="s0">private </span><span class="s1">List&lt;Eventos&gt; listaEventos</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">List&lt;String&gt; listIds</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">Context context</span><span class="s0">;</span>
+
+
+    <span class="s1">@SuppressLint(</span><span class="s2">&quot;NotifyDataSetChanged&quot;</span><span class="s1">)</span>
+    <span class="s0">public void </span><span class="s1">setFilteredList(List&lt;Eventos&gt; filteredList</span><span class="s0">, </span><span class="s1">List&lt;String&gt; filteredListIds){</span>
+        <span class="s0">this</span><span class="s1">.listaEventos = filteredList</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.listIds = filteredListIds</span><span class="s0">;</span>
+        <span class="s1">notifyDataSetChanged()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+    <span class="s0">public </span><span class="s1">VisuAdapter(List&lt;Eventos&gt; listaEventos</span><span class="s0">, </span><span class="s1">List&lt;String&gt; listIds) {</span>
+        <span class="s0">this</span><span class="s1">.listaEventos = listaEventos</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.listIds = listIds</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+
+    <span class="s0">public void </span><span class="s1">setListaEventos(List&lt;Eventos&gt; listaEventos) {</span>
+        <span class="s0">this</span><span class="s1">.listaEventos = listaEventos</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setListIds(List&lt;String&gt; listIds) {</span>
+        <span class="s0">this</span><span class="s1">.listIds = listIds</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@NonNull</span>
+    <span class="s1">@Override</span>
+    <span class="s0">public </span><span class="s1">MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent</span><span class="s0">, int </span><span class="s1">viewType) {</span>
+
+        <span class="s1">context = parent.getContext()</span><span class="s0">;</span>
+        <span class="s1">View itemLista = LayoutInflater.from(context).inflate(R.layout.lista_eventos_1</span><span class="s0">, </span><span class="s1">parent</span><span class="s0">, false</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s0">return new </span><span class="s1">MyViewHolder(itemLista)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onBindViewHolder(@NonNull MyViewHolder holder</span><span class="s0">, int </span><span class="s1">position) {</span>
+
+        <span class="s0">if</span><span class="s1">(listaEventos.isEmpty() || position &gt;= listaEventos.size()){</span>
+            <span class="s0">return;</span>
+        <span class="s1">}</span>
+
+        <span class="s1">Eventos evento = listaEventos.get(position)</span><span class="s0">;</span>
+        <span class="s1">String eventoId = listIds.get(position)</span><span class="s0">;</span>
+        <span class="s1">String localdoevento = evento.getlocaldoEvento()</span><span class="s0">;</span>
+
+        <span class="s0">if</span><span class="s1">(localdoevento != </span><span class="s0">null</span><span class="s1">){</span>
+            <span class="s0">switch </span><span class="s1">(localdoevento) {</span>
+                <span class="s0">case </span><span class="s2">&quot;Isabel dos Santos&quot;</span><span class="s1">: {</span>
+                    <span class="s1">Log.d(</span><span class="s2">&quot;TAG&quot;</span><span class="s0">, </span><span class="s2">&quot;Local do evento: Isabel dos Santos&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">ImageView imageView = holder.itemView.findViewById(R.id.imglocal)</span><span class="s0">;</span>
+                    <span class="s1">imageView.setImageResource(R.drawable.izabelmini)</span><span class="s0">;</span>
+                    <span class="s0">break;</span>
+                <span class="s1">}</span>
+                <span class="s0">case </span><span class="s2">&quot;Paulo Freire&quot;</span><span class="s1">: {</span>
+                    <span class="s1">Log.d(</span><span class="s2">&quot;TAG&quot;</span><span class="s0">, </span><span class="s2">&quot;Local do evento: Paulo Freire&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">ImageView imageView = holder.itemView.findViewById(R.id.imglocal)</span><span class="s0">;</span>
+                    <span class="s1">imageView.setImageResource(R.drawable.paulomini)</span><span class="s0">;</span>
+                    <span class="s0">break;</span>
+                <span class="s1">}</span>
+                <span class="s0">case </span><span class="s2">&quot;Multimídia 1&quot;</span><span class="s1">: {</span>
+                    <span class="s1">Log.d(</span><span class="s2">&quot;TAG&quot;</span><span class="s0">, </span><span class="s2">&quot;Local do evento: Multimídia 1&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">ImageView imageView = holder.itemView.findViewById(R.id.imglocal)</span><span class="s0">;</span>
+                    <span class="s1">imageView.setImageResource(R.drawable.multi1mini)</span><span class="s0">;</span>
+                    <span class="s0">break;</span>
+                <span class="s1">}</span>
+                <span class="s0">case </span><span class="s2">&quot;Multimídia 2&quot;</span><span class="s1">: {</span>
+                    <span class="s1">Log.d(</span><span class="s2">&quot;TAG&quot;</span><span class="s0">, </span><span class="s2">&quot;Local do evento: Multimídia 2&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">ImageView imageView = holder.itemView.findViewById(R.id.imglocal)</span><span class="s0">;</span>
+                    <span class="s1">imageView.setImageResource(R.drawable.multi2mini)</span><span class="s0">;</span>
+                    <span class="s0">break;</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+
+        <span class="s1">holder.nome.setText(evento.getnomedoEvento())</span><span class="s0">;</span>
+        <span class="s1">holder.data.setText(evento.getdatadoEvento())</span><span class="s0">;</span>
+        <span class="s1">holder.datafinal.setText(evento.getDatadoEventoFinal())</span><span class="s0">;</span>
+        <span class="s1">holder.horario.setText(evento.getHoradoEventoInicial())</span><span class="s0">;</span>
+        <span class="s1">holder.horafinal.setText(evento.getHoraEventoFinal())</span><span class="s0">;</span>
+        <span class="s1">holder.local.setText(evento.getlocaldoEvento())</span><span class="s0">;</span>
+        <span class="s1">holder.desc.setText(evento.getdescricaodaAtividade())</span><span class="s0">;</span>
+        <span class="s1">holder.itemView.setOnClickListener(v -&gt; {</span>
+            <span class="s1">DocumentReference infoEventoRef = FirebaseFirestore.getInstance().collection(</span><span class="s2">&quot;infoEventos&quot;</span><span class="s1">).document(eventoId)</span><span class="s0">;</span>
+            <span class="s1">infoEventoRef.get().addOnCompleteListener(task -&gt; {</span>
+                <span class="s0">if </span><span class="s1">(task.isSuccessful()) {</span>
+                    <span class="s1">DocumentSnapshot infoEventoSnapshot = task.getResult()</span><span class="s0">;</span>
+                    <span class="s0">if </span><span class="s1">(infoEventoSnapshot.exists()) {</span>
+                        <span class="s1">String observacoes = infoEventoSnapshot.getString(</span><span class="s2">&quot;observacoes&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                        <span class="s1">String participantes = infoEventoSnapshot.getString(</span><span class="s2">&quot;numerosdeParticipantes&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                        <span class="s1">String setor = infoEventoSnapshot.getString(</span><span class="s2">&quot;setorResponsavel&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+                        <span class="s1">Log.d(</span><span class="s2">&quot;FormVisualizacao&quot;</span><span class="s0">, </span><span class="s2">&quot;Observações: &quot; </span><span class="s1">+ observacoes)</span><span class="s0">;</span>
+                        <span class="s1">Log.d(</span><span class="s2">&quot;FormVisualizacao&quot;</span><span class="s0">, </span><span class="s2">&quot;Número de Participantes: &quot; </span><span class="s1">+ participantes)</span><span class="s0">;</span>
+                        <span class="s1">Log.d(</span><span class="s2">&quot;FormVisualizacao&quot;</span><span class="s0">, </span><span class="s2">&quot;Setor Responsável: &quot; </span><span class="s1">+ setor)</span><span class="s0">;</span>
+
+                        <span class="s1">AlertDialog.Builder builder = </span><span class="s0">new </span><span class="s1">AlertDialog.Builder(context)</span><span class="s0">;</span>
+                        <span class="s1">builder.setTitle(evento.getnomedoEvento())</span><span class="s0">;</span>
+                        <span class="s1">builder.setMessage(</span><span class="s2">&quot;Descrição da Atividade: &quot; </span><span class="s1">+ evento.getdescricaodaAtividade() +</span>
+                                <span class="s2">&quot;</span><span class="s0">\n\n</span><span class="s2">Observações: &quot; </span><span class="s1">+ observacoes +</span>
+                                <span class="s2">&quot;</span><span class="s0">\n\n</span><span class="s2">Número de Participantes: &quot; </span><span class="s1">+ participantes +</span>
+                                <span class="s2">&quot;</span><span class="s0">\n\n</span><span class="s2">Setor Responsável: &quot; </span><span class="s1">+ setor)</span><span class="s0">;</span>
+
+                        <span class="s1">builder.setPositiveButton(</span><span class="s2">&quot;Ok&quot;</span><span class="s0">, </span><span class="s1">(dialog</span><span class="s0">, </span><span class="s1">which) -&gt; dialog.dismiss())</span><span class="s0">;</span>
+
+                        <span class="s1">AlertDialog alertDialog = builder.create()</span><span class="s0">;</span>
+                        <span class="s1">alertDialog.show()</span><span class="s0">;</span>
+                    <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                        <span class="s1">Log.d(</span><span class="s2">&quot;FormVisualizacao&quot;</span><span class="s0">, </span><span class="s2">&quot;O documento infoEventos não existe para o evento com ID: &quot; </span><span class="s1">+ eventoId)</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+                <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                    <span class="s1">Log.e(</span><span class="s2">&quot;FormVisualizacao&quot;</span><span class="s0">, </span><span class="s2">&quot;Erro ao obter dados do infoEventos: &quot; </span><span class="s1">+ task.getException())</span><span class="s0">;</span>
+                <span class="s1">}</span>
+            <span class="s1">})</span><span class="s0">;</span>
+        <span class="s1">})</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public int </span><span class="s1">getItemCount() {</span>
+        <span class="s0">return </span><span class="s1">listaEventos.size()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public static class </span><span class="s1">MyViewHolder </span><span class="s0">extends </span><span class="s1">RecyclerView.ViewHolder{</span>
+        <span class="s0">private final </span><span class="s1">TextView nome</span><span class="s0">;</span>
+        <span class="s0">private final </span><span class="s1">TextView desc</span><span class="s0">;</span>
+        <span class="s0">private final </span><span class="s1">TextView data</span><span class="s0">;</span>
+        <span class="s0">private final </span><span class="s1">TextView datafinal</span><span class="s0">;</span>
+        <span class="s0">private final </span><span class="s1">TextView horario</span><span class="s0">;</span>
+        <span class="s0">private final </span><span class="s1">TextView horafinal</span><span class="s0">;</span>
+        <span class="s0">private final </span><span class="s1">TextView local</span><span class="s0">;</span>
+
+         <span class="s0">public </span><span class="s1">MyViewHolder(@NonNull View itemView) {</span>
+            <span class="s0">super</span><span class="s1">(itemView)</span><span class="s0">;</span>
+
+            <span class="s1">nome = itemView.findViewById(R.id.txtnome)</span><span class="s0">;</span>
+            <span class="s1">desc = itemView.findViewById(R.id.txtdescricao)</span><span class="s0">;</span>
+            <span class="s1">data = itemView.findViewById(R.id.txtdata1)</span><span class="s0">;</span>
+            <span class="s1">datafinal = itemView.findViewById(R.id.txtdata2)</span><span class="s0">;</span>
+            <span class="s1">horario = itemView.findViewById(R.id.txthorario1)</span><span class="s0">;</span>
+            <span class="s1">horafinal = itemView.findViewById(R.id.txthorario2)</span><span class="s0">;</span>
+            <span class="s1">local = itemView.findViewById(R.id.txtlocal1)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+</pre>
+</body>
+</html>

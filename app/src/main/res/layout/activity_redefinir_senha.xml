@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_claro"
+    android:gravity="center"
+    tools:context=".RedefinirSenha">
+
+    <ImageView
+        android:id="@+id/imageViewbackRedefinir"
+        android:layout_width="30dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="-30sp"
+        android:layout_marginTop="10sp"
+        android:contentDescription="@string/voltar1"
+        app:layout_constraintStart_toStartOf="@id/txt_esp_eventos_redefinir"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo_voltar"
+        tools:ignore="MissingConstraints,ImageContrastCheck" />
+
+    <TextView
+        android:id="@+id/txt_esp_eventos_redefinir"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="165dp"
+        android:fontFamily="@font/signika_semibold"
+        android:text="@string/redefinirsenha"
+        android:textColor="@color/azul1"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/txt_descricao_redefinir"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="220dp"
+        android:fontFamily="@font/open_sans_light"
+        android:text="@string/textredefinir"
+        android:textColor="@color/colorSecondary"
+        android:textSize="17sp"
+        app:layout_constraintStart_toStartOf="@id/txt_esp_eventos_redefinir"
+        app:layout_constraintEnd_toEndOf="@id/txt_esp_eventos_redefinir"
+        app:layout_constraintTop_toBottomOf="@id/txt_esp_eventos_redefinir"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/linearLayoutRedefinir"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:alpha="1"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/emailTextInputLayoutRedefinir"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/email"
+            android:textColorHint="@color/colorSecondary"
+            style="@style/CustomTextInputLayoutLoginRedefinir">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_email_redefinir"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:background="@drawable/layout_login_edits"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/bt_redefinir"
+            style="@style/Button2"
+            android:layout_marginBottom="10sp"
+            android:fontFamily="@font/signika_light"
+            android:text="@string/redefinir"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/emailTextInputLayoutRedefinir" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

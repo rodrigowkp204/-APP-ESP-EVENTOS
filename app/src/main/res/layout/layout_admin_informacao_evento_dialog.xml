@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="20dp"
+    android:padding="20dp"
+    android:id="@+id/layoutDialogContainer">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/layoutDialog"
+        android:background="@drawable/dialog_background">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="450dp"
+                app:layout_constraintBottom_toTopOf="@+id/buttoneditar"
+                app:layout_constraintTop_toBottomOf="@id/textTitleAlertDialog"
+                app:layout_constraintVertical_bias="0.0"
+                tools:ignore="NotSibling">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="450dp"
+                    android:orientation="vertical"
+                    android:gravity="top">
+
+                    <TextView
+                        android:id="@+id/textMessage"
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/textMessage1"
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="-20dp"
+                        android:layout_marginEnd="20dp"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/textMessage2"
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="-20dp"
+                        android:layout_marginEnd="20dp"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/textMessage3"
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="-20dp"
+                        android:layout_marginBottom="40dp"
+                        android:layout_marginEnd="20dp"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+                </LinearLayout>
+            </ScrollView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textTitleAlertDialog"
+            android:padding="10dp"
+            android:textAlignment="center"
+            android:background="@drawable/sucess_background"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:id="@+id/buttonexcluir"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/button_error_background"
+        app:layout_constraintBottom_toBottomOf="@id/layoutDialog"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/buttoneditar"
+        app:layout_constraintEnd_toStartOf="@id/buttoneditar"
+        app:layout_constraintTop_toBottomOf="@+id/layoutDialog"
+        android:textSize="14sp"
+        android:textColor="@color/white"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:id="@+id/buttoneditar"
+        android:layout_marginStart="90dp"
+        android:layout_marginEnd="90dp"
+        android:background="@drawable/button_aviso_background"
+        app:layout_constraintBottom_toBottomOf="@id/layoutDialog"
+        app:layout_constraintStart_toStartOf="@id/buttonexcluir"
+        app:layout_constraintStart_toEndOf="@id/buttoneditar"
+        app:layout_constraintTop_toBottomOf="@+id/layoutDialog"
+        android:textSize="14sp"
+        android:textColor="@color/white"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:id="@+id/buttonvoltar"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/button_sucess_background"
+        app:layout_constraintBottom_toBottomOf="@id/layoutDialog"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/buttoneditar"
+        app:layout_constraintTop_toBottomOf="@+id/layoutDialog"
+        android:textSize="14sp"
+        android:textColor="@color/white"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

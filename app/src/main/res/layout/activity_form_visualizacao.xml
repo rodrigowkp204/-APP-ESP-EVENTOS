@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_claro"
+        tools:context=".FormVisualizacao">
+
+        <ImageView
+            android:id="@+id/imageViewback1"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="30sp"
+            android:layout_marginStart="30dp"
+            android:contentDescription="@string/voltar1"
+            app:layout_constraintStart_toStartOf="@id/recyclerView1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/logo_voltar"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/textNomeUsuario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="31.5dp"
+            android:fontFamily="@font/signika_light"
+            android:text="@string/eventosinternos"
+            android:textColor="@color/azul1"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewback1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageViewoff"
+            android:layout_width="30dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="20sp"
+            android:layout_marginEnd="30sp"
+            android:contentDescription="@string/deslogar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/logo_logout"
+            tools:ignore="MissingConstraints" />
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/pesquisa"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="-50dp"
+            android:background="@color/white"
+            android:queryHint="Pesquisar..."
+            app:layout_constraintEnd_toEndOf="@id/adicionarfiltro"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textNomeUsuario" />
+
+        <ImageView
+            android:id="@+id/adicionarfiltro"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="30dp"
+            android:contentDescription="@string/adicionar"
+            app:layout_constraintBottom_toBottomOf="@+id/pesquisa"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/pesquisa"
+            app:srcCompat="@drawable/ic_filter"
+            tools:ignore="MissingConstraints" />
+
+        <ImageView
+            android:id="@+id/retirarfiltro"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="30dp"
+            android:contentDescription="@string/adicionar"
+            app:layout_constraintBottom_toBottomOf="@+id/pesquisa"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/pesquisa"
+            app:srcCompat="@drawable/ic_cancel"
+            tools:ignore="MissingConstraints"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/txtTituloServicos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_marginStart="35dp"
+            android:fontFamily="@font/open_sans_light"
+            android:gravity="start"
+            android:text="@string/proximosEventos"
+            android:textColor="@color/azul1"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/pesquisa"
+            app:layout_constraintTop_toBottomOf="@+id/pesquisa" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/txtTituloServicos"
+            android:orientation="horizontal">
+
+        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView1"
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:layout_marginTop="10sp"
+            app:layout_constraintTop_toBottomOf="@id/linearLayout1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/adicionarnovoevento"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="20dp"
+            android:src="@drawable/ic_add"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

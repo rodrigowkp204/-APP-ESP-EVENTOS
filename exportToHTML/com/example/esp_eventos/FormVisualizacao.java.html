@@ -1,0 +1,198 @@
+<html>
+<head>
+<title>FormVisualizacao.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+.s3 { color: #6897bb;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+FormVisualizacao.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.esp_eventos</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.annotation.SuppressLint</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.Intent</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Bundle</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.util.Log</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.Window</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.ImageView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.SearchView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.TextView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Toast</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.recyclerview.widget.LinearLayoutManager</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.recyclerview.widget.RecyclerView</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.google.firebase.auth.FirebaseAuth</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.firestore.DocumentReference</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.firestore.DocumentSnapshot</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.firestore.FirebaseFirestore</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.firestore.QueryDocumentSnapshot</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">java.util.ArrayList</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.List</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">FormVisualizacao </span><span class="s0">extends </span><span class="s1">BaseActivity {</span>
+    <span class="s1">ImageView imageViewoff</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">VisuAdapter visuAdapter</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">List&lt;Eventos&gt; listaEventos</span><span class="s0">;</span>
+    <span class="s1">SearchView searchView</span><span class="s0">;</span>
+    <span class="s1">RecyclerView recyclerView</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">List&lt;String&gt; listIds</span><span class="s0">;</span>
+    <span class="s1">ImageView imageViewback1</span><span class="s0">;</span>
+    <span class="s1">ImageView imageadd</span><span class="s0">;</span>
+    <span class="s1">TextView testecalendario</span><span class="s0">;</span>
+
+    <span class="s1">@SuppressLint({</span><span class="s2">&quot;MissingInflatedId&quot;</span><span class="s0">, </span><span class="s2">&quot;NotifyDataSetChanged&quot;</span><span class="s1">})</span>
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">onCreate(Bundle savedInstanceState) {</span>
+        <span class="s0">super</span><span class="s1">.onCreate(savedInstanceState)</span><span class="s0">;</span>
+        <span class="s1">setContentView(R.layout.activity_form_visualizacao)</span><span class="s0">;</span>
+
+        <span class="s1">Window window = </span><span class="s0">this</span><span class="s1">.getWindow()</span><span class="s0">;</span>
+        <span class="s1">window.setStatusBarColor(</span><span class="s0">this</span><span class="s1">.getResources().getColor(R.color.colorPrimary))</span><span class="s0">;</span>
+
+        <span class="s1">IniciarComponentes()</span><span class="s0">;</span>
+
+        <span class="s1">recyclerView.setHasFixedSize(</span><span class="s0">true</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">recyclerView.setLayoutManager(</span><span class="s0">new </span><span class="s1">LinearLayoutManager(</span><span class="s0">this</span><span class="s1">))</span><span class="s0">;</span>
+
+        <span class="s1">listaEventos = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;()</span><span class="s0">;</span>
+        <span class="s1">listIds = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;()</span><span class="s0">;</span>
+
+        <span class="s1">visuAdapter = </span><span class="s0">new </span><span class="s1">VisuAdapter(listaEventos</span><span class="s0">, </span><span class="s1">listIds)</span><span class="s0">;</span>
+        <span class="s1">recyclerView.setAdapter(visuAdapter)</span><span class="s0">;</span>
+
+        <span class="s1">FirebaseFirestore db = FirebaseFirestore.getInstance()</span><span class="s0">;</span>
+        <span class="s1">db.collection(</span><span class="s2">&quot;eventos&quot;</span><span class="s1">).get().addOnCompleteListener(task -&gt; {</span>
+            <span class="s0">if </span><span class="s1">(task.isSuccessful()) {</span>
+                <span class="s0">for </span><span class="s1">(QueryDocumentSnapshot document : task.getResult()) {</span>
+                    <span class="s1">Eventos event = document.toObject(Eventos.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">String eventoId = document.getString(</span><span class="s2">&quot;eventosId&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+                    <span class="s0">assert </span><span class="s1">eventoId != </span><span class="s0">null;</span>
+                    <span class="s1">DocumentReference infoEventoRef = FirebaseFirestore.getInstance().collection(</span><span class="s2">&quot;infoEventos&quot;</span><span class="s1">).document(eventoId)</span><span class="s0">;</span>
+                    <span class="s1">infoEventoRef.get().addOnCompleteListener(task1 -&gt; {</span>
+                        <span class="s0">if</span><span class="s1">(task1.isSuccessful()) {</span>
+                            <span class="s1">DocumentSnapshot infoEventoSnapshot = task1.getResult()</span><span class="s0">;</span>
+                            <span class="s0">if</span><span class="s1">(infoEventoSnapshot.exists()) {</span>
+                                <span class="s1">String observacoes = infoEventoSnapshot.getString(</span><span class="s2">&quot;observacoes&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                                <span class="s1">String participantes = infoEventoSnapshot.getString(</span><span class="s2">&quot;numerosdeParticipantes&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                                <span class="s1">String setor = infoEventoSnapshot.getString(</span><span class="s2">&quot;setorResponsavel&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+                                <span class="s1">event.setObservacoes(observacoes)</span><span class="s0">;</span>
+                                <span class="s1">event.setNumerosdeParticipantes(participantes)</span><span class="s0">;</span>
+                                <span class="s1">event.setSetorResponsavel(setor)</span><span class="s0">;</span>
+                            <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                                <span class="s1">Log.d(</span><span class="s2">&quot;FormVisualizacao&quot;</span><span class="s0">, </span><span class="s2">&quot;O documento infoEventos não existe para o evento com ID: &quot; </span><span class="s1">+ eventoId)</span><span class="s0">;</span>
+                            <span class="s1">}</span>
+                        <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                            <span class="s1">Log.e(</span><span class="s2">&quot;FormVisualizacao&quot;</span><span class="s0">, </span><span class="s2">&quot;Erro ao obter dados do infoEventos: &quot; </span><span class="s1">+ task1.getException())</span><span class="s0">;</span>
+                        <span class="s1">}</span>
+                    <span class="s1">})</span><span class="s0">;</span>
+                    <span class="s1">listaEventos.add(event)</span><span class="s0">;</span>
+                    <span class="s1">listIds.add(eventoId)</span><span class="s0">;</span>
+                <span class="s1">}</span>
+                <span class="s1">visuAdapter.setListaEventos(listaEventos)</span><span class="s0">;</span>
+                <span class="s1">visuAdapter.setListIds(listIds)</span><span class="s0">;</span>
+                <span class="s1">visuAdapter.notifyDataSetChanged()</span><span class="s0">;</span>
+            <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                <span class="s1">Toast.makeText(FormVisualizacao.</span><span class="s0">this, </span><span class="s2">&quot;Nenhum Evento cadastrado&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                <span class="s1">Log.e(</span><span class="s2">&quot;FormVisualizacao&quot;</span><span class="s0">, </span><span class="s2">&quot;Erro ao ler dados do Firestore: &quot; </span><span class="s1">+ task.getException())</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+        <span class="s1">imageViewback1.setOnClickListener(v -&gt; {</span>
+
+            <span class="s1">Intent intentVoltarparaPaginaPrincipal = </span><span class="s0">new </span><span class="s1">Intent(FormVisualizacao.</span><span class="s0">this, </span><span class="s1">PaginaPrincipal.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">startActivity(intentVoltarparaPaginaPrincipal)</span><span class="s0">;</span>
+            <span class="s1">finish()</span><span class="s0">;</span>
+        <span class="s1">})</span><span class="s0">;</span>
+        <span class="s1">imageViewoff.setOnClickListener(v -&gt; {</span>
+
+            <span class="s1">FirebaseAuth.getInstance().signOut()</span><span class="s0">;</span>
+            <span class="s1">Intent intentDeslogarFormVisualizacao = </span><span class="s0">new </span><span class="s1">Intent(FormVisualizacao.</span><span class="s0">this, </span><span class="s1">Activity_Splash_Form_Login.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">startActivity(intentDeslogarFormVisualizacao)</span><span class="s0">;</span>
+            <span class="s1">finish()</span><span class="s0">;</span>
+        <span class="s1">})</span><span class="s0">;</span>
+        <span class="s1">imageadd.setOnClickListener(v -&gt; {</span>
+
+            <span class="s1">Intent intentAdicionarEvento = </span><span class="s0">new </span><span class="s1">Intent(FormVisualizacao.</span><span class="s0">this, </span><span class="s1">FormCadastroEvento.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">startActivity(intentAdicionarEvento)</span><span class="s0">;</span>
+            <span class="s1">finish()</span><span class="s0">;</span>
+        <span class="s1">})</span><span class="s0">;</span>
+        <span class="s1">searchView.clearFocus()</span><span class="s0">;</span>
+        <span class="s1">searchView.setOnQueryTextListener(</span><span class="s0">new </span><span class="s1">SearchView.OnQueryTextListener() {</span>
+         <span class="s1">@Override</span>
+         <span class="s0">public boolean </span><span class="s1">onQueryTextSubmit(String query) {</span>
+             <span class="s0">return false;</span>
+         <span class="s1">}</span>
+          <span class="s1">@Override</span>
+         <span class="s0">public boolean </span><span class="s1">onQueryTextChange(String newText) {</span>
+              <span class="s1">Log.d(</span><span class="s2">&quot;FormVisualizacao&quot;</span><span class="s0">, </span><span class="s2">&quot;Texto de pesquisa atualizado: &quot; </span><span class="s1">+ newText)</span><span class="s0">;</span>
+              <span class="s1">fileList(newText)</span><span class="s0">;</span>
+              <span class="s0">return true;</span>
+         <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+    <span class="s1">}</span>
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onBackPressed(){</span>
+        <span class="s1">Toast.makeText(</span><span class="s0">this, </span><span class="s2">&quot;Utilize o botão de voltar no topo da tela&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+    <span class="s1">@SuppressLint(</span><span class="s2">&quot;NotifyDataSetChanged&quot;</span><span class="s1">)</span>
+    <span class="s0">private void </span><span class="s1">fileList(String text) {</span>
+
+            <span class="s1">String lowercaseText = text.toLowerCase()</span><span class="s0">;</span>
+
+            <span class="s0">if</span><span class="s1">(lowercaseText.isEmpty()){</span>
+                <span class="s1">visuAdapter.setFilteredList(listaEventos</span><span class="s0">,</span><span class="s1">listIds)</span><span class="s0">;</span>
+            <span class="s1">}</span><span class="s0">else</span><span class="s1">{</span>
+                 <span class="s1">List&lt;Eventos&gt; filteredList = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;()</span><span class="s0">;</span>
+                 <span class="s1">List&lt;String&gt; filteredListIds = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;()</span><span class="s0">;</span>
+
+                <span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">i = </span><span class="s3">0</span><span class="s0">; </span><span class="s1">i &lt; listaEventos.size()</span><span class="s0">; </span><span class="s1">i++) {</span>
+                    <span class="s1">Eventos evento = listaEventos.get(i)</span><span class="s0">;</span>
+                    <span class="s1">String eventoId = listIds.get(i)</span><span class="s0">;</span>
+
+                    <span class="s0">if </span><span class="s1">(evento.getnomedoEvento().toLowerCase().contains(lowercaseText)</span>
+                        <span class="s1">|| evento.getdatadoEvento().toLowerCase().contains(lowercaseText)</span>
+                        <span class="s1">|| evento.getDatadoEventoFinal().toLowerCase().contains(lowercaseText)</span>
+                        <span class="s1">|| evento.getHoradoEventoInicial().toLowerCase().contains(lowercaseText)</span>
+                        <span class="s1">|| evento.getHoraEventoFinal().toLowerCase().contains(lowercaseText)</span>
+                        <span class="s1">|| evento.getlocaldoEvento().toLowerCase().contains(lowercaseText)) {</span>
+                        <span class="s1">filteredList.add(evento)</span><span class="s0">;</span>
+                        <span class="s1">filteredListIds.add(eventoId)</span><span class="s0">;</span>
+                        <span class="s1">Log.d(</span><span class="s2">&quot;FormVisualizacao&quot;</span><span class="s0">, </span><span class="s2">&quot;Evento adicionado à lista filtrada: &quot; </span><span class="s1">+ evento.getnomedoEvento())</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+                <span class="s1">}</span>
+                <span class="s1">Log.d(</span><span class="s2">&quot;FormVisualizacao&quot;</span><span class="s0">, </span><span class="s2">&quot;Texto de pesquisa: &quot; </span><span class="s1">+ text)</span><span class="s0">;</span>
+                <span class="s1">Log.d(</span><span class="s2">&quot;FormVisualizacao&quot;</span><span class="s0">, </span><span class="s2">&quot;Tamanho da lista de eventos completa: &quot; </span><span class="s1">+ listaEventos.size())</span><span class="s0">;</span>
+                <span class="s1">Log.d(</span><span class="s2">&quot;FormVisualizacao&quot;</span><span class="s0">, </span><span class="s2">&quot;Tamanho da lista filtrada: &quot; </span><span class="s1">+ filteredList.size())</span><span class="s0">;</span>
+                <span class="s0">if </span><span class="s1">(filteredList.isEmpty()) {</span>
+                    <span class="s1">Toast.makeText(</span><span class="s0">this, </span><span class="s2">&quot;Sem resultado&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                <span class="s1">}</span>
+                <span class="s1">visuAdapter.setFilteredList(filteredList</span><span class="s0">, </span><span class="s1">filteredListIds)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+    <span class="s1">}</span>
+    <span class="s0">private void </span><span class="s1">IniciarComponentes(){</span>
+        <span class="s1">searchView = findViewById(R.id.pesquisa)</span><span class="s0">;</span>
+        <span class="s1">testecalendario = findViewById(R.id.txtTituloServicos)</span><span class="s0">;</span>
+        <span class="s1">imageadd = findViewById(R.id.adicionarevento)</span><span class="s0">;</span>
+        <span class="s1">imageViewback1 = findViewById(R.id.imageViewback1)</span><span class="s0">;</span>
+        <span class="s1">imageViewoff = findViewById(R.id.imageViewoff)</span><span class="s0">;</span>
+        <span class="s1">recyclerView = findViewById(R.id.recyclerView1)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+    <span class="s1">@SuppressLint(</span><span class="s2">&quot;LongLogTag&quot;</span><span class="s1">)</span>
+    <span class="s0">protected void </span><span class="s1">onDestroy(){</span>
+        <span class="s0">super</span><span class="s1">.onDestroy()</span><span class="s0">;</span>
+        <span class="s1">Log.d(</span><span class="s2">&quot;Formulario de Visualização Eventos&quot;</span><span class="s0">, </span><span class="s2">&quot;Activity finalizada&quot;</span><span class="s1">)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span></pre>
+</body>
+</html>
