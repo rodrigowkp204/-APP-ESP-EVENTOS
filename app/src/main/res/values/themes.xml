@@ -12,7 +12,9 @@
         <!-- COR DOS TEXTOS POR DEFAULT -->
         <item name="colorSecondary">@color/colorSecondary</item>
         <item name="colorOnSecondary">@color/white</item>
+        <item name="colorSecondaryVariant">@color/black</item>
 
+        <item name="android:calendarTextColor">@color/black</item>
     </style>
 
     <style name="Theme.LOGIN.NoActionBar">

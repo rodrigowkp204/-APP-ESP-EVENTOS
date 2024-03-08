@@ -112,8 +112,6 @@ public class FormCadastro extends AppCompatActivity {
             finish();
         });
 
-
-
             mAuth = FirebaseAuth.getInstance();
             mFirestore = FirebaseFirestore.getInstance();
 
@@ -198,7 +196,6 @@ public class FormCadastro extends AppCompatActivity {
 
         }).addOnFailureListener(e -> Log.d("db_error", "Erro ao salvar os dados" + e));
     }
-
     private void IniciarComponentes(){
 
         //Recuperar os componentes do arquivo XML

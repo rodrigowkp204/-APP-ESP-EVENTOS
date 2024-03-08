@@ -2,27 +2,89 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="170dp"
     android:padding="16dp">
 
     <TextView
         android:id="@+id/textView_event_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/azul1"
         android:textStyle="bold"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:textSize="18sp" />
 
     <TextView
         android:id="@+id/textView_event_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp" />
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textColor="@color/gray"
+        android:layout_marginTop="3dp" />
+
+    <TextView
+        android:id="@+id/txtLocal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="@string/local2"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView_event_local"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-30dp"
+        android:layout_marginStart="50dp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textColor="@color/gray" />
+
+    <TextView
+        android:id="@+id/txtdata"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="@string/data2"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/textView_event_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="-30dp"
+        android:layout_marginEnd="200dp"
+        android:layout_marginStart="90dp"
+        android:textColor="@color/gray"
+        android:textStyle="italic" />
+
+    <TextView
+        android:id="@+id/txtdataFinal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="200dp"
+        android:text="@string/data3"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView_event_final_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-30dp"
+        android:layout_marginStart="280dp"
+        android:textColor="@color/gray"
         android:textStyle="italic" />
 
 </LinearLayout>

@@ -9,7 +9,6 @@
     android:background="@drawable/bg_claro"
     tools:context=".FormCadastro">
 
-
     <ImageView
         android:id="@+id/imageViewbackFormCadastro"
         android:layout_width="30dp"

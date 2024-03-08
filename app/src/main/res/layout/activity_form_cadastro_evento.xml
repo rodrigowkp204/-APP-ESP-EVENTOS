@@ -658,12 +658,44 @@
             app:layout_constraintStart_toStartOf="@+id/checkBoxtransmissao"
             app:layout_constraintTop_toBottomOf="@id/title_solicitacao_material_grafico" />
 
+        <TextView
+            android:id="@+id/title_cobertura_fotografica"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/signika_semibold"
+            android:text="@string/coberturafotografica"
+            android:textColor="@color/azul1"
+            app:layout_constraintStart_toStartOf="@+id/quaisTextInputLayoutFormCadastroEvento"
+            app:layout_constraintTop_toBottomOf="@id/link_solicitacao_material_grafico" />
+
+        <CheckBox
+            android:id="@+id/checkBoxSimCoberturaFotografica"
+            android:layout_width="71dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/sim"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="@+id/title_transmissao_gravacao"
+            app:layout_constraintTop_toBottomOf="@id/title_cobertura_fotografica" />
+
+        <CheckBox
+            android:id="@+id/checkBoxNãoCoberturaFotografica"
+            android:layout_width="71dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="80dp"
+            android:text="@string/nao"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="@+id/title_equipamentos"
+            app:layout_constraintTop_toBottomOf="@id/title_cobertura_fotografica" />
+
 
         <androidx.core.widget.NestedScrollView
                 android:id="@+id/scrol2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_constraintTop_toBottomOf="@id/link_solicitacao_material_grafico">
+                app:layout_constraintTop_toBottomOf="@id/checkBoxSimCoberturaFotografica">
                         <!-- Campo de texto de Descrição de Atividades -->
                         <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edit_desc_atv"

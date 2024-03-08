@@ -31,6 +31,7 @@
     <string name="modalidade">Qual a modalidade da atividade ? *</string>
     <string name="link">Será necessário gerar link ? *</string>
     <string name="materialgrafico">Produção de material gráfico/ publicitário ? *</string>
+    <string name="coberturafotografica">Cobertura Fotográfica ?</string>
     <string name="formsLink">Preencha o formulário no link abaixo: *</string>
     <string name="linkformsgraf">
         <a href="https://forms.gle/Yn9HvZhRNmnYkQBr9">Solicitação de materiais gráficos/ publicitários</a>
@@ -101,5 +102,7 @@
     <string name="relatorioeventosinternos">Baixar relatório dos eventos internos</string>
     <string name="relatorioeventosexternos">Baixar relatório dos eventos externos</string>
     <string name="cadastraradmin">Cadastrar administrador</string>
+    <string name="forward"><![CDATA[->]]></string>
+    <string name="back"><![CDATA[<-]]></string>
 
 </resources>

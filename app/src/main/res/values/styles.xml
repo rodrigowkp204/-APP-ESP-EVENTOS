@@ -9,6 +9,7 @@
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="android:windowTranslucentStatus">true</item>
+        <item name="colorAccent">@color/black</item>
     </style>
 
     <style name="ContainerComponents">
@@ -175,11 +176,21 @@
         <item name="color">@color/white</item>
     </style>
 
+    <style name="CalendarDateTextAppearance" parent="@android:style/TextAppearance.Small">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:calendarTextColor">@color/black</item>
+    </style>
+
+
     <style name="AlertDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
     </style>
 
-
+    <!-- res/values/styles.xml -->
+    <style name="CustomCalendarView" parent="Widget.Material3.MaterialCalendar">
+        <!-- Substitua 'android:textColor' com o atributo correto para o nome do mês e setas. -->
+        <item name="android:title">@color/black</item>
+    </style>
 
 
 </resources>

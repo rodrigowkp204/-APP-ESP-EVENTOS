@@ -31,6 +31,12 @@ public class PhotoDetailsActivity extends BaseActivity {
             startActivity(intent3);
             finish();
         }
+        else if (photoId == 3) {
+            Intent intent4 = new Intent(PhotoDetailsActivity.this, CustomCalendar.class);
+            Objects.requireNonNull(intent4).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent4);
+            finish();
+        }
         // Faça o que for necessário para exibir os detalhes da foto
         // Você pode usar o photoId para carregar os detalhes da foto do banco de dados ou de outras fontes de dados
     }

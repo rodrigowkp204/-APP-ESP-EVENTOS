@@ -27,6 +27,8 @@ public class Eventos {
     private String temtransmissao;
     private String temTransmissaoTipo;
     private String materiaisgraficos;
+    private String coberturafotografica;
+    private String userId;
 
     public Eventos(String eventosId,String datadoEvento, String datadoEventoFinal ,
                    String descricaodaAtividade, String horadoEventoInicial, String horaEventoFinal,
@@ -35,7 +37,7 @@ public class Eventos {
                    String equipamentos,String presencial, String online,String hibrido,String linkTransmissao,
                    String quaisequipamentos,String temAmbosTipo,
                    String temGravacaoTipo,String temtransmissao,String temTransmissaoTipo,
-                   String materiaisgraficos){
+                   String materiaisgraficos, String coberturafotografica, String userId){
         this.eventosId = eventosId;
         this.datadoEvento = datadoEvento;
         this.datadoEventoFinal = datadoEventoFinal;
@@ -58,7 +60,10 @@ public class Eventos {
         this.temtransmissao = temtransmissao;
         this.temTransmissaoTipo = temTransmissaoTipo;
         this.materiaisgraficos = materiaisgraficos;
+        this.coberturafotografica = coberturafotografica;
+        this.userId = userId;
     }
+
     public Eventos (){
     }
     public Timestamp getDataAdicao() {
@@ -211,5 +216,20 @@ public class Eventos {
     }
     public void setMateriaisgraficos(String materiaisgraficos){
         this.materiaisgraficos = materiaisgraficos;
+    }
+
+    public String getCoberturafotografica() {
+        return coberturafotografica;
+    }
+    public void setCoberturafotografica(String coberturafotografica) {
+        this.coberturafotografica = coberturafotografica;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

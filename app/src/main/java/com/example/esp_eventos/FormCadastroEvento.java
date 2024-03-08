@@ -59,7 +59,8 @@ public class FormCadastroEvento extends BaseActivity {
     CheckBox checkBoxSimEvento, checkBoxNaoEvento,
             checkBoxSimEventoTransmissao, checkBoxNaoEventoTransmissao, checkBoxtransmissao, checkBoxgravacao,
             checkBoxAmbos, checkBoxPresencial, checkBoxHibrido, checkBoxonline,
-            checkBoxSimEventoLink, checkBoxNaoEventoLink, checkBoxSimMaterialGrafico, checkBoxNaoMaterialGrafico;
+            checkBoxSimEventoLink, checkBoxNaoEventoLink, checkBoxSimMaterialGrafico, checkBoxNaoMaterialGrafico,
+            checkBoxSimCoberturaFotografica, checkBoxNãoCoberturaFotografica;
     TextInputEditText edit_quais_equip;
     TextView title_link, title_solicitacao_material_grafico, link_solicitacao_material_grafico;
     String eventoId = UUID.randomUUID().toString();
@@ -163,6 +164,8 @@ public class FormCadastroEvento extends BaseActivity {
         bt_cadastrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                bt_cadastrar.setEnabled(false);
                 String data = editTextData2.getText().toString();
                 String datafinal = editTextDataFinal2.getText().toString();
                 String hora = editTextHoraInicial.getText().toString();
@@ -183,7 +186,7 @@ public class FormCadastroEvento extends BaseActivity {
                 boolean online = checkBoxonline.isChecked();
                 boolean linktransmissao = checkBoxSimEventoLink.isChecked();
                 boolean precisaMaterialGrafico = checkBoxSimMaterialGrafico.isChecked();
-
+                boolean coberturaFotografica = checkBoxSimCoberturaFotografica.isChecked();
 
                 CollectionReference evento = db.collection("eventos");
 
@@ -198,7 +201,10 @@ public class FormCadastroEvento extends BaseActivity {
                         boolean isEmptyField = data.isEmpty() || datafinal.isEmpty() || hora.isEmpty() || horafinal.isEmpty()
                                 || nome.isEmpty() || setor.isEmpty() || participantes.isEmpty()
                                 || local.isEmpty() || descricao.isEmpty() || !checkBoxSimEvento.isChecked() && !checkBoxNaoEvento.isChecked()
-                                || !checkBoxSimMaterialGrafico.isChecked() && !checkBoxNaoMaterialGrafico.isChecked();
+                                || !checkBoxSimMaterialGrafico.isChecked() && !checkBoxNaoMaterialGrafico.isChecked()
+                                || !checkBoxSimCoberturaFotografica.isChecked() && !checkBoxNãoCoberturaFotografica.isChecked()
+                                || !checkBoxSimEventoTransmissao.isChecked() && !checkBoxNaoEventoTransmissao.isChecked()
+                                || !checkBoxPresencial.isChecked() && !checkBoxHibrido.isChecked() && !checkBoxonline.isChecked();
 
                         QuerySnapshot querySnapshot = task.getResult();
 
@@ -206,7 +212,7 @@ public class FormCadastroEvento extends BaseActivity {
                             // Já existe um evento com as mesmas informações
                             // Realize as ações apropriadas, como exibir uma mensagem de erro ou retornar do método
                             showErrorAlertDilog(mensagens[0],"Já existe um evento com as mesmas informações");
-
+                            bt_cadastrar.setEnabled(true);
                         } else {
                             // Não existe um evento com as mesmas informações, verifique a segunda restrição
                             Query secondQuery = evento.whereEqualTo("localdoEvento", local);
@@ -234,16 +240,22 @@ public class FormCadastroEvento extends BaseActivity {
                                             // Já existe um evento com intervalo de tempo que contém o evento a ser cadastrado
                                             // Realize as ações apropriadas, como exibir uma mensagem de erro ou retornar do método
                                             showErrorAlertDilog(mensagens[0],"Já existe um agendamento para essa data e local ou conflito de data e hora");
+                                            bt_cadastrar.setEnabled(true);
                                         } else if (isEmptyField){
                                             showErrorAlertDilog(mensagens[0],"Preencha todos os campos");
+                                            bt_cadastrar.setEnabled(true);
                                         }else if (checkboxequip && equipamentosquais.isEmpty()){
                                             showErrorAlertDilog(mensagens[0],"Preencha o campo dos equipamentos necessários");
+                                            bt_cadastrar.setEnabled(true);
                                         } else if(precisaTransmissao && !transmissao && !gravacao && !ambas){
                                             showErrorAlertDilog(mensagens[0],"Preencha o campo dos tipos de transmissão");
+                                            bt_cadastrar.setEnabled(true);
                                         } else if(hibrido && !linktransmissao ){
                                             showErrorAlertDilog(mensagens[0],"Preencha o campo do link do evento");
+                                            bt_cadastrar.setEnabled(true);
                                         } else if(online && !linktransmissao ){
                                             showErrorAlertDilog(mensagens[0],"Preencha o campo do link do evento");
+                                            bt_cadastrar.setEnabled(true);
                                         }
                                         else {
                                             int capacidadeMaxima = 0; // Capacidade máxima inicializada com 0
@@ -280,12 +292,11 @@ public class FormCadastroEvento extends BaseActivity {
                                                 case "Sala de Reunião":
                                                     capacidadeMaxima = 6;
                                                     break;
-
                                             }
                                             if (Integer.parseInt(participantes) > capacidadeMaxima){
                                                 // Verificar se o número de participantes excede a capacidade máxima
                                                 showErrorAlertDilog(mensagens[0], "A capacidade máxima para este local é de " + capacidadeMaxima + " participantes");
-
+                                                bt_cadastrar.setEnabled(true);
                                             } else {
                                                 // Não existem eventos com intervalo de tempo que contém o evento a ser cadastrado
                                                 // Proceda com o cadastro do novo evento
@@ -318,14 +329,19 @@ public class FormCadastroEvento extends BaseActivity {
                                     } else {
                                         if(isEmptyField){
                                             showErrorAlertDilog(mensagens[0],"Preencha todos os campos");
+                                            bt_cadastrar.setEnabled(true);
                                         }else if (checkboxequip && equipamentosquais.isEmpty()){
                                             showErrorAlertDilog(mensagens[0],"Preencha o campo dos equipamentos necessários");
+                                            bt_cadastrar.setEnabled(true);
                                         } else if(precisaTransmissao && !transmissao && !gravacao && !ambas){
                                             showErrorAlertDilog(mensagens[0],"Preencha o campo dos tipos de transmissão");
+                                            bt_cadastrar.setEnabled(true);
                                         } else if(hibrido && !linktransmissao ){
                                             showErrorAlertDilog(mensagens[0],"Preencha o campo do link do evento");
+                                            bt_cadastrar.setEnabled(true);
                                         } else if(online && !linktransmissao ){
                                             showErrorAlertDilog(mensagens[0],"Preencha o campo do link do evento");
+                                            bt_cadastrar.setEnabled(true);
                                         } else {
                                             int capacidadeMaxima = 0; // Capacidade máxima inicializada com 0
                                             switch (local) {
@@ -365,6 +381,7 @@ public class FormCadastroEvento extends BaseActivity {
                                             if(Integer.parseInt(participantes) > capacidadeMaxima){
                                                 // Verificar se o número de participantes excede a capacidade máxima
                                                 showErrorAlertDilog(mensagens[0], "A capacidade máxima para este local é de " + capacidadeMaxima + " participantes");
+                                                bt_cadastrar.setEnabled(true);
                                             } else {
                                                 // Não existem eventos com o mesmo local
                                                 // Proceda com o cadastro do novo evento
@@ -389,12 +406,14 @@ public class FormCadastroEvento extends BaseActivity {
                                 } else {
                                     // Lida com possíveis erros na consulta do Firestore
                                     showErrorAlertDilog(mensagens[0],"Erro ao verificar agendamento");
+                                    bt_cadastrar.setEnabled(true);
                                 }
                             });
                         }
                     } else{
                         // Lida com possíveis erros na consulta do Firestore
                         showErrorAlertDilog(mensagens[0],"Erro ao verificar agendamento");
+                        bt_cadastrar.setEnabled(true);
                     }
                 });
             }
@@ -607,6 +626,22 @@ public class FormCadastroEvento extends BaseActivity {
                 }
             }
         });
+        checkBoxSimCoberturaFotografica.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    checkBoxNãoCoberturaFotografica.setChecked(false);
+                }
+            }
+        });
+        checkBoxNãoCoberturaFotografica.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    checkBoxSimCoberturaFotografica.setChecked(false);
+                }
+            }
+        });
 
         Intent intentEdicao = getIntent();
         if(intentEdicao.hasExtra("eventosId")){
@@ -644,8 +679,8 @@ public class FormCadastroEvento extends BaseActivity {
                 if (querySnapshot != null && !querySnapshot.isEmpty()) {
                     // Recupera o primeiro documento da consulta (deve haver apenas um)
                     DocumentSnapshot documentSnapshot = querySnapshot.getDocuments().get(0);
-                    String eventoId = documentSnapshot.getString("eventosId");
 
+                    String eventoId = documentSnapshot.getString("eventosId");
                     String nome = documentSnapshot.getString("nomedoEvento");
                     String descricao = documentSnapshot.getString("descricaodaAtividade");
                     String datainicial = documentSnapshot.getString("datadoEvento");
@@ -674,7 +709,7 @@ public class FormCadastroEvento extends BaseActivity {
                                 String online = infoEventoSnapshot.getString("online");
                                 String link = infoEventoSnapshot.getString("linkTransmissao");
                                 String materiaisgraficos = infoEventoSnapshot.getString("materiaisgraficos");
-
+                                String coberturafotografica = infoEventoSnapshot.getString("coberturafotografica");
 
                                 // Preencha os campos do formulário com os dados do evento e informações adicionais
                                 edit_nome_evento.setText(nome);
@@ -700,6 +735,8 @@ public class FormCadastroEvento extends BaseActivity {
                                 checkBoxonline.setChecked("Sim".equals(online));
                                 checkBoxSimMaterialGrafico.setChecked("Sim".equals(materiaisgraficos));
                                 checkBoxNaoMaterialGrafico.setChecked("Não".equals(materiaisgraficos));
+                                checkBoxSimCoberturaFotografica.setChecked("Sim".equals(coberturafotografica));
+                                checkBoxNãoCoberturaFotografica.setChecked("Não".equals(coberturafotografica));
                                 edit_desc_atv.setText(descricao);
                                 edit_obs.setText(observacoes);
                                 adapterlocais = new ArrayAdapter<>(this, R.layout.lista_item_local, locais);
@@ -726,7 +763,8 @@ public class FormCadastroEvento extends BaseActivity {
     }
     private void atualizarEvento(String eventId) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-
+        // Obtém o ID do usuário atualmente autenticado
+        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         String novoNome = edit_nome_evento.getText().toString();
         String novoSetor = edit_setor_resp.getText().toString();
         String novoParticipante = edit_numeros_participantes.getText().toString();
@@ -748,6 +786,7 @@ public class FormCadastroEvento extends BaseActivity {
         boolean novoOnline = checkBoxonline.isChecked();
         boolean novoLinktransmissao = checkBoxSimEventoLink.isChecked();
         boolean novoPrecisaMaterialGrafico = checkBoxSimMaterialGrafico.isChecked();
+        boolean novoCoberturaFotografica = checkBoxSimCoberturaFotografica.isChecked();
 
         CollectionReference evento = db.collection("eventos");
 
@@ -763,7 +802,8 @@ public class FormCadastroEvento extends BaseActivity {
                 boolean isEmptyField = novaDataInicial.isEmpty() || novaDataFinal.isEmpty() || novaHoraInicial.isEmpty() || novaHoraFinal.isEmpty()
                         || novoNome.isEmpty() || novoSetor.isEmpty() || novoParticipante.isEmpty()
                         || novoLocal.isEmpty() || novaDescricao.isEmpty() || !checkBoxSimEvento.isChecked() && !checkBoxNaoEvento.isChecked()
-                        || !checkBoxSimMaterialGrafico.isChecked() && !checkBoxNaoMaterialGrafico.isChecked();
+                        || !checkBoxSimMaterialGrafico.isChecked() && !checkBoxNaoMaterialGrafico.isChecked()
+                        || !checkBoxSimCoberturaFotografica.isChecked() && !checkBoxNãoCoberturaFotografica.isChecked();
 
                 QuerySnapshot querySnapshot = task.getResult();
 
@@ -886,6 +926,9 @@ public class FormCadastroEvento extends BaseActivity {
                                                         updates.put("quaisequipamentos", novoQuaisequipamentos);
                                                         updates.put("temtransmissao", novoprecisaTransmissao ? "Sim" : "Não");
                                                         updates.put("materiaisgraficos", novoPrecisaMaterialGrafico ? "Sim" : "Não");
+                                                        updates.put("coberturafotografica", novoCoberturaFotografica ? "Sim" : "Não");
+                                                        updates.put("userID", userID);
+
                                                         if(novoprecisaTransmissao && novoTransmissao){
                                                             updates.put("temTransmissaoTipo", novoTransmissao ? "Sim" : "Não");
                                                             updates.put("temGravacaoTipo", novoGravacao ? "Sim" : "Não");
@@ -1030,6 +1073,7 @@ public class FormCadastroEvento extends BaseActivity {
                                                         updates.put("quaisequipamentos", novoQuaisequipamentos);
                                                         updates.put("temtransmissao", novoprecisaTransmissao ? "Sim" : "Não");
                                                         updates.put("materiaisgraficos", novoPrecisaMaterialGrafico ? "Sim" : "Não");
+                                                        updates.put("coberturafotografica", novoCoberturaFotografica ? "Sim" : "Não");
                                                         if(novoprecisaTransmissao && novoTransmissao){
                                                             updates.put("temTransmissaoTipo", novoTransmissao ? "Sim" : "Não");
                                                             updates.put("temGravacaoTipo", novoGravacao ? "Sim" : "Não");
@@ -1134,6 +1178,8 @@ public class FormCadastroEvento extends BaseActivity {
         String participantes = edit_numeros_participantes.getText().toString();
         String observacoes = edit_obs.getText().toString();
         String documentoId = eventoId;
+        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
 
         boolean precisaEquipamento = checkBoxSimEvento.isChecked();
         boolean precisaTransmissao = checkBoxSimEventoTransmissao.isChecked();
@@ -1145,9 +1191,11 @@ public class FormCadastroEvento extends BaseActivity {
         boolean online = checkBoxonline.isChecked();
         boolean linktransmissao = checkBoxSimEventoLink.isChecked();
         boolean precisaMaterialGrafico = checkBoxSimMaterialGrafico.isChecked();
+        boolean precisaCoberturaFotografica = checkBoxSimCoberturaFotografica.isChecked();
 
         String equipamentos = precisaEquipamento ? edit_quais_equip.getText().toString() : "Não";
         String materialgrafico = precisaMaterialGrafico ? "Sim" : "Não";
+        String coberturafotografica = precisaCoberturaFotografica ? "Sim" : "Não";
         //String precisaTransmissao1 = precisaTransmissao ? "Sim" : "Não";
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -1162,6 +1210,8 @@ public class FormCadastroEvento extends BaseActivity {
         eventos2.put("quaisequipamentos", equipamentos);
         eventos2.put("temtransmissao", precisaTransmissao ? "Sim" : "Não");
         eventos2.put("materiaisgraficos", materialgrafico);
+        eventos2.put("coberturafotografica", coberturafotografica);
+        eventos2.put("userID", userID);
         if(precisaTransmissao && transmissao || gravacao || ambas){
             eventos2.put("temTransmissaoTipo", transmissao ? "Sim" : "Não");
             eventos2.put("temGravacaoTipo", gravacao ? "Sim" : "Não");
@@ -1378,6 +1428,8 @@ public class FormCadastroEvento extends BaseActivity {
         checkBoxNaoEventoLink = findViewById(R.id.checkBoxNãoEventoLink);
         checkBoxSimMaterialGrafico = findViewById(R.id.checkBoxSimMaterialGrafico);
         checkBoxNaoMaterialGrafico = findViewById(R.id.checkBoxNãoMaterialGrafico);
+        checkBoxSimCoberturaFotografica = findViewById(R.id.checkBoxSimCoberturaFotografica);
+        checkBoxNãoCoberturaFotografica = findViewById(R.id.checkBoxNãoCoberturaFotografica);
         edit_quais_equip = findViewById(R.id.edit_quais_equip);
         title_link = findViewById(R.id.title_link);
         title_solicitacao_material_grafico = findViewById(R.id.title_solicitacao_material_grafico);

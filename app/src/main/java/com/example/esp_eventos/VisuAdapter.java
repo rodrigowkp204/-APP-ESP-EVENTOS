@@ -62,7 +62,6 @@ public class VisuAdapter extends RecyclerView.Adapter<VisuAdapter.MyViewHolder> 
         }
     }
     @SuppressLint("NotifyDataSetChanged")
-
     public void ordenarPorDataMaisRecente() {
         listaEventos.sort((evento1, evento2) -> {
             Timestamp dataAdicao1 = evento1.getDataAdicao();
@@ -78,6 +77,7 @@ public class VisuAdapter extends RecyclerView.Adapter<VisuAdapter.MyViewHolder> 
                 return 0;
             }
         });
+
         setListaEventos(listaEventos);
         setListIds(listIds);
         notifyDataSetChanged();
@@ -119,25 +119,21 @@ public class VisuAdapter extends RecyclerView.Adapter<VisuAdapter.MyViewHolder> 
 
         ordenarPorPeriodo(hoje.getTime(), amanha.getTime());
     }
-
     public void ordenarPorEventosProximos7Dias() {
         Calendar seteDiasAtras = Calendar.getInstance();
         seteDiasAtras.add(Calendar.DAY_OF_YEAR, 7);
 
         ordenarPorPeriodo(new Date(), seteDiasAtras.getTime());
     }
-
     public void ordenarPorEventosProximos30Dias() {
         Calendar trintaDiasAtras = Calendar.getInstance();
         trintaDiasAtras.add(Calendar.DAY_OF_YEAR, 30);
 
         ordenarPorPeriodo(new Date(), trintaDiasAtras.getTime());
     }
-
     public void ordenarPorEventosPersonalizados(Date dataInicial, Date dataFinal) {
         ordenarPorPeriodo(dataInicial, dataFinal);
     }
-
     @SuppressLint("NotifyDataSetChanged")
     private void ordenarPorPeriodo(final Date dataInicial, final Date dataFinal) {
         List<Eventos> eventosNoPeriodo = new ArrayList<>();
@@ -186,10 +182,11 @@ public class VisuAdapter extends RecyclerView.Adapter<VisuAdapter.MyViewHolder> 
         setListaEventos(eventosNoPeriodo);
         notifyDataSetChanged();
     }
-
+    @SuppressLint("NotifyDataSetChanged")
     public void setListaEventos(List<Eventos> listaEventos) {
         this.listaEventos = listaEventos;
     }
+    @SuppressLint("NotifyDataSetChanged")
     public void setListIds(List<String> listIds) {
         this.listIds = listIds;
     }
@@ -212,7 +209,7 @@ public class VisuAdapter extends RecyclerView.Adapter<VisuAdapter.MyViewHolder> 
         }
 
         Eventos evento = listaEventos.get(position);
-        String eventoId = listIds.get(position);
+        String eventoId = evento.geteventosId();
         String localdoevento = evento.getlocaldoEvento();
 
         if(localdoevento != null){
@@ -291,6 +288,7 @@ public class VisuAdapter extends RecyclerView.Adapter<VisuAdapter.MyViewHolder> 
                 }
             }
         }
+
         holder.nome.setText(evento.getnomedoEvento());
         holder.data.setText(evento.getdatadoEvento());
         holder.datafinal.setText(evento.getDatadoEventoFinal());
@@ -315,8 +313,8 @@ public class VisuAdapter extends RecyclerView.Adapter<VisuAdapter.MyViewHolder> 
                         String hibrido = infoEventoSnapshot.getString("hibrido");
                         String online = infoEventoSnapshot.getString("online");
                         String linkTransmissao = infoEventoSnapshot.getString("linkTransmissao");
-
-                        Log.d("EVENTOID", "Registro do evento Id " + eventoId);
+                        String coberturafotografica = infoEventoSnapshot.getString("coberturafotografica");
+                        String userID = infoEventoSnapshot.getString("userID");
 
                         FirebaseFirestore db = FirebaseFirestore.getInstance();
                         FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -332,173 +330,51 @@ public class VisuAdapter extends RecyclerView.Adapter<VisuAdapter.MyViewHolder> 
                                                 String userType = document.getString("Tipo");
                                                 if ("admin".equals(userType)) {
                                                     // Habilitar o CheckBox para administradores
-                                                    AlertDialog.Builder builder = new AlertDialog.Builder(context,R.style.AlertDialogTheme);
+                                                    AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogTheme);
                                                     View view = LayoutInflater.from(context).inflate(
-                                                            R.layout.layout_admin_informacao_evento_dialog,null);
+                                                            R.layout.layout_admin_informacao_evento_dialog, null);
                                                     builder.setView(view);
                                                     ((TextView) view.findViewById(R.id.textTitleAlertDialog)).setText(evento.getnomedoEvento());
                                                     ((TextView) view.findViewById(R.id.textMessage)).setText(
                                                             "Descrição da Atividade: " + evento.getdescricaodaAtividade() +
-                                                            "\n\nLocal de Evento: " + evento.getlocaldoEvento() +
-                                                            "\n\nHora Inicial: " + evento.getHoradoEventoInicial() +
-                                                            "\n\nHora Final: " + evento.getHoraEventoFinal() +
-                                                            "\n\nData Inicial: " + evento.getdatadoEvento() +
-                                                            "\n\nData Final: " + evento.getDatadoEventoFinal() +
-                                                            "\n\nObservações: " + evento.getObservacoes() +
-                                                            "\n\nNúmero de Participantes: " + evento.getNumerosdeParticipantes() +
-                                                            "\n\nSetor Responsável: " + evento.getSetorResponsavel());
-                                                    if(evento.getEquipamentos().equals("Sim")){
+                                                                    "\n\nLocal de Evento: " + evento.getlocaldoEvento() +
+                                                                    "\n\nHora Inicial: " + evento.getHoradoEventoInicial() +
+                                                                    "\n\nHora Final: " + evento.getHoraEventoFinal() +
+                                                                    "\n\nData Inicial: " + evento.getdatadoEvento() +
+                                                                    "\n\nData Final: " + evento.getDatadoEventoFinal() +
+                                                                    "\n\nObservações: " + evento.getObservacoes() +
+                                                                    "\n\nNúmero de Participantes: " + evento.getNumerosdeParticipantes() +
+                                                                    "\n\nSetor Responsável: " + evento.getSetorResponsavel());
+                                                    if (evento.getEquipamentos().equals("Sim")) {
                                                         ((TextView) view.findViewById(R.id.textMessage1)).setText(
                                                                 "\n\nEquipamentos de áudio de vídeo: " + evento.getEquipamentos() +
                                                                 "\n\nEquipamentos: " + evento.getQuaisequipamentos());
-                                                    } else{
-                                                            ((TextView) view.findViewById(R.id.textMessage1)).setText(
-                                                                    "\n\nEquipamentos de áudio de vídeo: " + "Nao" );
+                                                    } else {
+                                                        ((TextView) view.findViewById(R.id.textMessage1)).setText(
+                                                                "\n\nEquipamentos de áudio de vídeo: " + "Nao");
                                                     }
 
-                                                    if(Objects.equals(temTransmissao, "Sim") && Objects.equals(transmissao, "Sim")){
+                                                    if (Objects.equals(temTransmissao, "Sim") && Objects.equals(transmissao, "Sim")) {
                                                         ((TextView) view.findViewById(R.id.textMessage2)).setText(
                                                                 "\n\nHaverá transmissão/ gravação: " + temTransmissao +
                                                                 "\n\nTransmissão: " + transmissao);
                                                     } else {
-                                                        if (Objects.equals(temTransmissao, "Sim") && Objects.equals(gravacao, "Sim")){
+                                                        if (Objects.equals(temTransmissao, "Sim") && Objects.equals(gravacao, "Sim")) {
                                                             ((TextView) view.findViewById(R.id.textMessage2)).setText(
                                                                     "\n\nHaverá transmissão/ gravação: " + temTransmissao +
                                                                     "\n\nGravação: " + gravacao);
-                                                        } else{
-                                                            if (Objects.equals(temTransmissao, "Sim") && Objects.equals(ambos, "Sim")){
+                                                        } else {
+                                                            if (Objects.equals(temTransmissao, "Sim") && Objects.equals(ambos, "Sim")) {
                                                                 ((TextView) view.findViewById(R.id.textMessage2)).setText(
                                                                         "\n\nHaverá transmissão/ gravação: " + temTransmissao +
                                                                         "\n\nTransmissão e gravação: " + ambos);
-                                                            } else{
+                                                            } else {
                                                                 ((TextView) view.findViewById(R.id.textMessage2)).setText(
                                                                         "\n\nHaverá transmissão/ gravação: " + temTransmissao);
                                                             }
                                                         }
                                                     }
-                                                    if(Objects.equals(presencial, "Sim")){
-                                                        ((TextView) view.findViewById(R.id.textMessage3)).setText(
-                                                                "\n\nPresencial: " + presencial);
-                                                    } else {
-                                                        if (Objects.equals(hibrido, "Sim") && Objects.equals(linkTransmissao, "Sim")) {
-                                                            ((TextView) view.findViewById(R.id.textMessage3)).setText(
-                                                                "\n\nHibrído: " + hibrido +
-                                                                "\n\nVai ter link: " + linkTransmissao);
-                                                    } else {
-                                                        if (Objects.equals(online, "Sim") && Objects.equals(linkTransmissao, "Sim")) {
-                                                         ((TextView) view.findViewById(R.id.textMessage3)).setText(
-                                                                 "\n\nOnline: " + online +
-                                                                 "\n\nVai ter link: " + linkTransmissao);
-                                                         }
-                                                        }
-                                                    }
-
-                                                    ((Button) view.findViewById(R.id.buttoneditar)).setText("Editar");
-                                                    ((Button) view.findViewById(R.id.buttonexcluir)).setText("Excluir");
-                                                    ((Button) view.findViewById(R.id.buttonvoltar)).setText("Voltar");
-
-                                                    final AlertDialog alertDialog = builder.create();
-
-                                                    view.findViewById(R.id.buttonvoltar).setOnClickListener(view13 -> alertDialog.dismiss());
-
-                                                    view.findViewById(R.id.buttonexcluir).setOnClickListener(view12 -> {
-
-                                                        alertDialog.dismiss();
-
-                                                        AlertDialog.Builder builderExcluir = new AlertDialog.Builder(context,R.style.AlertDialogTheme);
-                                                        View viewExcluir = LayoutInflater.from(context).inflate(
-                                                                R.layout.layout_alerta_dialog,null);
-
-                                                        builderExcluir.setView(viewExcluir);
-                                                        ((TextView) viewExcluir.findViewById(R.id.textTitleAlertDialog)).setText("Aviso");
-                                                        ((TextView) viewExcluir.findViewById(R.id.textMessage)).setText("Você deseja realmente excluir esse evento ?");
-                                                        ((Button) viewExcluir.findViewById(R.id.buttonYes)).setText("Sim");
-                                                        ((Button) viewExcluir.findViewById(R.id.buttonNo)).setText("Não");
-                                                        ((ImageView) viewExcluir.findViewById(R.id.imageIcon)).setImageResource(R.drawable.aviso);
-
-                                                        final AlertDialog alertDialog1 = builderExcluir.create();
-
-                                                        viewExcluir.findViewById(R.id.buttonYes).setOnClickListener(view15 -> {
-                                                            alertDialog1.dismiss();
-                                                            Eventos event = listaEventos.get(holder.getAdapterPosition());
-                                                            String eventosId = event.geteventosId();
-                                                            Log.d("Excluir", "Excluir evento com o eventoId: " + eventosId);
-                                                            excluirEvento(eventosId,position);
-                                                        });
-
-                                                        viewExcluir.findViewById(R.id.buttonNo).setOnClickListener(view14 -> {
-                                                            alertDialog1.dismiss();
-                                                            alertDialog.show();
-
-                                                        });
-
-                                                        if (alertDialog1.getWindow() != null){
-                                                            alertDialog1.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-                                                        }
-                                                        alertDialog1.show();
-                                                    });
-
-                                                    view.findViewById(R.id.buttoneditar).setOnClickListener(view1 -> {
-                                                        Eventos event = listaEventos.get(holder.getAdapterPosition());
-                                                        String eventosId = event.geteventosId();
-
-                                                        Intent intentEdicaoForm = new Intent(v.getContext(), FormCadastroEvento.class);
-                                                        intentEdicaoForm.putExtra("eventosId", eventosId);
-                                                        Log.d("Debug 2", "Nenhum documento encontrado com o eventoId: " + eventosId);
-                                                        v.getContext().startActivity(intentEdicaoForm);
-                                                    });
-
-                                                    if (alertDialog.getWindow() != null){
-                                                        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-                                                    }
-                                                    alertDialog.show();
-                                                } else{
-                                                    //add aqui os normais
-                                                    AlertDialog.Builder builder = new AlertDialog.Builder(context,R.style.AlertDialogTheme);
-                                                    View view = LayoutInflater.from(context).inflate(
-                                                            R.layout.layout_informacao_evento_dialog,null);
-                                                    builder.setView(view);
-                                                    ((TextView) view.findViewById(R.id.textTitleAlertDialog)).setText(evento.getnomedoEvento());
-                                                    ((TextView) view.findViewById(R.id.textMessage)).setText(
-                                                            "Descrição da Atividade: " + evento.getdescricaodaAtividade() +
-                                                            "\n\nLocal de Evento: " + evento.getlocaldoEvento() +
-                                                            "\n\nHora Inicial: " + evento.getHoradoEventoInicial() +
-                                                            "\n\nHora Final: " + evento.getHoraEventoFinal() +
-                                                            "\n\nData Inicial: " + evento.getdatadoEvento() +
-                                                            "\n\nData Final: " + evento.getDatadoEventoFinal() +
-                                                            "\n\nObservações: " + evento.getObservacoes() +
-                                                            "\n\nNúmero de Participantes: " + evento.getNumerosdeParticipantes() +
-                                                            "\n\nSetor Responsável: " + evento.getSetorResponsavel());
-
-                                                    if(evento.getEquipamentos().equals("Sim")){
-                                                        ((TextView) view.findViewById(R.id.textMessage1)).setText(
-                                                                "\n\nEquipamentos de áudio de vídeo: " + evento.getEquipamentos() +
-                                                                        "\n\nEquipamentos: " + evento.getQuaisequipamentos());
-                                                    } else{
-                                                        ((TextView) view.findViewById(R.id.textMessage1)).setText(
-                                                                "\n\nEquipamentos de áudio de vídeo: " + "Nao" );
-                                                    }
-                                                    if(Objects.equals(temTransmissao, "Sim") && Objects.equals(transmissao, "Sim")){
-                                                        ((TextView) view.findViewById(R.id.textMessage2)).setText(
-                                                                "\n\nHaverá transmissão/ gravação: " + temTransmissao +
-                                                                "\n\nTransmissão: " + transmissao);
-                                                    } else {
-                                                        if (Objects.equals(temTransmissao, "Sim") && Objects.equals(gravacao, "Sim")){
-                                                        ((TextView) view.findViewById(R.id.textMessage2)).setText(
-                                                                "\n\nHaverá transmissão/ gravação: " + temTransmissao +
-                                                                "\n\nGravação: " + gravacao);
-                                                        } else{
-                                                            if (Objects.equals(temTransmissao, "Sim") && Objects.equals(ambos, "Sim")){
-                                                                ((TextView) view.findViewById(R.id.textMessage2)).setText(
-                                                                        "\n\nHaverá transmissão/ gravação: " + temTransmissao +
-                                                                        "\n\nTransmissão e gravação: " + ambos);
-                                                            } else{
-                                                                ((TextView) view.findViewById(R.id.textMessage2)).setText(
-                                                                        "\n\nHaverá transmissão/ gravação: " + temTransmissao);
-                                                            }
-                                                        }
-                                                    }
-                                                    if(Objects.equals(presencial, "Sim")){
+                                                    if (Objects.equals(presencial, "Sim")) {
                                                         ((TextView) view.findViewById(R.id.textMessage3)).setText(
                                                                 "\n\nPresencial: " + presencial);
                                                     } else {
@@ -514,6 +390,169 @@ public class VisuAdapter extends RecyclerView.Adapter<VisuAdapter.MyViewHolder> 
                                                             }
                                                         }
                                                     }
+                                                    if (Objects.equals(coberturafotografica, "Sim")) {
+                                                        ((TextView) view.findViewById(R.id.textMessage3)).setText(
+                                                                "\n\nCobertura Fotográfica: " + coberturafotografica);
+                                                    } else {
+                                                        ((TextView) view.findViewById(R.id.textMessage3)).setText(
+                                                                "\n\nCobertura Fotográfica: " + "Não");
+                                                    }
+
+                                                    // Usando o userId para recuperar o nome do usuário da coleção "Info_Usuarios"
+                                                    db.collection("Info_Usuarios").document(userID).get()
+                                                            .addOnCompleteListener(verificacaoUsuario -> {
+                                                                if (verificacaoUsuario.isSuccessful()) {
+                                                                    DocumentSnapshot documentUserID = verificacaoUsuario.getResult();
+                                                                    if (documentUserID.exists()) {
+                                                                        String userName1 = documentUserID.getString("Nome");
+                                                                        // Agora você tem o nome do usuário, você pode adicionar ao AlertDialog
+                                                                        ((TextView) view.findViewById(R.id.textMessage3)).append(
+                                                                                "\n\nEvento Adicionado por: " + userName1);
+                                                                    }
+                                                                }
+                                                            });
+
+                                                    ((Button) view.findViewById(R.id.buttoneditar)).setText("Editar");
+                                                    ((Button) view.findViewById(R.id.buttonexcluir)).setText("Excluir");
+                                                    ((Button) view.findViewById(R.id.buttonvoltar)).setText("Voltar");
+
+                                                    final AlertDialog alertDialog = builder.create();
+
+                                                    view.findViewById(R.id.buttonvoltar).setOnClickListener(view13 -> alertDialog.dismiss());
+
+                                                    view.findViewById(R.id.buttonexcluir).setOnClickListener(view12 -> {
+
+                                                        alertDialog.dismiss();
+
+                                                        AlertDialog.Builder builderExcluir = new AlertDialog.Builder(context, R.style.AlertDialogTheme);
+                                                        View viewExcluir = LayoutInflater.from(context).inflate(
+                                                                R.layout.layout_alerta_dialog, null);
+
+                                                        builderExcluir.setView(viewExcluir);
+                                                        ((TextView) viewExcluir.findViewById(R.id.textTitleAlertDialog)).setText("Aviso");
+                                                        ((TextView) viewExcluir.findViewById(R.id.textMessage)).setText("Você deseja realmente excluir esse evento ?");
+                                                        ((Button) viewExcluir.findViewById(R.id.buttonYes)).setText("Sim");
+                                                        ((Button) viewExcluir.findViewById(R.id.buttonNo)).setText("Não");
+                                                        ((ImageView) viewExcluir.findViewById(R.id.imageIcon)).setImageResource(R.drawable.aviso);
+
+                                                        final AlertDialog alertDialog1 = builderExcluir.create();
+
+                                                        viewExcluir.findViewById(R.id.buttonYes).setOnClickListener(view15 -> {
+                                                            alertDialog1.dismiss();
+                                                            Eventos event = listaEventos.get(holder.getAdapterPosition());
+                                                            String eventosId = event.geteventosId();
+                                                            Log.d("Excluir", "Excluir evento com o eventoId: " + eventoId);
+                                                            excluirEvento(eventosId, position);
+                                                        });
+
+                                                        viewExcluir.findViewById(R.id.buttonNo).setOnClickListener(view14 -> {
+                                                            alertDialog1.dismiss();
+                                                            alertDialog.show();
+
+                                                        });
+
+                                                        if (alertDialog1.getWindow() != null) {
+                                                            alertDialog1.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                                                        }
+                                                        alertDialog1.show();
+                                                    });
+
+                                                    view.findViewById(R.id.buttoneditar).setOnClickListener(view1 -> {
+                                                        Eventos event = listaEventos.get(holder.getAdapterPosition());
+                                                        String eventosId = event.geteventosId();
+
+                                                        Intent intentEdicaoForm = new Intent(v.getContext(), FormCadastroEvento.class);
+                                                        intentEdicaoForm.putExtra("eventosId", eventosId);
+                                                        Log.d("Debug 2", "Nenhum documento encontrado com o eventoId: " + eventosId);
+                                                        v.getContext().startActivity(intentEdicaoForm);
+                                                    });
+
+                                                    if (alertDialog.getWindow() != null) {
+                                                        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                                                    }
+                                                    alertDialog.show();
+                                                } else {
+                                                    //add aqui os normais
+                                                    AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogTheme);
+                                                    View view = LayoutInflater.from(context).inflate(
+                                                            R.layout.layout_informacao_evento_dialog, null);
+                                                    builder.setView(view);
+                                                    ((TextView) view.findViewById(R.id.textTitleAlertDialog)).setText(evento.getnomedoEvento());
+                                                    ((TextView) view.findViewById(R.id.textMessage)).setText(
+                                                            "Descrição da Atividade: " + evento.getdescricaodaAtividade() +
+                                                                    "\n\nLocal de Evento: " + evento.getlocaldoEvento() +
+                                                                    "\n\nHora Inicial: " + evento.getHoradoEventoInicial() +
+                                                                    "\n\nHora Final: " + evento.getHoraEventoFinal() +
+                                                                    "\n\nData Inicial: " + evento.getdatadoEvento() +
+                                                                    "\n\nData Final: " + evento.getDatadoEventoFinal() +
+                                                                    "\n\nObservações: " + evento.getObservacoes() +
+                                                                    "\n\nNúmero de Participantes: " + evento.getNumerosdeParticipantes() +
+                                                                    "\n\nSetor Responsável: " + evento.getSetorResponsavel());
+
+                                                    if (evento.getEquipamentos().equals("Sim")) {
+                                                        ((TextView) view.findViewById(R.id.textMessage1)).setText(
+                                                                "\n\nEquipamentos de áudio de vídeo: " + evento.getEquipamentos() +
+                                                                "\n\nEquipamentos: " + evento.getQuaisequipamentos());
+                                                    } else {
+                                                        ((TextView) view.findViewById(R.id.textMessage1)).setText(
+                                                                "\n\nEquipamentos de áudio de vídeo: " + "Nao");
+                                                    }
+                                                    if (Objects.equals(temTransmissao, "Sim") && Objects.equals(transmissao, "Sim")) {
+                                                        ((TextView) view.findViewById(R.id.textMessage2)).setText(
+                                                                "\n\nHaverá transmissão/ gravação: " + temTransmissao +
+                                                                "\n\nTransmissão: " + transmissao);
+                                                    } else {
+                                                        if (Objects.equals(temTransmissao, "Sim") && Objects.equals(gravacao, "Sim")) {
+                                                            ((TextView) view.findViewById(R.id.textMessage2)).setText(
+                                                                    "\n\nHaverá transmissão/ gravação: " + temTransmissao +
+                                                                    "\n\nGravação: " + gravacao);
+                                                        } else {
+                                                            if (Objects.equals(temTransmissao, "Sim") && Objects.equals(ambos, "Sim")) {
+                                                                ((TextView) view.findViewById(R.id.textMessage2)).setText(
+                                                                        "\n\nHaverá transmissão/ gravação: " + temTransmissao +
+                                                                        "\n\nTransmissão e gravação: " + ambos);
+                                                            } else {
+                                                                ((TextView) view.findViewById(R.id.textMessage2)).setText(
+                                                                        "\n\nHaverá transmissão/ gravação: " + temTransmissao);
+                                                            }
+                                                        }
+                                                    }
+                                                    if (Objects.equals(presencial, "Sim")) {
+                                                        ((TextView) view.findViewById(R.id.textMessage3)).setText(
+                                                                "\n\nPresencial: " + presencial);
+                                                    } else {
+                                                        if (Objects.equals(hibrido, "Sim") && Objects.equals(linkTransmissao, "Sim")) {
+                                                            ((TextView) view.findViewById(R.id.textMessage3)).setText(
+                                                                    "\n\nHibrído: " + hibrido +
+                                                                    "\n\nVai ter link: " + linkTransmissao);
+                                                        } else {
+                                                            if (Objects.equals(online, "Sim") && Objects.equals(linkTransmissao, "Sim")) {
+                                                                ((TextView) view.findViewById(R.id.textMessage3)).setText(
+                                                                        "\n\nOnline: " + online +
+                                                                        "\n\nVai ter link: " + linkTransmissao);
+                                                            }
+                                                        }
+                                                    }
+                                                    if (Objects.equals(coberturafotografica, "Sim")) {
+                                                        ((TextView) view.findViewById(R.id.textMessage3)).setText(
+                                                                "\n\nCobertura Fotográfica: " + coberturafotografica);
+                                                    } else {
+                                                        ((TextView) view.findViewById(R.id.textMessage3)).setText(
+                                                                "\n\nCobertura Fotográfica: " + coberturafotografica);
+                                                    }
+                                                    // Usando o userId para recuperar o nome do usuário da coleção "Info_Usuarios"
+                                                    db.collection("Info_Usuarios").document(userID).get()
+                                                            .addOnCompleteListener(verificacaoUsuario -> {
+                                                                if (verificacaoUsuario.isSuccessful()) {
+                                                                    DocumentSnapshot documentUserID = verificacaoUsuario.getResult();
+                                                                    if (documentUserID.exists()) {
+                                                                        String userName1 = documentUserID.getString("Nome");
+                                                                        // Agora você tem o nome do usuário, você pode adicionar ao AlertDialog
+                                                                        ((TextView) view.findViewById(R.id.textMessage3)).append(
+                                                                                "\n\nEvento Adicionado por: " + userName1);
+                                                                    }
+                                                                }
+                                                            });
 
                                                     ((Button) view.findViewById(R.id.buttonAction)).setText("Voltar");
 
@@ -521,7 +560,7 @@ public class VisuAdapter extends RecyclerView.Adapter<VisuAdapter.MyViewHolder> 
 
                                                     view.findViewById(R.id.buttonAction).setOnClickListener(view13 -> alertDialog.dismiss());
 
-                                                    if (alertDialog.getWindow() != null){
+                                                    if (alertDialog.getWindow() != null) {
                                                         alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
                                                     }
                                                     alertDialog.show();
@@ -569,7 +608,6 @@ public class VisuAdapter extends RecyclerView.Adapter<VisuAdapter.MyViewHolder> 
                 holder.tagExpirado.setVisibility(View.GONE); // Esconde a tag "Expirado"
             }
         }
-
     }
     private Date sumTimeToDate(Date date, Date time) {
         Calendar calendarDate = Calendar.getInstance();

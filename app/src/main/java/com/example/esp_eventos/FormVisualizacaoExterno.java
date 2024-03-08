@@ -52,7 +52,7 @@ public class FormVisualizacaoExterno extends BaseActivity {
     private List<String> listIdsExt;
     private VisuAdapterExt visuAdapterExt;
 
-    @SuppressLint({"MissingInflatedId", "NotifyDataSetChanged"})
+    @SuppressLint({"MissingInflatedId", "NotifyDataSetChanged", "SetTextI18n"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

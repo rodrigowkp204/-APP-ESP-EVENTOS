@@ -92,10 +92,10 @@ public class PaginaPrincipal extends BaseActivity {
         });
 
         imageViewConfigAdmin.setOnClickListener(vadmin ->{
-            //showSortDialog("Opções de administrador");
-            Intent intenttestecalendario = new Intent(PaginaPrincipal.this, CalendarViewMonthly.class);
-            startActivity(intenttestecalendario);
-            finish();
+            showSortDialog("Opções de administrador");
+            //Intent intenttestecalendario = new Intent(PaginaPrincipal.this, CalendarViewMonthly.class);
+            //startActivity(intenttestecalendario);
+            //finish();
         });
 
         photoList = getPhotoList();
@@ -242,6 +242,7 @@ public class PaginaPrincipal extends BaseActivity {
 
         photoList.add(new Photos(1,R.drawable.logo_calendario_eventos_pagina_inicial,"Agendar Evento"));
         photoList.add(new Photos(2,R.drawable.logo_visualizacao_pagina_inicial, "Visualizar Agendados"));
+        photoList.add(new Photos(3,R.drawable.logo_visualizar_calendario, "Visualizar Calendário"));
 
         return photoList;
     }
@@ -409,6 +410,7 @@ public class PaginaPrincipal extends BaseActivity {
         recyclerView = findViewById(R.id.recyclerView);
         imageViewConfigAdmin = findViewById(R.id.imageViewConfigAdmin);
     }
+
     protected void onDestroy(){
         super.onDestroy();
 

@@ -55,7 +55,7 @@ public class FormVisualizacao extends BaseActivity {
     EditText searchedittext;
 
 
-    @SuppressLint({"MissingInflatedId", "NotifyDataSetChanged"})
+    @SuppressLint({"MissingInflatedId", "NotifyDataSetChanged", "SetTextI18n"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,7 +84,6 @@ public class FormVisualizacao extends BaseActivity {
                 for (QueryDocumentSnapshot document1 : task.getResult()) {
                     Eventos event = document1.toObject(Eventos.class);
                     String eventoId = document1.getString("eventosId");
-                    Log.d("ID", "EVENTOID" + eventoId);
 
                     // Defina a data de adição como a data atual
                     Timestamp dataAdicao = document1.getTimestamp("dataAdicao");
@@ -109,6 +108,7 @@ public class FormVisualizacao extends BaseActivity {
                                 String online = infoEventoSnapshot.getString("online");
                                 String linktransmissao = infoEventoSnapshot.getString("linkTransmissao");
                                 String materialgraficos = infoEventoSnapshot.getString("materiaisgraficos");
+                                String coberturafotografica = infoEventoSnapshot.getString("coberturafotografica");
 
                                 if(Objects.equals(equipamentos, "Sim")){
                                     event.setQuaisequipamentos(quaisequipamentos);
@@ -138,7 +138,9 @@ public class FormVisualizacao extends BaseActivity {
                                 event.setSetorResponsavel(setor);
                                 event.setEquipamentos(equipamentos);
                                 event.setMateriaisgraficos(materialgraficos);
+                                event.setCoberturafotografica(coberturafotografica);
                                 event.setDataAdicao(dataAdicao);
+
                             } else {
                                 Log.d("FormVisualizacao", "O documento infoEventos não existe para o evento com ID: " + eventoId);
                             }
@@ -181,7 +183,7 @@ public class FormVisualizacao extends BaseActivity {
             showSortDialog("Ordenação dos Eventos");
         });
         retirarfiltro.setOnClickListener(v ->{
-            visuAdapter.ordenarPorDataMaisRecente();
+            //visuAdapter.ordenarPorDataMaisRecente();
             mostrarTodososEventos();
             retirarfiltro.setVisibility(View.GONE);
             adicionarfiltro.setVisibility(View.VISIBLE);
